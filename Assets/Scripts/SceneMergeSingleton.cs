@@ -5,9 +5,9 @@ using System.Security.Cryptography;
 using UnityEngine;
 
 /// <author>Elijah Shadbolt</author>
-public class SceneMergeObject : MonoBehaviour
+public class SceneMergeSingleton : MonoBehaviour
 {
-	private static Dictionary<Hash128, SceneMergeObject> objects = new Dictionary<Hash128, SceneMergeObject>();
+	private static Dictionary<Hash128, SceneMergeSingleton> objects = new Dictionary<Hash128, SceneMergeSingleton>();
 
 	[SerializeField]
 	private string m_uniqueName;
@@ -25,7 +25,7 @@ public class SceneMergeObject : MonoBehaviour
 		}
 
 		uniqueNameHash = Hash128.Compute(m_uniqueName);
-		if (objects.TryGetValue(uniqueNameHash, out SceneMergeObject obj))
+		if (objects.TryGetValue(uniqueNameHash, out SceneMergeSingleton obj))
 		{
 			if (obj != this)
 			{
