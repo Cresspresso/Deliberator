@@ -12,6 +12,7 @@ public class SceneMerger : MonoBehaviour
 
 	private void Start()
 	{
+		// load scenes async
 		foreach (var name in sceneNames)
 		{
 			try

@@ -9,13 +9,37 @@ public class SceneMergeSingleton : MonoBehaviour
 {
 	private static Dictionary<Hash128, SceneMergeSingleton> objects = new Dictionary<Hash128, SceneMergeSingleton>();
 
+	public static SceneMergeSingleton GetByName(string uniqueName) => GetByHash(Hash128.Compute(uniqueName));
+	public static SceneMergeSingleton GetByHash(Hash128 uniqueNameHash)
+	{
+		if (objects.ContainsKey(uniqueNameHash))
+		{
+			return objects[uniqueNameHash];
+		}
+		else
+		{
+			return null;
+		}
+	}
+
+#pragma warning disable CS0649
 	[SerializeField]
 	private string m_uniqueName;
+#pragma warning restore CS0649
+	public string uniqueName => m_uniqueName;
 
-	private Hash128 uniqueNameHash;
-	private bool isTheOne = false;
+	public Hash128 uniqueNameHash { get; private set; }
+	public bool isTheOne { get; private set; }
 
 	private void Awake()
+	{
+		if (!isTheOne)
+		{
+			CheckMergeSingleton();
+		}
+	}
+
+	private void CheckMergeSingleton()
 	{
 		if (string.IsNullOrWhiteSpace(m_uniqueName))
 		{
