@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-5215588141933826906
+--- !u!114 &-8651679869918405811
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,16 +20,17 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: LabMachine1_M
+  m_Name: SingleLabDoor_Window_M
   m_Shader: {fileID: 4800000, guid: 6e4ae4064600d784cac1e41a9e6f2e59, type: 3}
-  m_ShaderKeywords: _ALPHATEST_ON _DOUBLESIDED_ON _EMISSIVE_COLOR_MAP _MASKMAP _NORMALMAP
-    _NORMALMAP_TANGENT_SPACE
+  m_ShaderKeywords: _ALPHATEST_ON _BLENDMODE_ALPHA _BLENDMODE_PRESERVE_SPECULAR_LIGHTING
+    _DOUBLESIDED_ON _ENABLE_FOG_ON_TRANSPARENT _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE
+    _SURFACE_TYPE_TRANSPARENT
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 1
-  m_CustomRenderQueue: 2450
+  m_CustomRenderQueue: 3000
   stringTagMap:
-    RenderType: TransparentCutout
+    RenderType: Transparent
   disabledShaderPasses:
   - DistortionVectors
   - MOTIONVECTORS
@@ -44,7 +45,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseColorMap:
-        m_Texture: {fileID: 2800000, guid: 39e2c54918ad3c14abc969e477d8c8aa, type: 3}
+        m_Texture: {fileID: 2800000, guid: 174ba3397e47b3d4d868397133f8ff50, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BentNormalMap:
@@ -68,7 +69,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissiveColorMap:
-        m_Texture: {fileID: 2800000, guid: 1a3354fb0823ad444bc3045c713ef64d, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _HeightMap:
@@ -84,15 +85,15 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 39e2c54918ad3c14abc969e477d8c8aa, type: 3}
+        m_Texture: {fileID: 2800000, guid: 174ba3397e47b3d4d868397133f8ff50, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskMap:
-        m_Texture: {fileID: 2800000, guid: 42b4b53293cb781469845ce14f5bd00c, type: 3}
+        m_Texture: {fileID: 2800000, guid: f5151069f6e0ba14691eff2b31b8cfe2, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
-        m_Texture: {fileID: 2800000, guid: cb1594962a6aeb148ad0954f319eb4f0, type: 3}
+        m_Texture: {fileID: 2800000, guid: bb18b816d8fe25d4baec6448f8477e60, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMapOS:
@@ -132,9 +133,9 @@ Material:
     - _AlphaCutoff: 0
     - _AlphaCutoffEnable: 1
     - _AlphaCutoffPostpass: 0.5
-    - _AlphaCutoffPrepass: 0.034
-    - _AlphaCutoffShadow: 0.147
-    - _AlphaDstBlend: 0
+    - _AlphaCutoffPrepass: 0.5
+    - _AlphaCutoffShadow: 0.307
+    - _AlphaDstBlend: 10
     - _AlphaSrcBlend: 1
     - _Anisotropy: 0
     - _BlendMode: 0
@@ -167,12 +168,12 @@ Material:
     - _DistortionVectorScale: 2
     - _DoubleSidedEnable: 1
     - _DoubleSidedNormalMode: 1
-    - _DstBlend: 0
+    - _DstBlend: 10
     - _EmissiveColorMode: 1
     - _EmissiveExposureWeight: 1
-    - _EmissiveIntensity: 100000
+    - _EmissiveIntensity: 1
     - _EmissiveIntensityUnit: 0
-    - _EnableBlendModePreserveSpecularLighting: 0
+    - _EnableBlendModePreserveSpecularLighting: 1
     - _EnableFogOnTransparent: 1
     - _EnableGeometricSpecularAA: 0
     - _EnergyConservingSpecularColor: 1
@@ -194,9 +195,9 @@ Material:
     - _Metallic: 0
     - _NormalMapSpace: 0
     - _NormalScale: 0
-    - _PPDLodThreshold: 4.67
-    - _PPDMaxSamples: 15.4
-    - _PPDMinSamples: 10
+    - _PPDLodThreshold: 5
+    - _PPDMaxSamples: 15
+    - _PPDMinSamples: 5
     - _PPDPrimitiveLength: 1
     - _PPDPrimitiveWidth: 1
     - _ReceivesSSR: 1
@@ -205,8 +206,8 @@ Material:
     - _Smoothness: 0.5
     - _SmoothnessRemapMax: 1
     - _SmoothnessRemapMin: 0
-    - _SpecularAAScreenSpaceVariance: 0.206
-    - _SpecularAAThreshold: 0.111
+    - _SpecularAAScreenSpaceVariance: 0.1
+    - _SpecularAAThreshold: 0.2
     - _SpecularOcclusionMode: 1
     - _SrcBlend: 1
     - _StencilRef: 0
@@ -221,7 +222,7 @@ Material:
     - _StencilWriteMaskMV: 40
     - _SubsurfaceMask: 1
     - _SupportDecals: 1
-    - _SurfaceType: 0
+    - _SurfaceType: 1
     - _TexWorldScale: 1
     - _TexWorldScaleEmissive: 1
     - _Thickness: 1
@@ -229,7 +230,7 @@ Material:
     - _TransparentBackfaceEnable: 0
     - _TransparentCullMode: 2
     - _TransparentDepthPostpassEnable: 0
-    - _TransparentDepthPrepassEnable: 1
+    - _TransparentDepthPrepassEnable: 0
     - _TransparentSortPriority: 0
     - _TransparentWritingMotionVec: 0
     - _TransparentZWrite: 0
@@ -238,11 +239,11 @@ Material:
     - _UVEmissive: 0
     - _UseEmissiveIntensity: 0
     - _UseShadowThreshold: 1
-    - _ZTestDepthEqualForOpaque: 3
+    - _ZTestDepthEqualForOpaque: 4
     - _ZTestGBuffer: 3
     - _ZTestModeDistortion: 4
     - _ZTestTransparent: 4
-    - _ZWrite: 1
+    - _ZWrite: 0
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
@@ -250,8 +251,8 @@ Material:
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissiveColor: {r: 10936.955, g: 2837.4177, b: 2837.4177, a: 100000}
-    - _EmissiveColorLDR: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
+    - _EmissiveColorLDR: {r: 0, g: 0, b: 0, a: 1}
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
