@@ -77,7 +77,7 @@ public class FirstPersonCharacterController : MonoBehaviour
 	public bool isGroundSlippery { get; private set; } = false;
 	public bool didJump { get; private set; } = false;
 
-	public float verticalVelocity { get; private set; } = 0;
+	public float verticalVelocity { get; set; } = 0;
 
 	public int hitMask { get; private set; }
 
@@ -236,13 +236,5 @@ public class FirstPersonCharacterController : MonoBehaviour
 
 		UpdateRotation();
 		UpdatePosition();
-
-		// temporary solution for falling off the map
-		const float limit = -50;
-		if (position.y < limit)
-		{
-			position += Vector3.up * (50 - limit);
-			verticalVelocity = -10.0f;
-		}
 	}
 }
