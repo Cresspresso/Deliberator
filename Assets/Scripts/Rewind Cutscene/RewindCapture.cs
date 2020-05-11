@@ -80,10 +80,5 @@ public class RewindCapture : MonoBehaviour
 	{
 		elapsedTime += Time.deltaTime;
 		momentDuration += Time.deltaTime;
-
-		if (Input.GetKeyDown(KeyCode.R))
-		{
-			PresentRewindCutscene();
-		}
 	}
 }
