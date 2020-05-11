@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
@@ -6,6 +7,19 @@ using UnityEngine;
 /// <author>Elijah Shadbolt</author>
 public class PauseMenu : MonoBehaviour
 {
+	[SerializeField]
+	private MenuNavigation m_menuNavigation;
+	public MenuNavigation menuNavigation {
+		get
+		{
+			if (!m_menuNavigation)
+			{
+				m_menuNavigation = GetComponent<MenuNavigation>();
+			}
+			return m_menuNavigation;
+		}
+	}
+
 	[SerializeField]
 	private CursorController m_cursorController;
 	public CursorController cursorController {
@@ -20,29 +34,43 @@ public class PauseMenu : MonoBehaviour
 	}
 
 	[SerializeField]
-	private GameObject m_visuals;
-	public GameObject visuals => m_visuals;
+	private GameObject m_pauseMenuBackground;
+	public GameObject pauseMenuBackground => m_pauseMenuBackground;
 
-	private bool m_isPaused;
-	public bool isPaused {
-		get => m_isPaused;
-		set
-		{
-			m_isPaused = value;
-			Time.timeScale = m_isPaused ? 0.0f : 1.0f;
-			cursorController.enabled = !m_isPaused;
-			visuals.SetActive(m_isPaused);
-		}
+	[SerializeField]
+	private GameObject m_pauseMenuPanel;
+	public GameObject pauseMenuPanel => m_pauseMenuPanel;
+
+	public bool isPaused { get; private set; }
+
+	public void Pause() => Pause(this.pauseMenuPanel);
+	public void Pause(GameObject menuPanel)
+	{
+		isPaused = true;
+		Time.timeScale = 0.0f;
+		cursorController.enabled = false;
+		pauseMenuBackground.SetActive(true);
+		menuNavigation.Clear();
+		menuNavigation.GoInto(menuPanel);
 	}
 
-	private bool subscribed = false;
+	public void Unpause()
+	{
+		isPaused = false;
+		Time.timeScale = 1.0f;
+		cursorController.enabled = true;
+		pauseMenuBackground.SetActive(false);
+		menuNavigation.Clear();
+	}
+
+	private bool initialised = false;
 
 	private void Awake()
 	{
-		if (!subscribed)
+		if (!initialised)
 		{
-			subscribed = true;
-			isPaused = false;
+			initialised = true;
+			Unpause();
 		}
 	}
 
@@ -50,7 +78,19 @@ public class PauseMenu : MonoBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
-			isPaused = !isPaused;
+			if (isPaused)
+			{
+				menuNavigation.GoBack();
+			}
+			else
+			{
+				Pause(pauseMenuPanel);
+			}
+		}
+
+		if (isPaused && !menuNavigation.Any())
+		{
+			Unpause();
 		}
 	}
 }
