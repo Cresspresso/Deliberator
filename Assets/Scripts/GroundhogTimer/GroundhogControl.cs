@@ -28,12 +28,14 @@ public class GroundhogControl : MonoBehaviour
 		remainingDuration -= Time.deltaTime;
 		if (remainingDuration <= 0.0f)
 		{
+			Finish();
 		}
 	}
 
 	private void Finish()
 	{
 		hasFinished = true;
+
 		try
 		{
 			Finished?.Invoke();
@@ -42,7 +44,17 @@ public class GroundhogControl : MonoBehaviour
 		{
 			Debug.LogException(e);
 		}
-		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+		var cap = GetComponent<RewindCapture>();
+		if (cap)
+		{
+			cap.PresentRewindCutscene();
+		}
+		else
+		{
+			Debug.LogError("RewindCapture not found", this);
+			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+		}
 	}
 
 	public void PlayerDied()

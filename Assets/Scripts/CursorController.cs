@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using UnityEngine;
 
 /// <author>Elijah Shadbolt</author>
@@ -45,9 +46,13 @@ public class CursorController : MonoBehaviour
 		fpcc.isMoveInputEnabled = hideCursor;
 		fpcc.isJumpInputEnabled = hideCursor;
 		hc.enabled = hideCursor;
+		UncheckedSetCursorHidden(hideCursor);
+	}
 
-		Cursor.lockState = hideCursor ? CursorLockMode.Locked : CursorLockMode.None;
-		Cursor.visible = !hideCursor;
+	public static void UncheckedSetCursorHidden(bool hidden)
+	{
+		Cursor.lockState = hidden ? CursorLockMode.Locked : CursorLockMode.None;
+		Cursor.visible = !hidden;
 	}
 
 	private void Awake()
