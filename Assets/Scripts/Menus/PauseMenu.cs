@@ -33,12 +33,16 @@ public class PauseMenu : MonoBehaviour
 		}
 	}
 
+#pragma warning disable CS0649
 	[SerializeField]
 	private GameObject m_pauseMenuBackground;
+#pragma warning restore CS0649
 	public GameObject pauseMenuBackground => m_pauseMenuBackground;
 
+#pragma warning disable CS0649
 	[SerializeField]
 	private GameObject m_pauseMenuPanel;
+#pragma warning restore CS0649
 	public GameObject pauseMenuPanel => m_pauseMenuPanel;
 
 	public bool isPaused { get; private set; }

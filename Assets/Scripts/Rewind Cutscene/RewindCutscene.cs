@@ -82,6 +82,10 @@ public class RewindCutscene : MonoBehaviour
 	private void OnDestroy()
 	{
 		CursorController.UncheckedSetCursorHidden(false);
+		if (data)
+		{
+			Destroy(data);
+		}
 	}
 
 	private void InvokeFinished()
