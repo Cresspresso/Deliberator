@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <author>Elijah Shadbolt</author>
+[RequireComponent(typeof(Handle))]
 public class ButtonHandle : MonoBehaviour
 {
-	[SerializeField]
 	private Handle m_handle;
 	public Handle handle {
 		get
@@ -15,7 +15,6 @@ public class ButtonHandle : MonoBehaviour
 			return m_handle;
 		}
 	}
-
 	private void Find()
 	{
 		if (!m_handle)

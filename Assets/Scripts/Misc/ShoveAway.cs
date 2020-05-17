@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ShoveAway : MonoBehaviour
 {
+	public HandleHoverInfo nextInfo = new HandleHoverInfo("Push Again", null);
+
 	[SerializeField]
 	private ButtonHandle m_handle;
 	public ButtonHandle handle {
@@ -35,6 +37,6 @@ public class ShoveAway : MonoBehaviour
 	private void OnClick(ButtonHandle bh, HandleController handleController)
 	{
 		transform.position += transform.forward * 1.0f;
-		bh.handle.description = "push again";
+		bh.handle.hoverInfo = nextInfo;
 	}
 }
