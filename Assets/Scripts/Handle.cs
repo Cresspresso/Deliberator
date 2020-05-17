@@ -9,7 +9,7 @@ public struct HandleHoverInfo
 	public string description;
 	public Sprite sprite;
 
-	public HandleHoverInfo(string description, Sprite sprite)
+	public HandleHoverInfo(string description, Sprite sprite = null)
 	{
 		this.description = description;
 		this.sprite = sprite;

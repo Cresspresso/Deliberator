@@ -10,6 +10,7 @@ public class HandleDescriptionDisplay : MonoBehaviour
 	public Image image;
 	public GameObject visuals;
 	public Sprite idleSprite;
+	public Sprite interactSprite;
 	private bool subscribed = false;
 
 	private void Awake()
@@ -43,16 +44,16 @@ public class HandleDescriptionDisplay : MonoBehaviour
 
 	private void OnHoverExit(HandleController handleController, Handle handle)
 	{
+		handle.onHoverInfoChanged -= OnHoverInfoChanged;
 		visuals.SetActive(false);
 		image.sprite = idleSprite;
-		handle.onHoverInfoChanged -= OnHoverInfoChanged;
 	}
 
 	private void OnHoverInfoChanged(Handle handle, HandleHoverInfo hoverInfo)
 	{
 		if (image)
 		{
-			image.sprite = hoverInfo.sprite ?? idleSprite;
+			image.sprite = hoverInfo.sprite ? hoverInfo.sprite : interactSprite;
 		}
 
 		if (textElements != null)
