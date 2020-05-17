@@ -7,13 +7,16 @@ using UnityEngine.UI;
 public class HandleDescriptionDisplay : MonoBehaviour
 {
 	public Text[] textElements;
+	public Image image;
+	public GameObject visuals;
+	public Sprite idleSprite;
 	private bool subscribed = false;
 
 	private void Awake()
 	{
 		if (!subscribed)
 		{
-			gameObject.SetActive(false);
+			visuals.SetActive(false);
 			subscribed = true;
 			var handleController = FindObjectOfType<HandleController>();
 			handleController.onHoverEnter += OnHoverEnter;
@@ -33,26 +36,32 @@ public class HandleDescriptionDisplay : MonoBehaviour
 
 	private void OnHoverEnter(HandleController handleController, Handle handle)
 	{
-		handle.onDescriptionChanged += OnDescriptionChanged;
-		OnDescriptionChanged(handle, handle.description);
-		gameObject.SetActive(true);
+		handle.onHoverInfoChanged += OnHoverInfoChanged;
+		OnHoverInfoChanged(handle, handle.hoverInfo);
+		visuals.SetActive(true);
 	}
 
 	private void OnHoverExit(HandleController handleController, Handle handle)
 	{
-		gameObject.SetActive(false);
-		handle.onDescriptionChanged -= OnDescriptionChanged;
+		visuals.SetActive(false);
+		image.sprite = idleSprite;
+		handle.onHoverInfoChanged -= OnHoverInfoChanged;
 	}
 
-	private void OnDescriptionChanged(Handle handle, string description)
+	private void OnHoverInfoChanged(Handle handle, HandleHoverInfo hoverInfo)
 	{
+		if (image)
+		{
+			image.sprite = hoverInfo.sprite ?? idleSprite;
+		}
+
 		if (textElements != null)
 		{
 			foreach (var textElement in textElements)
 			{
 				if (textElement)
 				{
-					textElement.text = description;
+					textElement.text = hoverInfo.description;
 				}
 			}
 		}
