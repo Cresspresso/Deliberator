@@ -67,4 +67,10 @@ public class Handle : MonoBehaviour
 			Debug.LogError(e, this);
 		}
 	}
+
+	// to show enabled checkbox
+	private void Start()
+	{
+		
+	}
 }
