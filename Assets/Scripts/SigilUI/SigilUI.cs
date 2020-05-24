@@ -32,6 +32,11 @@ public class SigilUI : MonoBehaviour
 		}
 	}
 
+	public bool ContainsSigilSprite(Sprite sprite)
+	{
+		return m_sigilSprites.Contains(sprite);
+	}
+
 	private void Awake()
 	{
 		secondImage.gameObject.SetActive(false);
