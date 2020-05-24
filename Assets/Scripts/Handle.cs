@@ -67,4 +67,22 @@ public class Handle : MonoBehaviour
 			Debug.LogError(e, this);
 		}
 	}
+
+	// to show enabled checkbox
+	private void Start()
+	{
+		
+	}
+
+	private void OnDestroy()
+	{
+		try
+		{
+			onHoverExit?.Invoke(this, controller);
+		}
+		catch (Exception e)
+		{
+			Debug.LogError(e, this);
+		}
+	}
 }

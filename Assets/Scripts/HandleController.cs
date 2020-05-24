@@ -62,7 +62,7 @@ public class HandleController : MonoBehaviour
 			QueryTriggerInteraction.Collide))
 		{
 			var otherHandle = hit.collider.GetComponentInParent<Handle>();
-			if (otherHandle)
+			if (otherHandle && otherHandle.enabled)
 			{
 				hoveredHandle = otherHandle;
 				return;
