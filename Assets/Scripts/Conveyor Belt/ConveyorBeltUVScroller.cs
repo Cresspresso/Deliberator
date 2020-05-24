@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Changes the texture offset of an HDRP Lit material over time.
+/// </summary>
+/// <author>Elijah Shadbolt</author>
 public class ConveyorBeltUVScroller : MonoBehaviour
 {
 	public MeshRenderer meshRenderer { get; private set; }
