@@ -5,10 +5,10 @@ using DG.Tweening;
 
 public class SpinAnim : MonoBehaviour
 {
-	private void Start()
+	public Vector3 speedAngles = new Vector3(0, 360.0f, 0);
+
+	private void Update()
 	{
-		transform.DORotate(new Vector3(0, 0, 360.0f), 1.0f, RotateMode.LocalAxisAdd)
-			.SetLoops(-1)
-			.SetEase(Ease.Linear);
+		transform.Rotate(speedAngles * Time.deltaTime, Space.Self);
 	}
 }

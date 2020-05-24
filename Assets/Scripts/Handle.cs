@@ -73,4 +73,16 @@ public class Handle : MonoBehaviour
 	{
 		
 	}
+
+	private void OnDestroy()
+	{
+		try
+		{
+			onHoverExit?.Invoke(this, controller);
+		}
+		catch (Exception e)
+		{
+			Debug.LogError(e, this);
+		}
+	}
 }

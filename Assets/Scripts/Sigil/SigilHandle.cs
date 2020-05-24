@@ -7,6 +7,7 @@ using UnityEngine.VFX;
 public class SigilHandle : MonoBehaviour
 {
 	public ButtonHandle button { get; private set; }
+	public Sprite sigilPatternSprite;
 	public VisualEffect visualEffect;
 	public SigilExplode explosionPrefab;
 
@@ -26,6 +27,8 @@ public class SigilHandle : MonoBehaviour
 
 	private void OnClick(ButtonHandle button, HandleController controller)
 	{
+		FindObjectOfType<SigilUI>().AddSigilSprite(sigilPatternSprite);
+
 		var go = Instantiate(explosionPrefab.gameObject, transform.position, transform.rotation);
 		visualEffect.Stop();
 		visualEffect.transform.SetParent(go.transform);
