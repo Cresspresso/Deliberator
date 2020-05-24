@@ -25,10 +25,17 @@ public class GroundhogControl : MonoBehaviour
 
 	private void Update()
 	{
-		remainingDuration -= Time.deltaTime;
-		if (remainingDuration <= 0.0f)
+		if (Input.GetKeyDown(KeyCode.R))
 		{
 			Finish();
+		}
+		else
+		{
+			remainingDuration -= Time.deltaTime;
+			if (remainingDuration <= 0.0f)
+			{
+				Finish();
+			}
 		}
 	}
 
