@@ -14,7 +14,7 @@ public class HandleController : MonoBehaviour
 		get => m_hoveredHandle;
 		set
 		{
-			if (m_hoveredHandle == value) { return; }
+			if (value == m_hoveredHandle) { return; }
 
 			if (m_hoveredHandle)
 			{
@@ -51,14 +51,36 @@ public class HandleController : MonoBehaviour
 	public event Action<HandleController, Handle> onHoverEnter;
 	public event Action<HandleController, Handle> onHoverExit;
 
+	public void InternalOnHandleDisabled(Handle handle)
+	{
+		if (m_hoveredHandle == handle)
+		{
+			// unsubscribe
+			if (m_hoveredHandle)
+			{
+				m_hoveredHandle.HandleControllerHoverExit(this);
+				try
+				{
+					onHoverExit?.Invoke(this, m_hoveredHandle);
+				}
+				catch (Exception e)
+				{
+					Debug.LogException(e);
+				}
+			}
+
+			m_hoveredHandle = null;
+		}
+	}
+
 	private void RaycastForHandle()
 	{
+		var ray = new Ray(transform.position, transform.forward);
 		if (Physics.Raycast(
-			origin: transform.position,
-			direction: transform.forward,
+			ray,
 			out var hit,
-			maxDistance: maxDistance,
-			layerMask: handleMask,
+			maxDistance,
+			handleMask,
 			QueryTriggerInteraction.Collide))
 		{
 			var otherHandle = hit.collider.GetComponentInParent<Handle>();
@@ -74,11 +96,6 @@ public class HandleController : MonoBehaviour
 	private void Update()
 	{
 		RaycastForHandle();
-	}
-
-	private void OnDisable()
-	{
-		hoveredHandle = null;
 	}
 
 	private void OnDrawGizmosSelected()

@@ -10,6 +10,7 @@ public class SigilUI : MonoBehaviour
 	public Image mainImage;
 	public Image secondImage;
 	public GameObject helperVisuals;
+	public float width = 600;
 	[SerializeField]
 	private List<Sprite> m_sigilSprites = new List<Sprite>();
 	public IReadOnlyList<Sprite> sigilSprites => m_sigilSprites;
@@ -96,7 +97,7 @@ public class SigilUI : MonoBehaviour
 		}
 		else
 		{
-			var k = 600;
+			var k = width;
 			if (right) { k = -k; }
 
 			secondImage.sprite = mainImage.sprite;
