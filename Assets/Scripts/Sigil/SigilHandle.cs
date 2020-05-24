@@ -28,7 +28,11 @@ public class SigilHandle : MonoBehaviour
 	private void OnClick(ButtonHandle button, HandleController controller)
 	{
 		FindObjectOfType<SigilUI>().AddSigilSprite(sigilPatternSprite);
+		ExplodeWithoutCollecting();
+	}
 
+	public void ExplodeWithoutCollecting()
+	{
 		var go = Instantiate(explosionPrefab.gameObject, transform.position, transform.rotation);
 		visualEffect.Stop();
 		visualEffect.transform.SetParent(go.transform);
