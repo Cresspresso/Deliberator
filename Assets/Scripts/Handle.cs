@@ -74,15 +74,12 @@ public class Handle : MonoBehaviour
 		
 	}
 
-	private void OnDestroy()
+	private void OnDisable()
 	{
-		try
+		if (controller)
 		{
-			onHoverExit?.Invoke(this, controller);
-		}
-		catch (Exception e)
-		{
-			Debug.LogError(e, this);
+			controller.InternalOnHandleDisabled(this);
+			controller = null;
 		}
 	}
 }
