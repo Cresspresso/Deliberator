@@ -51,7 +51,7 @@ public class RewindCutscene : MonoBehaviour
 		}
 
 		var recordedDuration = data.moments.Sum(m => m.duration);
-		speed = recordedDuration / duration;
+		speed = Mathf.Max(1.0f, recordedDuration / duration);
 
 		var moment = data.moments.Pop();
 		momentDuration = moment.duration;

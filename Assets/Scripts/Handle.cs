@@ -67,4 +67,19 @@ public class Handle : MonoBehaviour
 			Debug.LogError(e, this);
 		}
 	}
+
+	// to show enabled checkbox
+	private void Start()
+	{
+		
+	}
+
+	private void OnDisable()
+	{
+		if (controller)
+		{
+			controller.InternalOnHandleDisabled(this);
+			controller = null;
+		}
+	}
 }
