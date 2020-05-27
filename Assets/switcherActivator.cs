@@ -23,7 +23,7 @@ public class switcherActivator : MonoBehaviour
 
         if (distanceToButton < 2.0f)
         {
-            Debug.Log("Activate Switcher");
+            //Debug.Log("Activate Switcher");
 
             switcher.GetComponent<conveyerSwitcher>().Activate();
         }

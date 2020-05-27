@@ -5,24 +5,34 @@ using UnityEngine;
 /// <author> Lorenzo Sae-Phoo Zemp </author>
 public class boxSpawner : MonoBehaviour
 {
-    public GameObject box;
+    public int spawnLimit = 10; //upper limit of how many can be spawned
 
-    private GameObject[] boxes;
+    public float timeBetweenSpawns  = 7.0f; //how many seconds between spawns
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public GameObject box; //Item to Spawn
+
+    public string itemTag; //Tag for conveyerbelt item that is supposed to spawn so it can keep count
+
+    private float timer = 0.0f;
+
+    private GameObject[] boxes; //Add items with the same tag to this array to count how many items are actively in the gameworld
 
     // Update is called once per frame
     void Update()
     {
-        boxes = GameObject.FindGameObjectsWithTag("ConveyerBeltItem");
+        timer += Time.deltaTime;
 
-        if (boxes.Length == 0)
+        boxes = GameObject.FindGameObjectsWithTag(itemTag);
+
+        //if (boxes.Length == 0)
+        //{
+        //    Instantiate(box, gameObject.transform);
+        //}
+        if (boxes.Length != spawnLimit && timer >= timeBetweenSpawns)
         {
             Instantiate(box, gameObject.transform);
+
+            timer = 0.0f;
         }
     }
 }
