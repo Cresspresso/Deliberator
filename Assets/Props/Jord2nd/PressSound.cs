@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class PressSound : MonoBehaviour
 {
-    public AudioClip slam;
+    public AudioClip Soundeffect;
 
     public AudioSource audioSource;
     
-    void Slam()
+    void SoundEffect()
     {
-        audioSource.PlayOneShot(slam);
+        audioSource.PlayOneShot(Soundeffect);
     }
 
 }
