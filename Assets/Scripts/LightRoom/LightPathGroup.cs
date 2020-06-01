@@ -1,11 +1,10 @@
 ﻿using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.Rendering.HighDefinition;
 
-public class LightRoom : MonoBehaviour
+public class LightPathGroup : PathGroup
 {
 	public SigilHandle sigil;
 	public GameObject darkness;
@@ -13,6 +12,25 @@ public class LightRoom : MonoBehaviour
 	public float duration = 1.0f;
 
 	public bool isTurnedOff { get; private set; } = false;
+
+	private void Awake()
+	{
+		darkness.SetActive(false);
+	}
+
+	protected override void OnPartExit(PathTrigger pathTrigger)
+	{
+		if (!touching.Any())
+		{
+			if (pathTrigger is LightPathTrigger lightPathTrigger)
+			{
+				if (!lightPathTrigger.ignore)
+				{
+					Utility.TryElseLog(this, () => TurnLightsOff());
+				}
+			}
+		}
+	}
 
 	public void TurnLightsOff()
 	{
