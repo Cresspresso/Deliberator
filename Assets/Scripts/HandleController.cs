@@ -12,7 +12,7 @@ public class HandleController : MonoBehaviour
 	private Handle m_hoveredHandle;
 	public Handle hoveredHandle {
 		get => m_hoveredHandle;
-		set
+		private set
 		{
 			if (value == m_hoveredHandle) { return; }
 
@@ -50,6 +50,11 @@ public class HandleController : MonoBehaviour
 
 	public event Action<HandleController, Handle> onHoverEnter;
 	public event Action<HandleController, Handle> onHoverExit;
+
+	private void OnDisable()
+	{
+		hoveredHandle = null;
+	}
 
 	public void InternalOnHandleDisabled(Handle handle)
 	{
