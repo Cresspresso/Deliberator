@@ -860,22 +860,22 @@ MonoBehaviour:
   categoryWhitelist: 
   textElement: {fileID: 3664580923654728923}
   idleDelay: 3
-  idleMessage: Insert Key Card
+  idleMessage: Locked
   validMessage: Access Granted
-  invalidMessage: Access Denied
-  invalidCategoryMessage: Access Denied
-  invalidClearanceLevelMessage: Access Denied
+  invalidMessage: Invalid Key Card
+  invalidCategoryMessage: Invalid Key Card
+  invalidClearanceLevelMessage: Invalid Key Card
   validHoverInfo:
     description: Swipe Key Card
     sprite: {fileID: 0}
   invalidHoverInfo:
-    description: Find a Key Card
-    sprite: {fileID: 21300000, guid: 87ce009218da24b4ca2d63b5d4445785, type: 3}
+    description: Swipe Object
+    sprite: {fileID: 0}
   invalidCategoryHoverInfo:
-    description: Find a different Key Card
-    sprite: {fileID: 21300000, guid: 87ce009218da24b4ca2d63b5d4445785, type: 3}
+    description: Swipe Key Card
+    sprite: {fileID: 0}
   invalidClearanceLevelHoverInfo:
-    description: Find a Key Card with higher clearance
-    sprite: {fileID: 21300000, guid: 87ce009218da24b4ca2d63b5d4445785, type: 3}
+    description: Swipe Key Card
+    sprite: {fileID: 0}
   validSound: {fileID: 145425682159335313}
   invalidSound: {fileID: 8389366674664424257}
