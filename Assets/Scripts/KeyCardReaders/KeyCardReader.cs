@@ -25,6 +25,9 @@ public class KeyCardReader : MonoBehaviour
 	public HandleHoverInfo invalidCategoryHoverInfo = new HandleHoverInfo("Find a different key card");
 	public HandleHoverInfo invalidClearanceLevelHoverInfo = new HandleHoverInfo("Find a key card with higher clearance");
 
+	public AudioSource validSound;
+	public AudioSource invalidSound;
+
 	public event Action<KeyCardReader, HandleController> onValidClick;
 	public event Action<KeyCardReader, HandleController, ValidationOutcome> onInvalidClick;
 
@@ -156,12 +159,14 @@ public class KeyCardReader : MonoBehaviour
 				textElement.text = invalidCategoryMessage;
 				break;
 		}
+		if (invalidSound) { invalidSound.Play(); }
 		onInvalidClick?.Invoke(this, handleController, reason);
 	}
 
 	private void InvokeValid(HandleController handleController)
 	{
 		textElement.text = validMessage;
+		if (validSound) { validSound.Play(); }
 		onValidClick?.Invoke(this, handleController);
 	}
 
