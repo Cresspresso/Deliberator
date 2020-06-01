@@ -35,63 +35,26 @@ public class NumPadKeyboardInput : MonoBehaviour
 		if (!m_handle)
 		{
 			m_handle = GetComponent<Handle>();
-			//if (m_handle)
-			//{
-			//	m_handle.onHoverEnter += OnHoverEnter;
-			//	m_handle.onHoverExit += OnHoverExit; ;
-			//}
+			if (m_handle)
+			{
+				m_handle.onHoverEnter += OnHoverEnter;
+				m_handle.onHoverExit += OnHoverExit;
+			}
 		}
 	}
-
-	public ButtonHandle[] numkeys = new ButtonHandle[10];
-	public ButtonHandle numkeyClear;
-	public ButtonHandle numkeyEnter;
-
-	//private void OnHoverEnter(Handle handle, HandleController handleController)
-	//{
-	//}
-
-	//private void OnHoverExit(Handle handle, HandleController handleController)
-	//{
-	//}
 
 	private void Awake()
 	{
 		FindHandle();
-		FindNumPad();
 	}
 
-	private PauseMenu pauseMenu;
-
-	private void Update()
+	private void OnHoverEnter(Handle handle, HandleController handleController)
 	{
-		if (!pauseMenu)
-		{
-			pauseMenu = FindObjectOfType<PauseMenu>();
-		}
+		pad.OnHoverEnter(handleController);
+	}
 
-		if (handle.isHovered && !pauseMenu.isPaused)
-		{
-			for (int i = 0; i <= 9; ++i)
-			{
-				if (Input.GetKeyDown((KeyCode)((int)KeyCode.Keypad0 + i))
-					|| Input.GetKeyDown((KeyCode)((int)KeyCode.Alpha0 + i)))
-				{
-					numkeys[i].InvokeClick(handle.controller);
-				}
-			}
-
-			if (Input.GetKeyDown(KeyCode.KeypadEnter)
-				|| Input.GetKeyDown(KeyCode.Return))
-			{
-				numkeyEnter.InvokeClick(handle.controller);
-			}
-
-			if (Input.GetKeyDown(KeyCode.Delete)
-				|| Input.GetKeyDown(KeyCode.Backspace))
-			{
-				numkeyClear.InvokeClick(handle.controller);
-			}
-		}
+	private void OnHoverExit(Handle handle, HandleController handleController)
+	{
+		pad.OnHoverExit(handleController);
 	}
 }

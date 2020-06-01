@@ -10,6 +10,8 @@ public class NumPadKey : MonoBehaviour
 	private NumPadKeyType m_type = NumPadKeyType.Num0;
 	public NumPadKeyType type => m_type;
 
+	public AudioSource sound;
+
 	[SerializeField]
 	private NumPad m_pad;
 	public NumPad pad {
@@ -39,6 +41,8 @@ public class NumPadKey : MonoBehaviour
 			if (m_buttonHandle)
 			{
 				m_buttonHandle.onClick += OnClick;
+				m_buttonHandle.handle.onHoverEnter += OnHoverEnter;
+				m_buttonHandle.handle.onHoverExit += OnHoverExit;
 			}
 		}
 	}
@@ -48,7 +52,15 @@ public class NumPadKey : MonoBehaviour
 		FindButtonHandle();
 	}
 
-	public AudioSource sound;
+	private void OnHoverEnter(Handle handle, HandleController handleController)
+	{
+		pad.OnHoverEnter(handleController);
+	}
+
+	private void OnHoverExit(Handle handle, HandleController handleController)
+	{
+		pad.OnHoverExit(handleController);
+	}
 
 	private void OnClick(ButtonHandle buttonHandle, HandleController handleController)
 	{

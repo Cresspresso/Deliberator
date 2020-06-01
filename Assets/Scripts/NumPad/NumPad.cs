@@ -97,4 +97,58 @@ public class NumPad : MonoBehaviour
 			}
 		}
 	}
+
+	public ButtonHandle[] numkeys = new ButtonHandle[10];
+	public ButtonHandle numkeyClear;
+	public ButtonHandle numkeyEnter;
+
+	private PauseMenu pauseMenu;
+
+	public HandleController controller { get; private set; }
+	public bool isHovered { get; private set; }
+
+	public void OnHoverEnter(HandleController handleController)
+	{
+		controller = handleController;
+		isHovered = true;
+	}
+
+	public void OnHoverExit(HandleController handleController)
+	{
+		isHovered = false;
+		controller = null;
+	}
+
+	private void Update()
+	{
+		if (!pauseMenu)
+		{
+			pauseMenu = FindObjectOfType<PauseMenu>();
+		}
+
+		if (isHovered && !pauseMenu.isPaused)
+		{
+			for (int i = 0; i <= 9; ++i)
+			{
+				if (Input.GetKeyDown((KeyCode)((int)KeyCode.Keypad0 + i))
+					|| Input.GetKeyDown((KeyCode)((int)KeyCode.Alpha0 + i)))
+				{
+					var button = numkeys[i];
+					if (button) { button.InvokeClick(controller); }
+				}
+			}
+
+			if (Input.GetKeyDown(KeyCode.KeypadEnter)
+				|| Input.GetKeyDown(KeyCode.Return))
+			{
+				if (numkeyEnter) { numkeyEnter.InvokeClick(controller); }
+			}
+
+			if (Input.GetKeyDown(KeyCode.Delete)
+				|| Input.GetKeyDown(KeyCode.Backspace))
+			{
+				if (numkeyClear) { numkeyClear.InvokeClick(controller); }
+			}
+		}
+	}
 }
