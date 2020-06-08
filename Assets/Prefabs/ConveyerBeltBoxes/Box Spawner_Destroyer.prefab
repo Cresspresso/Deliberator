@@ -89,7 +89,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95f1702774215424199e3883b770594c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  box: {fileID: 6685853565073767435, guid: 5d5dcfca97ec2fe4296ab5d4c6c9d90e, type: 3}
+  spawnLimit: 10
+  timeBetweenSpawns: 7
+  boxes:
+  - {fileID: 9196758282824655033, guid: a8c152f8c39acf240a5d0271801c8f6c, type: 3}
+  - {fileID: 2829123098385038708, guid: f4e7ad3cb2e9f62429a1d1ca9c182411, type: 3}
+  - {fileID: 753070927792811547, guid: 62eb34c97bdae70429386e413afa756b, type: 3}
+  itemTags:
+  - BoxBlue
+  - BoxRed
+  - BoxGreen
 --- !u!1 &6148126161002497252
 GameObject:
   m_ObjectHideFlags: 0
