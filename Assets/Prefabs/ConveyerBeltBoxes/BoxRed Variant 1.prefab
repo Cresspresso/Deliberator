@@ -1,12 +1,17 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &4605577543316804438
+--- !u!1001 &5348108900456242676
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4632865572853330913, guid: dc73611a1ceb90042b09236f72df3083,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: f0bb265886facc94ea97ca9e5ff83948, type: 2}
     - target: {fileID: 4632865572853330915, guid: dc73611a1ceb90042b09236f72df3083,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -65,12 +70,12 @@ PrefabInstance:
     - target: {fileID: 4632865572853330927, guid: dc73611a1ceb90042b09236f72df3083,
         type: 3}
       propertyPath: m_Name
-      value: BoxBlue Variant
+      value: BoxRed Variant 1
       objectReference: {fileID: 0}
     - target: {fileID: 4632865572853330927, guid: dc73611a1ceb90042b09236f72df3083,
         type: 3}
       propertyPath: m_TagString
-      value: ConveyerBeltItem
+      value: BoxRed
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dc73611a1ceb90042b09236f72df3083, type: 3}

@@ -9,30 +9,30 @@ public class boxSpawner : MonoBehaviour
 
     public float timeBetweenSpawns  = 7.0f; //how many seconds between spawns
 
-    public GameObject box; //Item to Spawn
+    public GameObject[] boxes; //Item to Spawn
 
-    public string itemTag; //Tag for conveyerbelt item that is supposed to spawn so it can keep count
+    public string[] itemTags; //Tag for conveyerbelt item that is supposed to spawn so it can keep count
 
     private float timer = 0.0f;
 
-    private GameObject[] boxes; //Add items with the same tag to this array to count how many items are actively in the gameworld
+    public int boxCount; //Add items with the same tag to this array to count how many items are actively in the gameworld
 
     // Update is called once per frame
     void Update()
     {
         timer += Time.deltaTime;
 
-        boxes = GameObject.FindGameObjectsWithTag(itemTag);
+        boxCount = GameObject.FindGameObjectsWithTag("BoxBlue").Length +
+            GameObject.FindGameObjectsWithTag("BoxGreen").Length +
+            GameObject.FindGameObjectsWithTag("BoxRed").Length;
 
-        //if (boxes.Length == 0)
-        //{
-        //    Instantiate(box, gameObject.transform);
-        //}
-        if (boxes.Length != spawnLimit && timer >= timeBetweenSpawns)
+        if (boxCount != spawnLimit && timer >= timeBetweenSpawns)
         {
-            Instantiate(box, gameObject.transform);
+            Instantiate(boxes[Random.Range(0, 3)], gameObject.transform);
 
             timer = 0.0f;
+
+            //Debug.Log("boxes in scene: " + boxCount);
         }
     }
 }
