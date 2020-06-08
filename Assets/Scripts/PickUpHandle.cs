@@ -58,7 +58,7 @@ public class PickUpHandle : MonoBehaviour
 					radius,
 					maxDistance,
 					hc.handleMask,
-					QueryTriggerInteraction.Collide)
+					QueryTriggerInteraction.Ignore)
 					.Where(hit => !colliders.Contains(hit.collider))
 					.OrderBy(hit => hit.distance);
 				if (hits.Any())
