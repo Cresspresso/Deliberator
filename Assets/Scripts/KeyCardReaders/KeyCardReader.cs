@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(ButtonHandle))]
@@ -30,6 +31,10 @@ public class KeyCardReader : MonoBehaviour
 
 	public event Action<KeyCardReader, HandleController> onValidClick;
 	public event Action<KeyCardReader, HandleController, ValidationOutcome> onInvalidClick;
+
+	public UnityEvent onValidClickEvent = new UnityEvent();
+	public UnityEvent onInvalidClickEvent = new UnityEvent();
+	public UnityEvent onResetEvent = new UnityEvent();
 
 	private ButtonHandle m_buttonHandle;
 	public ButtonHandle buttonHandle {
@@ -161,6 +166,7 @@ public class KeyCardReader : MonoBehaviour
 		}
 		if (invalidSound) { invalidSound.Play(); }
 		onInvalidClick?.Invoke(this, handleController, reason);
+		onInvalidClickEvent.Invoke();
 	}
 
 	private void InvokeValid(HandleController handleController)
@@ -168,6 +174,7 @@ public class KeyCardReader : MonoBehaviour
 		textElement.text = validMessage;
 		if (validSound) { validSound.Play(); }
 		onValidClick?.Invoke(this, handleController);
+		onValidClickEvent.Invoke();
 	}
 
 	private IEnumerator Co_BackToIdle()
@@ -175,5 +182,6 @@ public class KeyCardReader : MonoBehaviour
 		yield return new WaitForSeconds(idleDelay);
 		buttonHandle.enabled = true;
 		textElement.text = idleMessage;
+		onResetEvent.Invoke();
 	}
 }
