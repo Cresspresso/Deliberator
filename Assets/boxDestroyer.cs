@@ -7,7 +7,7 @@ public class boxDestroyer : MonoBehaviour
 {
     void OnTriggerEnter(Collider col)
     {
-        if (col.tag == "ConveyerBeltItem")
+        if (col.tag == "BoxBlue" || col.tag == "BoxRed" || col.tag == "BoxGreen")
         {
             Destroy(col.gameObject);
         }
