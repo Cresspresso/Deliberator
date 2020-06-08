@@ -26,6 +26,10 @@ public class switcherActivator : MonoBehaviour
             //Debug.Log("Activate Switcher");
 
             switcher.GetComponent<conveyerSwitcher>().Activate();
+
+            //Activate AnimationTrigger
+            gameObject.GetComponent<Animator>().SetTrigger("Active");
+            gameObject.GetComponent<PressSound>().SoundEffect();
         }
     }
 }
