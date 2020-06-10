@@ -9,8 +9,13 @@ public class pressItemSpawner : MonoBehaviour
     public GameObject redItem;
     public GameObject greenItem;
 
+    public GameObject CratePress;
+
     void OnTriggerEnter(Collider col)
     {
+        CratePress.GetComponent<Animator>().SetTrigger("PressSlam");
+        CratePress.GetComponent<PressSound>().SoundEffect();
+
         if (col.tag == "BoxBlue")
         {
             Destroy(col.gameObject);
@@ -25,7 +30,6 @@ public class pressItemSpawner : MonoBehaviour
         {
             Destroy(col.gameObject);
             Instantiate(redItem, gameObject.transform);
-
         }
     }
 }
