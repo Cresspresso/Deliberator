@@ -38,26 +38,23 @@ public abstract class Trigger : MonoBehaviour
 
 	private void OnTriggerExit(Collider other)
 	{
-		if (IsValidCollider(other))
+		if (m_touching.TryGetValue(other, out var count))
 		{
-			if (m_touching.TryGetValue(other, out var count))
+			--count;
+			if (count == 0)
 			{
-				--count;
-				if (count == 0)
-				{
-					m_touching.Remove(other);
-					Utility.TryElseLog(this, () => OnValidTriggerExitAny(other));
-					Utility.TryElseLog(this, () => OnValidTriggerExit(other));
-				}
-				else if (count > 0)
-				{
-					m_touching[other] = count;
-					Utility.TryElseLog(this, () => OnValidTriggerExitAny(other));
-				}
-				else
-				{
-					m_touching.Remove(other);
-				}
+				m_touching.Remove(other);
+				Utility.TryElseLog(this, () => OnValidTriggerExitAny(other));
+				Utility.TryElseLog(this, () => OnValidTriggerExit(other));
+			}
+			else if (count > 0)
+			{
+				m_touching[other] = count;
+				Utility.TryElseLog(this, () => OnValidTriggerExitAny(other));
+			}
+			else
+			{
+				m_touching.Remove(other);
 			}
 		}
 	}

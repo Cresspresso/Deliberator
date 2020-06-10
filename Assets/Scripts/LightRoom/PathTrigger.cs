@@ -16,6 +16,11 @@ public class PathTrigger : Trigger
 
 	protected virtual void Start()
 	{
+		if (!m_group)
+		{
+			m_group = GetComponentInParent<PathGroup>();
+		}
+
 		if (group)
 		{
 			group.Register(this);

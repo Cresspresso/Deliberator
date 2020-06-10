@@ -8,7 +8,7 @@ public class LightPathGroup : PathGroup
 {
 	public SigilHandle sigil;
 	public GameObject darkness;
-	public Light[] lights = new Light[0];
+	public GameObject lightsParent;
 	public float duration = 1.0f;
 
 	public bool isTurnedOff { get; private set; } = false;
@@ -44,9 +44,11 @@ public class LightPathGroup : PathGroup
 
 		darkness.SetActive(true);
 
-		foreach (var light in lights)
+		var seq = DOTween.Sequence();
+		foreach (var light in lightsParent.GetComponentsInChildren<Light>())
 		{
-			light.DOIntensity(0, duration).OnComplete(() => light.enabled = false);
+			seq.Insert(0, light.DOIntensity(0, duration));
 		}
+		seq.AppendCallback(() => lightsParent.SetActive(false));
 	}
 }

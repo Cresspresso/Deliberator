@@ -27,11 +27,15 @@ public class DarkPathGroup : PathGroup
 		}
 	}
 
-	private HashSet<PathTrigger> m_touched = new HashSet<PathTrigger>();
+	private HashSet<DarkPathTrigger> m_touched = new HashSet<DarkPathTrigger>();
 
 	protected override void OnPartEnter(PathTrigger pathTrigger)
 	{
-		m_touched.Add(pathTrigger);
+		if (hasRevealed) { return; }
+
+		var dpt = (DarkPathTrigger)pathTrigger;
+		m_touched.Add(dpt);
+		dpt.SetVisible(true);
 
 		if (parts.Except(m_touched).Any() == false)
 		{
@@ -41,10 +45,22 @@ public class DarkPathGroup : PathGroup
 
 	protected override void OnPartExit(PathTrigger pathTrigger)
 	{
+		if (hasRevealed) { return; }
+
 		if (!touching.Any())
 		{
-			m_touched.Clear();
-			Debug.Log("Dark Puzzle Reset");
+			try
+			{
+				foreach (var dpt in m_touched)
+				{
+					dpt.SetVisible(false);
+				}
+			}
+			finally
+			{
+				m_touched.Clear();
+				Debug.Log("Dark Puzzle Reset");
+			}
 		}
 	}
 }
