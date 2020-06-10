@@ -51,11 +51,14 @@ public class RewindCutscene : MonoBehaviour
 		var moment = data.moments.Pop();
 
 		momentDuration = moment.duration;
-		if (rawImage.texture)
+		if (elapsed < momentDuration)
 		{
-			Destroy(rawImage.texture);
+			if (rawImage.texture)
+			{
+				Destroy(rawImage.texture);
+			}
+			rawImage.texture = ReadTextureFromFile(moment);
 		}
-		rawImage.texture = ReadTextureFromFile(moment);
 	}
 
 	private void Awake()
