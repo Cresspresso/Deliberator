@@ -1,18 +1,19 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public struct RewindMoment
 {
-	public float duration { get; private set; }
-	public Texture2D texture { get; private set; }
-
-	public RewindMoment(float duration, Texture2D texture)
-	{
-		this.duration = duration;
-		this.texture = texture;
-	}
+	public float duration;
+	public int fileNumber;
+	public int bytesLength;
+	public int width;
+	public int height;
+	public TextureFormat textureFormat;
 }
 
 /// <summary>
@@ -25,14 +26,17 @@ public class RewindCapture : MonoBehaviour
 	public AnimationCurve durationBetweenFramesOverTime = new AnimationCurve(
 		new Keyframe(0, 1.0f / 60.0f),
 		new Keyframe(10 * 60, 10));
-	public Stack<RewindMoment> moments { get; private set; } = new Stack<RewindMoment>();
-	public float elapsedTime { get; private set; } = 0.0f;
+	public float totalDuration { get; private set; } = 0.0f;
 	public float momentDuration { get; private set; } = 0.0f;
+	private Stack<RewindMoment> moments = new Stack<RewindMoment>();
 
-	private void Awake()
-	{
-		OnEnable();
-	}
+	private int fileNumber = 0;
+
+	public static string GetFilename(int fileNumber)
+		=> Path.Combine(
+		Application.temporaryCachePath,
+		"rewind_cutscene_" + fileNumber.ToString() + ".jpg"
+			);
 
 	private void OnEnable()
 	{
@@ -56,9 +60,43 @@ public class RewindCapture : MonoBehaviour
 	{
 		while (true)
 		{
-			yield return new WaitForSeconds(durationBetweenFramesOverTime.Evaluate(elapsedTime));
-			moments.Push(new RewindMoment(momentDuration, ScreenCapture.CaptureScreenshotAsTexture()));
-			momentDuration = 0.0f;
+			yield return new WaitForSeconds(durationBetweenFramesOverTime.Evaluate(totalDuration));
+
+			var screenshot = ScreenCapture.CaptureScreenshotAsTexture();
+			try
+			{
+				var bytes = screenshot.GetRawTextureData();
+				var moment = new RewindMoment
+				{
+					duration = momentDuration,
+					fileNumber = this.fileNumber,
+					bytesLength = bytes.Length,
+					width = screenshot.width,
+					height = screenshot.height,
+					textureFormat = screenshot.format
+				};
+				++fileNumber;
+				momentDuration = 0.0f;
+
+				var filename = GetFilename(moment.fileNumber);
+				if (File.Exists(filename))
+				{
+					File.Delete(filename);
+				}
+				using (var file = new FileStream(filename, FileMode.Create, FileAccess.Write))
+				{
+					file.Write(bytes, 0, bytes.Length);
+				}
+				moments.Push(moment);
+			}
+			catch (Exception e)
+			{
+				Debug.LogException(e, this);
+			}
+			finally
+			{
+				Destroy(screenshot);
+			}
 		}
 	}
 
@@ -72,13 +110,14 @@ public class RewindCapture : MonoBehaviour
 			data = go.AddComponent<RewindData>();
 		}
 		data.moments = this.moments;
+		data.totalDuration = this.totalDuration;
 		data.sceneBuildIndex = SceneManager.GetActiveScene().buildIndex;
 		SceneManager.LoadScene("Rewind Cutscene");
 	}
 
 	private void Update()
 	{
-		elapsedTime += Time.deltaTime;
+		totalDuration += Time.deltaTime;
 		momentDuration += Time.deltaTime;
 	}
 }
