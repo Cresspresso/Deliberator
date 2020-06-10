@@ -29,7 +29,6 @@ public class switcherActivator : MonoBehaviour
 
             //Activate AnimationTrigger
             gameObject.GetComponent<Animator>().SetTrigger("Active");
-            gameObject.GetComponent<PressSound>().SoundEffect();
         }
     }
 }
