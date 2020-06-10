@@ -13,7 +13,9 @@ public class pressItemSpawner : MonoBehaviour
 
     void OnTriggerEnter(Collider col)
     {
-        CratePress.GetComponent<Animator>().SetTrigger("PressSlam");
+        //CratePress.transform.parent.GetComponent<Animator>().SetTrigger("PressSlam");
+
+        //CratePress.GetComponent<Animator>().SetTrigger("PressSlam");
         CratePress.GetComponent<PressSound>().SoundEffect();
 
         if (col.tag == "BoxBlue")
