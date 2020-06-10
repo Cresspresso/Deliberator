@@ -8,6 +8,7 @@ using UnityEngine;
 /// <author>Elijah Shadbolt</author>
 public class RewindData : MonoBehaviour
 {
-	public Stack<RewindMoment> moments { get; set; }
+	public float totalDuration { get; set; }
 	public int sceneBuildIndex { get; set; }
+	public Stack<RewindMoment> moments { get; set; }
 }
