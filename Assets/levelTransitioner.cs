@@ -30,14 +30,23 @@ public class levelTransitioner : MonoBehaviour
         StartCoroutine(WaitToTransition());
     }
 
-    public void OnFadeComplete()
+    //for QuitGameButton
+    public void QuitGame()
     {
-        SceneManager.LoadScene(levelIndex);
+        fadeAnim.SetTrigger("Fade");
+        StartCoroutine(WaitToQuit());
     }
 
     IEnumerator WaitToTransition()
     {
         yield return new WaitForSeconds(1.0f);
         SceneManager.LoadScene(levelIndex);
+    }
+
+    IEnumerator WaitToQuit()
+    {
+        yield return new WaitForSeconds(1.0f);
+        Application.Quit();
+        //Debug.Log("Application Has Quit");
     }
 }
