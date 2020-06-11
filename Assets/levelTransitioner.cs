@@ -46,7 +46,6 @@ public class levelTransitioner : MonoBehaviour
     IEnumerator WaitToQuit()
     {
         yield return new WaitForSeconds(1.0f);
-        Application.Quit();
-        //Debug.Log("Application Has Quit");
+        Quitter.StaticQuit();
     }
 }
