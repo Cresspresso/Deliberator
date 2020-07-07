@@ -20,6 +20,7 @@ public struct HandleHoverInfo
 public class Handle : MonoBehaviour
 {
 	public HandleController controller { get; private set; }
+	public bool isHovered { get; private set; }
 	public event Action<Handle, HandleController> onHoverEnter;
 	public event Action<Handle, HandleController> onHoverExit;
 	public event Action<Handle, HandleHoverInfo> onHoverInfoChanged;
@@ -45,6 +46,7 @@ public class Handle : MonoBehaviour
 	public void HandleControllerHoverEnter(HandleController handleController)
 	{
 		controller = handleController;
+		isHovered = true;
 		try
 		{
 			onHoverEnter?.Invoke(this, handleController);
@@ -58,6 +60,7 @@ public class Handle : MonoBehaviour
 	public void HandleControllerHoverExit(HandleController handleController)
 	{
 		controller = handleController;
+		isHovered = false;
 		try
 		{
 			onHoverExit?.Invoke(this, handleController);
@@ -66,11 +69,22 @@ public class Handle : MonoBehaviour
 		{
 			Debug.LogError(e, this);
 		}
+		controller = null;
 	}
 
 	// to show enabled checkbox
 	private void Start()
 	{
 		
+	}
+
+	private void OnDisable()
+	{
+		isHovered = false;
+		if (controller)
+		{
+			controller.InternalOnHandleDisabled(this);
+			controller = null;
+		}
 	}
 }

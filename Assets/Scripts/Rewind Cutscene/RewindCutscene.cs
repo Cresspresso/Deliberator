@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
+using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -16,9 +18,48 @@ public class RewindCutscene : MonoBehaviour
 	public RawImage rawImage;
 	private RewindData data;
 	private float speed;
-	private float momentDuration;
 	private float elapsed = 0.0f;
 	public bool isFinished { get; private set; } = false;
+
+	private float momentDuration;
+
+	private Texture ReadTextureFromFile(RewindMoment moment)
+	{
+		var filename = RewindCapture.GetFilename(moment.fileNumber);
+		byte[] bytes = new byte[moment.bytesLength];
+		using (var file = new FileStream(filename, FileMode.Open, FileAccess.Read))
+		{
+			int read = file.Read(bytes, 0, moment.bytesLength);
+			if (read != moment.bytesLength)
+			{
+				throw new IOException("Not all bytes read");
+			}
+		}
+		var texture = new Texture2D(moment.width, moment.height, moment.textureFormat, false);
+		texture.LoadRawTextureData(bytes);
+		texture.Apply();
+		return texture;
+	}
+
+	private void NextMoment()
+	{
+		if (!data.moments.Any())
+		{
+			InvokeFinished();
+			return;
+		}
+		var moment = data.moments.Pop();
+
+		momentDuration = moment.duration;
+		if (elapsed < momentDuration)
+		{
+			if (rawImage.texture)
+			{
+				Destroy(rawImage.texture);
+			}
+			rawImage.texture = ReadTextureFromFile(moment);
+		}
+	}
 
 	private void Awake()
 	{
@@ -29,53 +70,32 @@ public class RewindCutscene : MonoBehaviour
 			SceneManager.LoadScene(0);
 			return;
 		}
-		if (!rawImage)
-		{
-			Debug.LogError("rawImage is null", this);
-			InvokeFinished();
-			return;
-		}
-		if (duration <= 0)
-		{
-			Debug.LogError("duration <= 0", this);
-			InvokeFinished();
-			return;
-		}
 
-		CursorController.UncheckedSetCursorHidden(true);
-		if (!data.moments.Any())
+		try
 		{
-			Debug.LogError("no moments", this);
-			InvokeFinished();
-			return;
-		}
-
-		var recordedDuration = data.moments.Sum(m => m.duration);
-		speed = recordedDuration / duration;
-
-		var moment = data.moments.Pop();
-		momentDuration = moment.duration;
-		rawImage.texture = moment.texture;
-	}
-
-	private void Update()
-	{
-		if (isFinished) { return; }
-		elapsed += Time.deltaTime * speed;
-		while (elapsed >= momentDuration)
-		{
-			elapsed -= momentDuration;
-			if (data.moments.Any())
+			if (!rawImage)
 			{
-				var moment = data.moments.Pop();
-				momentDuration = moment.duration;
-				rawImage.texture = moment.texture;
-			}
-			else
-			{
+				Debug.LogError("rawImage is null", this);
 				InvokeFinished();
-				break;
+				return;
 			}
+
+			if (duration <= 0)
+			{
+				Debug.LogError("duration <= 0", this);
+				InvokeFinished();
+				return;
+			}
+
+			rawImage.texture = null;
+			speed = Mathf.Max(1.0f, data.totalDuration / duration);
+
+			NextMoment();
+		}
+		catch
+		{
+			InvokeFinished();
+			throw;
 		}
 	}
 
@@ -88,9 +108,23 @@ public class RewindCutscene : MonoBehaviour
 		}
 	}
 
+	private void Update()
+	{
+		if (isFinished) { return; }
+		elapsed += Time.deltaTime * speed;
+		while (elapsed >= momentDuration && !isFinished)
+		{
+			elapsed -= momentDuration;
+			NextMoment();
+		}
+	}
+
 	private void InvokeFinished()
 	{
-		isFinished = true;
-		SceneManager.LoadScene(data.sceneBuildIndex);
+		if (!isFinished)
+		{
+			isFinished = true;
+			SceneManager.LoadScene(data.sceneBuildIndex);
+		}
 	}
 }

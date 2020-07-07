@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 /// <author> Elijah Shadbolt </author>
 /// <author> Lorenzo Zemp </author>
@@ -10,7 +11,21 @@ public class DoorOpener : MonoBehaviour
     public int doorType; //Only 1 or 2, 1 as in single door and 2 for double
 
     public bool openOnAwake = false;
-    public bool isLocked = false;
+
+    [FormerlySerializedAs("isLocked")]
+    [SerializeField]
+    private bool m_isLocked = false;
+    public bool isLocked {
+        get => m_isLocked;
+        set
+        {
+            m_isLocked = value;
+            if (isOpen && m_isLocked)
+            {
+                ToggleDoor();
+            }
+        }
+    }
 
     public bool isOpen { get; private set; } = false;
 
@@ -71,33 +86,38 @@ public class DoorOpener : MonoBehaviour
         }
         else
         {
-            isOpen = !isOpen;
+            ToggleDoor();
+        }
+    }
 
-            switch(doorType)
-            {
-                case 1:
-                    anim[0].SetBool("Open", isOpen);
-                    break;
-                case 2:
-                    anim[0].SetBool("Open", isOpen);
-                    anim[1].SetBool("Open", isOpen);
-                    break;
-                default:
-                    Debug.Log("Incorrect Door Type? Check Door Type Integer, only 1 or 2");
-                    break;
-            }
+    private void ToggleDoor()
+    {
+        isOpen = !isOpen;
 
-            buttonHandle.handle.hoverInfo = isOpen ? openedHoverInfo : closedHoverInfo;
+        switch (doorType)
+        {
+            case 1:
+                anim[0].SetBool("Open", isOpen);
+                break;
+            case 2:
+                anim[0].SetBool("Open", isOpen);
+                anim[1].SetBool("Open", isOpen);
+                break;
+            default:
+                Debug.Log("Incorrect Door Type? Check Door Type Integer, only 1 or 2");
+                break;
+        }
 
-            // audio
-            if (isOpen)
-            {
-                if (openingSound) { openingSound.Play(); }
-            }
-            else
-            {
-                if (closingSound) { closingSound.Play(); }
-            }
+        buttonHandle.handle.hoverInfo = isOpen ? openedHoverInfo : closedHoverInfo;
+
+        // audio
+        if (isOpen)
+        {
+            if (openingSound) { openingSound.Play(); }
+        }
+        else
+        {
+            if (closingSound) { closingSound.Play(); }
         }
     }
 
