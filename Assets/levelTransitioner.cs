@@ -6,7 +6,7 @@ using UnityEngine;
 /// <author> Lorenzo Sae-Phoo Zemp /// </author>
 public class levelTransitioner : MonoBehaviour
 {
-    public int levelIndex;
+    public string sceneName = "Ang_MenuScene";
 
     public Animator fadeAnim;
 
@@ -40,13 +40,12 @@ public class levelTransitioner : MonoBehaviour
     IEnumerator WaitToTransition()
     {
         yield return new WaitForSeconds(1.0f);
-        SceneManager.LoadScene(levelIndex);
+        SceneManager.LoadScene(sceneName);
     }
 
     IEnumerator WaitToQuit()
     {
         yield return new WaitForSeconds(1.0f);
-        Application.Quit();
-        //Debug.Log("Application Has Quit");
+        Quitter.StaticQuit();
     }
 }

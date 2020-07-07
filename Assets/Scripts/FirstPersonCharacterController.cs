@@ -26,7 +26,7 @@ public class FirstPersonCharacterController : MonoBehaviour
 		}
 	}
 
-	[SerializeField]
+	//[SerializeField]
 	private float m_bodyAngle = 0;
 	public float bodyAngle {
 		get => m_bodyAngle;
@@ -37,7 +37,7 @@ public class FirstPersonCharacterController : MonoBehaviour
 		}
 	}
 
-	[SerializeField]
+	//[SerializeField]
 	private float m_headAngle = 0;
 	public float headAngle {
 		get => m_headAngle;
@@ -109,8 +109,10 @@ public class FirstPersonCharacterController : MonoBehaviour
 
 	private void Awake()
 	{
-		bodyAngle = m_bodyAngle;
-		headAngle = m_headAngle;
+		//bodyAngle = m_bodyAngle;
+		//headAngle = m_headAngle;
+		bodyAngle = transform.localEulerAngles.y;
+		headAngle = head.localEulerAngles.x;
 
 		int layer = gameObject.layer;
 		int layerMask = 0;
