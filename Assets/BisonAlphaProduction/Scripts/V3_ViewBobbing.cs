@@ -6,45 +6,42 @@ using UnityEngine;
 
 public class V3_ViewBobbing : MonoBehaviour
 {
-    public float bobSpeed = 5;
-    public float bobAmount = 0.5f;
-    public V2_FirstPersonCharacterController characterController;
+    public float bobbingSpeed = 0.18f;
+    public float bobbingAmount = 0.2f;
+    public float midpoint = 2.0f;
 
-    private bool active = true;
-    private float characterVelocity = 0.0f;
-    private float defaultYPos = 0.0f;
-    private float time = 0;
+    private float timer = 0.0f;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        defaultYPos = gameObject.transform.localPosition.y;
-        characterVelocity = characterController.GetComponent<CharacterController>().velocity.x;
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        //if bobbing is active
-        if (active)
+        float waveslice = 0.0f;
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
+        if (Mathf.Abs(horizontal) == 0 && Mathf.Abs(vertical) == 0)
         {
-            //If the player is moving
-            if (characterVelocity > 0.1f) 
+            timer = 0.0f;
+        }
+        else
+        {
+            waveslice = Mathf.Sin(timer);
+            timer = timer + bobbingSpeed;
+            if (timer > Mathf.PI * 2)
             {
-                time = Time.deltaTime * bobSpeed;
-                //Debug.Log(time);
-                gameObject.transform.localPosition = new Vector3(transform.localPosition.x,
-                    defaultYPos + (Mathf.Sin(time) * bobAmount), transform.localPosition.z);
+                timer = timer - (Mathf.PI * 2);
             }
-            //If the player is idling
-            else
-            {
-                time = Time.deltaTime * bobSpeed;
-                //Debug.Log(time);
-                gameObject.transform.localPosition = new Vector3(transform.localPosition.x,
-                    defaultYPos + (Mathf.Sin(time) * (bobAmount)), transform.localPosition.z);
-                Debug.Log(defaultYPos + (Mathf.Sin(time) * (bobAmount)));
-            }
+        }
+        if (waveslice != 0)
+        {
+            float translateChange = waveslice * bobbingAmount;
+            float totalAxes = Mathf.Abs(horizontal) + Mathf.Abs(vertical);
+            totalAxes = Mathf.Clamp(totalAxes, 0.0f, 1.0f);
+            translateChange = totalAxes * translateChange;
+
+            gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, midpoint + translateChange, gameObject.transform.localPosition.z);
+        }
+        else
+        {
+            gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, midpoint, gameObject.transform.localPosition.z);
         }
     }
 }
