@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-3105025621033630049
+--- !u!114 &-2109818796249167647
 MonoBehaviour:
   m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
@@ -12,22 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 598e2d32e2c7b0c418e030c3236d663a, type: 3}
   m_Name: ChromaticAberration
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   m_AdvancedMode: 0
   quality:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 1
   spectralLut:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: {fileID: 0}
   intensity:
     m_OverrideState: 1
-    m_Value: 0.285
+    m_Value: 0
     min: 0
     max: 1
   m_MaxSamples:
-    m_OverrideState: 1
-    m_Value: 6
+    m_OverrideState: 0
+    m_Value: 8
     min: 3
     max: 24
 --- !u!114 &11400000
@@ -46,7 +46,7 @@ MonoBehaviour:
   - {fileID: 8711377374188185572}
   - {fileID: 6640133647794636954}
   - {fileID: 396278178000043239}
-  - {fileID: -3105025621033630049}
+  - {fileID: -2109818796249167647}
 --- !u!114 &396278178000043239
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -63,7 +63,7 @@ MonoBehaviour:
   m_AdvancedMode: 0
   temperature:
     m_OverrideState: 1
-    m_Value: 20
+    m_Value: 27
     min: -100
     max: 100
   tint:
@@ -96,7 +96,7 @@ MonoBehaviour:
     m_Value: 1
   fixedExposure:
     m_OverrideState: 1
-    m_Value: 8.5
+    m_Value: 11.01
   compensation:
     m_OverrideState: 0
     m_Value: 0
@@ -171,7 +171,7 @@ MonoBehaviour:
     m_Value: {x: 0.5, y: 0.5}
   intensity:
     m_OverrideState: 1
-    m_Value: 0.25
+    m_Value: 0.188
     min: 0
     max: 1
   smoothness:
