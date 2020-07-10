@@ -13,21 +13,15 @@ public class V2_KeyCardReader : MonoBehaviour
 	public bool useCategoryWhitelist = false;
 	public int[] categoryWhitelist = new int[0];
 
-	public Text textElement;
 	public float idleDelay = 3.0f;
-	public string idleMessage = "Insert Key Card";
-	public string validMessage = "Access Granted";
-	public string invalidMessage = "Access Denied";
-	public string invalidCategoryMessage = "Access Denied";
-	public string invalidClearanceLevelMessage = "Access Denied";
 
 	public V2_HandleHoverInfo validHoverInfo = new V2_HandleHoverInfo("Swipe Key Card");
 	public V2_HandleHoverInfo invalidHoverInfo = new V2_HandleHoverInfo("Find a Key Card");
 	public V2_HandleHoverInfo invalidCategoryHoverInfo = new V2_HandleHoverInfo("Find a different key card");
 	public V2_HandleHoverInfo invalidClearanceLevelHoverInfo = new V2_HandleHoverInfo("Find a key card with higher clearance");
 
-	public AudioSource validSound;
-	public AudioSource invalidSound;
+	public V3_KeyCardReader_Sounds sounds;
+	public V3_KeyCardReader_Sprites sprites;
 
 	public event Action<V2_KeyCardReader, V2_HandleController> onValidClick;
 	public event Action<V2_KeyCardReader, V2_HandleController, ValidationOutcome> onInvalidClick;
@@ -61,7 +55,6 @@ public class V2_KeyCardReader : MonoBehaviour
 	private void Awake()
 	{
 		FindButtonHandle();
-		textElement.text = idleMessage;
 	}
 
 	private void OnDestroy()
@@ -151,28 +144,29 @@ public class V2_KeyCardReader : MonoBehaviour
 
 	private void InvokeInvalid(V2_HandleController handleController, ValidationOutcome reason)
 	{
-		switch (reason)
-		{
-			default:
-			case ValidationOutcome.NotHoldingKeyCard:
-				textElement.text = invalidMessage;
-				break;
-			case ValidationOutcome.ClearanceLevelTooLow:
-				textElement.text = invalidClearanceLevelMessage;
-				break;
-			case ValidationOutcome.InvalidCategory:
-				textElement.text = invalidCategoryMessage;
-				break;
-		}
-		if (invalidSound) { invalidSound.Play(); }
+		//switch (reason)
+		//{
+		//	default:
+		//	case ValidationOutcome.NotHoldingKeyCard:
+		//		textElement.text = invalidMessage;
+		//		break;
+		//	case ValidationOutcome.ClearanceLevelTooLow:
+		//		textElement.text = invalidClearanceLevelMessage;
+		//		break;
+		//	case ValidationOutcome.InvalidCategory:
+		//		textElement.text = invalidCategoryMessage;
+		//		break;
+		//}
+		if (sounds) { sounds.PlayBadSound(); }
+		if (sprites) { sprites.ShowShakeImage(); }
 		onInvalidClick?.Invoke(this, handleController, reason);
 		onInvalidClickEvent.Invoke();
 	}
 
 	private void InvokeValid(V2_HandleController handleController)
 	{
-		textElement.text = validMessage;
-		if (validSound) { validSound.Play(); }
+		if (sounds) { sounds.PlayGoodSound(); }
+		if (sprites) { sprites.ShowUnlockedImage(); }
 		onValidClick?.Invoke(this, handleController);
 		onValidClickEvent.Invoke();
 	}
@@ -181,7 +175,11 @@ public class V2_KeyCardReader : MonoBehaviour
 	{
 		yield return new WaitForSeconds(idleDelay);
 		buttonHandle.enabled = true;
-		textElement.text = idleMessage;
+		if (sounds) { sounds.PlayEndSound(); }
+		if (sprites)
+		{
+			sprites.ShowLockedImage();
+		}
 		onResetEvent.Invoke();
 	}
 }
