@@ -175,6 +175,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6310779866088439767, guid: 33a7954a783177e4999a2a7cdf746e41,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6310779866630276354, guid: 33a7954a783177e4999a2a7cdf746e41,
         type: 3}
       propertyPath: m_Name
@@ -347,9 +352,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6cf5b38f1060ae41ac8aa83aa2016f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bobbingSpeed: 0.2
-  bobbingAmount: 0.08
-  midpoint: 0.5
+  bobbingSpeed: 0.14
+  bobbingAmount: 0.1
+  midpoint: 0
 --- !u!1 &1261007958
 GameObject:
   m_ObjectHideFlags: 0
