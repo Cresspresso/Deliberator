@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 /// <author>Elijah Shadbolt</author>
 [RequireComponent(typeof(V2_Handle))]
@@ -29,6 +30,7 @@ public class V2_ButtonHandle : MonoBehaviour
 	}
 
 	public event Action<V2_ButtonHandle, V2_HandleController> onClick;
+	public UnityEvent onClickEvent = new UnityEvent();
 
 	public void InvokeClick(V2_HandleController handleController)
 	{
@@ -40,6 +42,8 @@ public class V2_ButtonHandle : MonoBehaviour
 		{
 			Debug.LogException(e);
 		}
+
+		Old_Utils.TryExceptLog(() => onClickEvent.Invoke());
 	}
 
 	private void Update()

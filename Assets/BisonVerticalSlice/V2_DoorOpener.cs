@@ -22,17 +22,32 @@ public class V2_DoorOpener : MonoBehaviour
             m_isLocked = value;
             if (isOpen && m_isLocked)
             {
-                ToggleDoor();
+                OnToggleDoor();
             }
         }
     }
 
-    public bool isOpen { get; private set; } = false;
+    private bool m_isOpen = false;
+    public bool isOpen {
+        get => m_isOpen;
+        set
+        {
+            m_isOpen = value;
+            buttonHandle.handle.hoverInfo = isOpen ? openedHoverInfo : (isLocked ? lockedHoverInfo : closedHoverInfo);
+        }
+    }
 
     public Animator[] anim;
     public AudioSource lockedSound;
     public AudioSource openingSound;
     public AudioSource closingSound;
+
+    public AudioSource lockedSound2;
+    public float delayLockedSound2 = 0.05f;
+    public AudioSource openingSound2;
+    public float delayOpeningSound2 = 0.05f;
+    public AudioSource closingSound2;
+    public float delayClosingSound2 = 0.05f;
 
     public V2_HandleHoverInfo lockedHoverInfo = new V2_HandleHoverInfo("Locked");
     public V2_HandleHoverInfo openedHoverInfo = new V2_HandleHoverInfo("Close");
@@ -83,14 +98,27 @@ public class V2_DoorOpener : MonoBehaviour
             buttonHandle.handle.hoverInfo = lockedHoverInfo;
 
             if (lockedSound) { lockedSound.Play(); }
+            Invoke(nameof(PlayLockedSound2), delayLockedSound2);
         }
         else
         {
-            ToggleDoor();
+            OnToggleDoor();
         }
     }
 
-    private void ToggleDoor()
+    private void PlayLockedSound2() { if (lockedSound2) { lockedSound2.Play(); } }
+    private void PlayOpeningSound2() { if (openingSound2) { openingSound2.Play(); } }
+    private void PlayClosingSound2() { if (closingSound2) { closingSound2.Play(); } }
+
+    public void ToggleDoor()
+    {
+        if (!isLocked)
+        {
+            OnToggleDoor();
+        }
+    }
+
+    private void OnToggleDoor()
     {
         isOpen = !isOpen;
 
@@ -108,16 +136,16 @@ public class V2_DoorOpener : MonoBehaviour
                 break;
         }
 
-        buttonHandle.handle.hoverInfo = isOpen ? openedHoverInfo : closedHoverInfo;
-
         // audio
         if (isOpen)
         {
             if (openingSound) { openingSound.Play(); }
+            Invoke(nameof(PlayOpeningSound2), delayOpeningSound2);
         }
         else
         {
             if (closingSound) { closingSound.Play(); }
+            Invoke(nameof(PlayClosingSound2), delayClosingSound2);
         }
     }
 
