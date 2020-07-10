@@ -8,8 +8,8 @@ using DG.Tweening;
 /// Alpha Production
 public class V3_KeyCardReader_Sprites : MonoBehaviour
 {
-	public Image lockedImage;
 	public Image unlockedImage;
+	public Image lockedImage;
 	public Image shakeImage;
 
 	public static void ShowImage(Image show, params Image[] hide)
@@ -21,8 +21,8 @@ public class V3_KeyCardReader_Sprites : MonoBehaviour
 			if (other) other.gameObject.SetActive(false);
 		}
 	}
-	public void ShowLockedImage() => ShowImage(lockedImage, unlockedImage, shakeImage);
 	public void ShowUnlockedImage() => ShowImage(unlockedImage, lockedImage, shakeImage);
+	public void ShowLockedImage() => ShowImage(lockedImage, unlockedImage, shakeImage);
 	public void ShowShakeImage()
 	{
 		ShowImage(shakeImage, lockedImage, unlockedImage);

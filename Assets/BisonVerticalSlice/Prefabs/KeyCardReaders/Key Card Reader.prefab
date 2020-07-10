@@ -267,7 +267,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3664580923410154213}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -562,8 +562,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: -0.0004}
   m_LocalScale: {x: 0.005, y: 0.005, z: 0.005}
   m_Children:
-  - {fileID: 161385192439903160}
   - {fileID: 6697544149126011401}
+  - {fileID: 161385192439903160}
   - {fileID: 4565807495803512817}
   m_Father: {fileID: 5588519256107990760}
   m_RootOrder: 4
@@ -645,8 +645,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de0c18c920b77e0479b031b122e552cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lockedImage: {fileID: 5007409332382577125}
   unlockedImage: {fileID: 3057788083854050265}
+  lockedImage: {fileID: 5007409332382577125}
   shakeImage: {fileID: 5291168988331226202}
 --- !u!1 &4422862168314982594
 GameObject:
@@ -692,7 +692,7 @@ AudioSource:
   m_audioClip: {fileID: 8300000, guid: e0e71957de35c3e47841eeb99c61f4ee, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.2
-  m_Pitch: 1
+  m_Pitch: 1.3
   Loop: 0
   Mute: 0
   Spatialize: 0
@@ -928,7 +928,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3664580923410154213}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
