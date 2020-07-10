@@ -6,9 +6,9 @@ using UnityEngine;
 
 public class V3_ViewBobbing : MonoBehaviour
 {
-    public float bobbingSpeed = 0.18f;
-    public float bobbingAmount = 0.2f;
-    public float midpoint = 2.0f;
+    public float bobbingSpeed = 0.18f; // how fast it bobs
+    public float bobbingAmount = 0.2f; // how high it bobs
+    public float midpoint = 0.0f; // changes height of the camera 0 is default
 
     private float timer = 0.0f;
 
@@ -17,6 +17,7 @@ public class V3_ViewBobbing : MonoBehaviour
         float waveslice = 0.0f;
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
+
         if (Mathf.Abs(horizontal) == 0 && Mathf.Abs(vertical) == 0)
         {
             timer = 0.0f;
@@ -30,6 +31,7 @@ public class V3_ViewBobbing : MonoBehaviour
                 timer = timer - (Mathf.PI * 2);
             }
         }
+
         if (waveslice != 0)
         {
             float translateChange = waveslice * bobbingAmount;
