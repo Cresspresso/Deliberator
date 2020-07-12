@@ -27,7 +27,7 @@ public class V3_KeyCardReader_Sprites : MonoBehaviour
 	{
 		ShowImage(shakeImage, lockedImage, unlockedImage);
 		shakeImage.transform.DOKill(true);
-		shakeImage.transform.DOShakePosition(4.0f, new Vector3(20.0f, 0, 0), 5, 10);
+		shakeImage.transform.DOShakePosition(4.0f, new Vector3(20.0f, 0, 0), 5, 0);
 	}
 
 	private void Start()

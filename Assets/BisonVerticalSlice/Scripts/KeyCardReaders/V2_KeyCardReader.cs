@@ -26,6 +26,7 @@ public class V2_KeyCardReader : MonoBehaviour
 	public event Action<V2_KeyCardReader, V2_HandleController> onValidClick;
 	public event Action<V2_KeyCardReader, V2_HandleController, ValidationOutcome> onInvalidClick;
 
+	[System.Serializable] public class UnityEvent_bool : UnityEvent<bool> { }
 	public UnityEvent onValidClickEvent = new UnityEvent();
 	public UnityEvent onInvalidClickEvent = new UnityEvent();
 	public UnityEvent onResetEvent = new UnityEvent();
@@ -139,36 +140,55 @@ public class V2_KeyCardReader : MonoBehaviour
 		{
 			InvokeInvalid(handleController, outcome);
 		}
-		StartCoroutine(Co_BackToIdle());
 	}
 
 	private void InvokeInvalid(V2_HandleController handleController, ValidationOutcome reason)
 	{
-		//switch (reason)
-		//{
-		//	default:
-		//	case ValidationOutcome.NotHoldingKeyCard:
-		//		textElement.text = invalidMessage;
-		//		break;
-		//	case ValidationOutcome.ClearanceLevelTooLow:
-		//		textElement.text = invalidClearanceLevelMessage;
-		//		break;
-		//	case ValidationOutcome.InvalidCategory:
-		//		textElement.text = invalidCategoryMessage;
-		//		break;
-		//}
-		if (sounds) { sounds.PlayBadSound(); }
-		if (sprites) { sprites.ShowShakeImage(); }
-		onInvalidClick?.Invoke(this, handleController, reason);
-		onInvalidClickEvent.Invoke();
+		try
+		{
+			//switch (reason)
+			//{
+			//	default:
+			//	case ValidationOutcome.NotHoldingKeyCard:
+			//		textElement.text = invalidMessage;
+			//		break;
+			//	case ValidationOutcome.ClearanceLevelTooLow:
+			//		textElement.text = invalidClearanceLevelMessage;
+			//		break;
+			//	case ValidationOutcome.InvalidCategory:
+			//		textElement.text = invalidCategoryMessage;
+			//		break;
+			//}
+			if (sounds) { sounds.PlayBadSound(); }
+			if (sprites) { sprites.ShowShakeImage(); }
+			onInvalidClick?.Invoke(this, handleController, reason);
+			onInvalidClickEvent.Invoke();
+		}
+		finally
+		{
+			StartCoroutine(Co_BackToIdle());
+		}
 	}
 
 	private void InvokeValid(V2_HandleController handleController)
 	{
-		if (sounds) { sounds.PlayGoodSound(); }
-		if (sprites) { sprites.ShowUnlockedImage(); }
-		onValidClick?.Invoke(this, handleController);
-		onValidClickEvent.Invoke();
+		try
+		{
+			if (sounds) { sounds.PlayGoodSound(); }
+			if (sprites) { sprites.ShowUnlockedImage(); }
+			onValidClick?.Invoke(this, handleController);
+			onValidClickEvent.Invoke();
+		}
+		finally
+		{
+			StartCoroutine(Co_BackToIdle());
+		}
+	}
+
+	public void InvokeValid()
+	{
+		if (!buttonHandle.enabled) { return; }
+		InvokeValid(null);
 	}
 
 	private IEnumerator Co_BackToIdle()
