@@ -13,6 +13,9 @@ GameObject:
   - component: {fileID: 3528518799372660550}
   - component: {fileID: 5616844148493376987}
   - component: {fileID: 5616844148493376996}
+  - component: {fileID: 7115799474139600486}
+  - component: {fileID: 5646917929173860847}
+  - component: {fileID: 9025091329698667224}
   m_Layer: 0
   m_Name: Glass_Singledoor
   m_TagString: Untagged
@@ -30,7 +33,10 @@ Transform:
   m_LocalRotation: {x: -0, y: 0.0000002682209, z: -0, w: 1}
   m_LocalPosition: {x: 3.897349, y: 2.9309886e-16, z: 1.3322676e-17}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 5616844147133617987}
+  - {fileID: 5616844147243435963}
+  - {fileID: 5616844148539677855}
   m_Father: {fileID: 615230841821034877}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -115,6 +121,71 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &7115799474139600486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 514417744046775285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6be2f7e85cf582644b97d1e2d85d347b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_hoverInfo:
+    description: Touch
+    sprite: {fileID: 0}
+--- !u!114 &5646917929173860847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 514417744046775285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70a2ac27432cf3a469e277fb0b02305e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onClickEvent:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &9025091329698667224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 514417744046775285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b796590ce14c6dc4bb6b508d00284c34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  doorType: 1
+  openOnAwake: 0
+  m_isLocked: 0
+  anim:
+  - {fileID: 5616844148493376996}
+  lockedSound: {fileID: 5616844147133617996}
+  openingSound: {fileID: 5616844147243435972}
+  closingSound: {fileID: 5616844148539677848}
+  lockedSound2: {fileID: 0}
+  delayLockedSound2: 0.05
+  openingSound2: {fileID: 0}
+  delayOpeningSound2: 0.05
+  closingSound2: {fileID: 0}
+  delayClosingSound2: 0.05
+  lockedHoverInfo:
+    description: Locked
+    sprite: {fileID: 0}
+  openedHoverInfo:
+    description: Close
+    sprite: {fileID: 0}
+  closedHoverInfo:
+    description: Open
+    sprite: {fileID: 0}
 --- !u!1 &4526932260712975214
 GameObject:
   m_ObjectHideFlags: 0
@@ -127,9 +198,6 @@ GameObject:
   - component: {fileID: 8490054474483909451}
   - component: {fileID: 2805235575947247538}
   - component: {fileID: 5616844147149879816}
-  - component: {fileID: 5616844147149879819}
-  - component: {fileID: 5616844147149879818}
-  - component: {fileID: 5616844147149879817}
   m_Layer: 0
   m_Name: WindowDoor
   m_TagString: Untagged
@@ -149,9 +217,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2735983106524515355}
-  - {fileID: 5616844147133617987}
-  - {fileID: 5616844147243435963}
-  - {fileID: 5616844148539677855}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -217,62 +282,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 598531031791064292, guid: c78008e55f02e3141986d8106f6f6d79, type: 3}
---- !u!114 &5616844147149879819
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4526932260712975214}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b796590ce14c6dc4bb6b508d00284c34, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  doorType: 1
-  openOnAwake: 0
-  m_isLocked: 0
-  anim:
-  - {fileID: 5616844148493376996}
-  lockedSound: {fileID: 5616844147133617996}
-  openingSound: {fileID: 5616844147243435972}
-  closingSound: {fileID: 5616844148539677848}
-  lockedHoverInfo:
-    description: Locked
-    sprite: {fileID: 0}
-  openedHoverInfo:
-    description: Close
-    sprite: {fileID: 0}
-  closedHoverInfo:
-    description: Open
-    sprite: {fileID: 0}
---- !u!114 &5616844147149879818
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4526932260712975214}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70a2ac27432cf3a469e277fb0b02305e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &5616844147149879817
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4526932260712975214}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6be2f7e85cf582644b97d1e2d85d347b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_hoverInfo:
-    description: Touch
-    sprite: {fileID: 0}
 --- !u!1 &5616844147133617997
 GameObject:
   m_ObjectHideFlags: 0
@@ -297,12 +306,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5616844147133617997}
-  m_LocalRotation: {x: -0, y: 0.7071057, z: -0, w: 0.7071079}
-  m_LocalPosition: {x: 3.4373627, y: 0, z: 0.15847015}
+  m_LocalRotation: {x: -0, y: 0.7071055, z: -0, w: 0.7071081}
+  m_LocalPosition: {x: -1.0973493, y: 0.93, z: 0.1599994}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 615230841821034877}
-  m_RootOrder: 1
+  m_Father: {fileID: 2735983106524515355}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &5616844147133617996
 AudioSource:
@@ -314,7 +323,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: a46eb35e42716df41905ffd2ffb992ae, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 515853f09a0e1094187587646493a440, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -424,12 +433,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5616844147243435973}
-  m_LocalRotation: {x: -0, y: 0.7071057, z: -0, w: 0.7071079}
-  m_LocalPosition: {x: 3.4373627, y: 0, z: 0.15847015}
+  m_LocalRotation: {x: -0, y: 0.7071055, z: -0, w: 0.7071081}
+  m_LocalPosition: {x: -1.0973493, y: 0.93, z: 0.1599994}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 615230841821034877}
-  m_RootOrder: 2
+  m_Father: {fileID: 2735983106524515355}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &5616844147243435972
 AudioSource:
@@ -441,7 +450,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: a46eb35e42716df41905ffd2ffb992ae, type: 3}
+  m_audioClip: {fileID: 8300000, guid: e22de94ebe2281940b4bb5096552c337, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -551,12 +560,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5616844148539677849}
-  m_LocalRotation: {x: -0, y: 0.7071057, z: -0, w: 0.7071079}
-  m_LocalPosition: {x: 3.4373627, y: 0, z: 0.15847015}
+  m_LocalRotation: {x: -0, y: 0.7071055, z: -0, w: 0.7071081}
+  m_LocalPosition: {x: -1.0973493, y: 0.93, z: 0.1599994}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 615230841821034877}
-  m_RootOrder: 3
+  m_Father: {fileID: 2735983106524515355}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &5616844148539677848
 AudioSource:
@@ -568,7 +577,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: ced3f03b12147f44db73dad410adc93a, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 69c7c09d0d7da834080a838dbcf650ff, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
