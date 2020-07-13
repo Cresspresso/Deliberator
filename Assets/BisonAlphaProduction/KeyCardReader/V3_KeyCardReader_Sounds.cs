@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// Elijah Shadbolt
-/// Alpha Production
+/// <author>Elijah Shadbolt</author>
+/// <stage>Alpha Production</stage>
 public class V3_KeyCardReader_Sounds : MonoBehaviour
 {
 	public AudioSource badSound;
