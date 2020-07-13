@@ -53,7 +53,7 @@ public class V3_ViewBobbing : MonoBehaviour
 
                 waveslice = Mathf.Sin(timer);
 
-                timer = timer + walkBobSpeed;
+                timer = (timer + walkBobSpeed);
                 if (timer > Mathf.PI * 2)
                 {
                     timer = timer - (Mathf.PI * 2);
@@ -62,7 +62,7 @@ public class V3_ViewBobbing : MonoBehaviour
                 walkTranslateChange = waveslice * walkBobAmount;
                 gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, walkTranslateChange, gameObject.transform.localPosition.z);
 
-                //Debug.Log("Walking");
+                Debug.Log("Walking");
                 break;
 
             case false:
@@ -77,7 +77,7 @@ public class V3_ViewBobbing : MonoBehaviour
 
                 waveslice = Mathf.Sin(timer);
 
-                timer = timer + idleBobSpeed;
+                timer = (timer + idleBobSpeed);
                 if (timer > Mathf.PI * 2)
                 {
                     timer = timer - (Mathf.PI * 2);
@@ -86,7 +86,7 @@ public class V3_ViewBobbing : MonoBehaviour
                 idleTranslateChange = waveslice * idleBobAmount;
                 gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, idleTranslateChange, gameObject.transform.localPosition.z);
 
-                //Debug.Log("Idling");
+                Debug.Log("Idling");
                 break;
         }
     }
