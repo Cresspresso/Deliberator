@@ -23,15 +23,13 @@ public class V3_ViewBobbing : MonoBehaviour
         if (Mathf.Abs(horizontal) != 0 || Mathf.Abs(vertical) != 0)
         {
             walking = true;
-
-            bob(walking);
         }
         else //if the player isnt moving
         {
             walking = false;
-
-            bob(walking);
         }
+
+        bob(walking);
     }
 
     void bob(bool _walking)
@@ -45,11 +43,11 @@ public class V3_ViewBobbing : MonoBehaviour
         switch (_walking)
         {
             case true:
+                //attempt to smoothly interpolate from idling to walking
                 justSwitched = true;
-
                 if(justSwitched)
                 {
-                    walkTranslateChange = Mathf.Lerp(idleTranslateChange, walkTranslateChange, 0.0f);
+                    walkTranslateChange = Mathf.Lerp(idleTranslateChange, walkTranslateChange, 1.0f);
                     justSwitched = false;
                 }
 
@@ -68,11 +66,12 @@ public class V3_ViewBobbing : MonoBehaviour
                 break;
 
             case false:
-                justSwitched = true;
 
+                //attempt to smoothly interpolate from walking to idling 
+                justSwitched = true;
                 if (justSwitched)
                 {
-                    idleTranslateChange = Mathf.Lerp(walkTranslateChange, idleTranslateChange, 0.0f);
+                    idleTranslateChange = Mathf.Lerp(walkTranslateChange, idleTranslateChange, 1.0f);
                     justSwitched = false;
                 }
 
