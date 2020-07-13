@@ -32,8 +32,11 @@ public class V2_DoorOpener : MonoBehaviour
         get => m_isOpen;
         set
         {
-            m_isOpen = value;
-            buttonHandle.handle.hoverInfo = isOpen ? openedHoverInfo : (isLocked ? lockedHoverInfo : closedHoverInfo);
+            if (!isLocked)
+            {
+                m_isOpen = value;
+                buttonHandle.handle.hoverInfo = isOpen ? openedHoverInfo : (isLocked ? lockedHoverInfo : closedHoverInfo);
+            }
         }
     }
 
@@ -59,7 +62,7 @@ public class V2_DoorOpener : MonoBehaviour
     {
         if (!m_buttonHandle)
         {
-            m_buttonHandle = GetComponent<V2_ButtonHandle>();
+            m_buttonHandle = GetComponentInChildren<V2_ButtonHandle>();
             if (m_buttonHandle)
             {
                 m_buttonHandle.onClick -= OnClick;
