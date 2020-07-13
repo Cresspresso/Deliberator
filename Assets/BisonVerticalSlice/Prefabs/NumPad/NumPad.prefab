@@ -103,6 +103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2372a765e05a590499dae452dfaa5d9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_location: {fileID: 0}
   showHoverInfo: 1
   hoverDescription: 7
   hoverNotInteractableDescription: X
@@ -198,6 +199,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2372a765e05a590499dae452dfaa5d9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_location: {fileID: 0}
   showHoverInfo: 1
   hoverDescription: 9
   hoverNotInteractableDescription: X
@@ -321,7 +323,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3074782781799315748}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
   m_Name: 
@@ -392,6 +394,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2372a765e05a590499dae452dfaa5d9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_location: {fileID: 0}
   showHoverInfo: 1
   hoverDescription: 2
   hoverNotInteractableDescription: X
@@ -487,6 +490,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2372a765e05a590499dae452dfaa5d9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_location: {fileID: 0}
   showHoverInfo: 1
   hoverDescription: 1
   hoverNotInteractableDescription: X
@@ -582,6 +586,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2372a765e05a590499dae452dfaa5d9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_location: {fileID: 0}
   showHoverInfo: 1
   hoverDescription: 8
   hoverNotInteractableDescription: X
@@ -677,6 +682,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2372a765e05a590499dae452dfaa5d9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_location: {fileID: 0}
   showHoverInfo: 1
   hoverDescription: 6
   hoverNotInteractableDescription: X
@@ -772,6 +778,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2372a765e05a590499dae452dfaa5d9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_location: {fileID: 0}
   showHoverInfo: 1
   hoverDescription: 5
   hoverNotInteractableDescription: X
@@ -820,6 +827,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxLength: 4
   submitAtMaxLength: 1
+  clearAfterMaxLength: 1
   m_onCodeChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -838,13 +846,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af3d7a1fd8327b745b3eff6e58bb05b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_pad: {fileID: 0}
+  passcode: 1234
   m_onCorrectSubmitted:
     m_PersistentCalls:
       m_Calls: []
   m_onIncorrectSubmitted:
     m_PersistentCalls:
       m_Calls: []
-  passcode: 1234
 --- !u!65 &7152249345034211080
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -919,6 +928,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2372a765e05a590499dae452dfaa5d9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_location: {fileID: 0}
   showHoverInfo: 1
   hoverDescription: 3
   hoverNotInteractableDescription: X
@@ -1014,6 +1024,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0.7343964, g: 1, b: 0.7216981, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1106,6 +1117,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2372a765e05a590499dae452dfaa5d9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_location: {fileID: 0}
   showHoverInfo: 1
   hoverDescription: Clear
   hoverNotInteractableDescription: X
@@ -1201,6 +1213,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2372a765e05a590499dae452dfaa5d9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_location: {fileID: 0}
   showHoverInfo: 1
   hoverDescription: 4
   hoverNotInteractableDescription: X
@@ -1296,6 +1309,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2372a765e05a590499dae452dfaa5d9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_location: {fileID: 0}
   showHoverInfo: 1
   hoverDescription: Enter
   hoverNotInteractableDescription: X
@@ -1391,6 +1405,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2372a765e05a590499dae452dfaa5d9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_location: {fileID: 0}
   showHoverInfo: 1
   hoverDescription: 0
   hoverNotInteractableDescription: X
