@@ -5,13 +5,13 @@ using UnityEngine;
 /// <author> Lorenzo Zemp </author>
 public class V3_ViewBobbing : MonoBehaviour
 {
-    public float walkBobSpeed = 0.08f; // how fast it bobs while walking
-    public float walkBobAmount = 0.08f; // how high it bobs while walking
+    public float walkBobSpeed = 7.0f; // how fast it bobs while walking
+    public float walkBobAmount = 0.05f; // how high it bobs while walking
 
-    public float idleBobSpeed = 0.02f; // how fast it bobs while idling
-    public float idleBobAmount = 0.02f; // how high it bobs while idling
+    public float idleBobSpeed = 0.5f; // how fast it bobs while idling
+    public float idleBobAmount = 0.05f; // how high it bobs while idling
 
-    private float timer = 0.0f;
+    private float timer = Mathf.PI / 2;
     private bool walking = false;
 
     void Update()
@@ -38,55 +38,32 @@ public class V3_ViewBobbing : MonoBehaviour
         float walkTranslateChange = 0.0f;
         float idleTranslateChange = 0.0f;
 
-        bool justSwitched = false;
-
         switch (_walking)
         {
             case true:
-                //attempt to smoothly interpolate from idling to walking
-                justSwitched = true;
-                if(justSwitched)
-                {
-                    walkTranslateChange = Mathf.Lerp(idleTranslateChange, walkTranslateChange, 1.0f);
-                    justSwitched = false;
-                }
 
                 waveslice = Mathf.Sin(timer);
 
-                timer = (timer + walkBobSpeed);
-                if (timer > Mathf.PI * 2)
-                {
-                    timer = timer - (Mathf.PI * 2);
-                }
+                timer += (Time.deltaTime * walkBobSpeed);
 
                 walkTranslateChange = waveslice * walkBobAmount;
-                gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, walkTranslateChange, gameObject.transform.localPosition.z);
+                gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, Mathf.Abs(walkTranslateChange), gameObject.transform.localPosition.z);
 
-                Debug.Log("Walking");
+                //Debug.Log(Mathf.Abs(walkTranslateChange));
+                //Debug.Log("Walking");
                 break;
 
             case false:
 
-                //attempt to smoothly interpolate from walking to idling 
-                justSwitched = true;
-                if (justSwitched)
-                {
-                    idleTranslateChange = Mathf.Lerp(walkTranslateChange, idleTranslateChange, 1.0f);
-                    justSwitched = false;
-                }
-
                 waveslice = Mathf.Sin(timer);
 
-                timer = (timer + idleBobSpeed);
-                if (timer > Mathf.PI * 2)
-                {
-                    timer = timer - (Mathf.PI * 2);
-                }
+                timer += (Time.deltaTime * idleBobSpeed);
 
                 idleTranslateChange = waveslice * idleBobAmount;
-                gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, idleTranslateChange, gameObject.transform.localPosition.z);
+                gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, Mathf.Abs(idleTranslateChange), gameObject.transform.localPosition.z);
 
-                Debug.Log("Idling");
+                //Debug.Log(Mathf.Abs(idleTranslateChange));
+                //Debug.Log("Idling");
                 break;
         }
     }
