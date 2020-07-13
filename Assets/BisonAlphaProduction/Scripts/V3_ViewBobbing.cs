@@ -5,10 +5,10 @@ using UnityEngine;
 /// <author> Lorenzo Zemp </author>
 public class V3_ViewBobbing : MonoBehaviour
 {
-    public float walkBobSpeed = 0.18f; // how fast it bobs while walking
-    public float walkBobAmount = 0.2f; // how high it bobs while walking
+    public float walkBobSpeed = 0.08f; // how fast it bobs while walking
+    public float walkBobAmount = 0.08f; // how high it bobs while walking
 
-    public float idleBobSpeed = 0.08f; // how fast it bobs while idling
+    public float idleBobSpeed = 0.02f; // how fast it bobs while idling
     public float idleBobAmount = 0.02f; // how high it bobs while idling
 
     private float timer = 0.0f;
