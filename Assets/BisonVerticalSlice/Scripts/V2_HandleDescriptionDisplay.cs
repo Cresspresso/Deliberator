@@ -9,12 +9,23 @@ public class V2_HandleDescriptionDisplay : MonoBehaviour
 	public Text[] textElements;
 	public Image image;
 	public GameObject visuals;
+	private RectTransform rt;
+	private Canvas canvas;
+	private CanvasScaler canvasScaler;
 	public Sprite idleSprite;
 	public Sprite interactSprite;
 	private bool subscribed = false;
 
+	private V2_Handle currentHandle;
+
 	private void Awake()
 	{
+		rt = visuals.GetComponent<RectTransform>();
+		Debug.Assert(rt, this);
+
+		canvas = GetComponentInParent<Canvas>();
+		canvasScaler = canvas.GetComponent<CanvasScaler>();
+
 		if (!subscribed)
 		{
 			visuals.SetActive(false);
@@ -37,6 +48,7 @@ public class V2_HandleDescriptionDisplay : MonoBehaviour
 
 	private void OnHoverEnter(V2_HandleController handleController, V2_Handle handle)
 	{
+		currentHandle = handle;
 		handle.onHoverInfoChanged += OnHoverInfoChanged;
 		OnHoverInfoChanged(handle, handle.hoverInfo);
 		visuals.SetActive(true);
@@ -44,6 +56,7 @@ public class V2_HandleDescriptionDisplay : MonoBehaviour
 
 	private void OnHoverExit(V2_HandleController handleController, V2_Handle handle)
 	{
+		currentHandle = null;
 		handle.onHoverInfoChanged -= OnHoverInfoChanged;
 		visuals.SetActive(false);
 		image.sprite = idleSprite;
