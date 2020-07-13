@@ -25,6 +25,17 @@ public class V2_Handle : MonoBehaviour
 	public event Action<V2_Handle, V2_HandleController> onHoverExit;
 	public event Action<V2_Handle, V2_HandleHoverInfo> onHoverInfoChanged;
 
+	/// <author>Elijah Shadbolt</author>
+	/// <stage>Alpha Production</stage>
+#pragma warning disable CS0649
+	[SerializeField]
+	private Transform m_handlePoint;
+	public Transform handlePoint => m_handlePoint;
+#pragma warning restore CS0649
+
+
+
+
 	[SerializeField]
 	private V2_HandleHoverInfo m_hoverInfo = new V2_HandleHoverInfo("Touch", null);
 	public V2_HandleHoverInfo hoverInfo {

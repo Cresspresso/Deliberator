@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 
-/// Elijah Shadbolt
-/// Alpha Production
+/// <author>Elijah Shadbolt</author>
+/// <stage>Alpha Production</stage>
 public class V3_KeyCardReader_Sprites : MonoBehaviour
 {
 	public Image unlockedImage;
