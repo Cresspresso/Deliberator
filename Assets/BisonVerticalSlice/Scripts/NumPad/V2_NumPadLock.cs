@@ -44,7 +44,6 @@ public class V2_NumPadLock : MonoBehaviour
 
 	private void OnSubmit(string code)
 	{
-
 		if (code == passcode)
 		{
 			onCorrectSubmitted.Invoke();
