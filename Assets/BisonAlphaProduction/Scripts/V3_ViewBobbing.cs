@@ -2,48 +2,93 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <author> </author>
-
+/// <author> Lorenzo Zemp </author>
 public class V3_ViewBobbing : MonoBehaviour
 {
-    public float bobbingSpeed = 0.18f; // how fast it bobs
-    public float bobbingAmount = 0.2f; // how high it bobs
-    public float midpoint = 0.0f; // changes height of the camera 0 is default
+    public float walkBobSpeed = 0.18f; // how fast it bobs while walking
+    public float walkBobAmount = 0.2f; // how high it bobs while walking
+
+    public float idleBobSpeed = 0.08f; // how fast it bobs while idling
+    public float idleBobAmount = 0.02f; // how high it bobs while idling
 
     private float timer = 0.0f;
+    private bool walking = false;
 
     void Update()
     {
-        float waveslice = 0.0f;
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
-        if (Mathf.Abs(horizontal) == 0 && Mathf.Abs(vertical) == 0)
+        //if player is moving
+        if (Mathf.Abs(horizontal) != 0 || Mathf.Abs(vertical) != 0)
         {
-            timer = 0.0f;
-        }
-        else
-        {
-            waveslice = Mathf.Sin(timer);
-            timer = timer + bobbingSpeed;
-            if (timer > Mathf.PI * 2)
-            {
-                timer = timer - (Mathf.PI * 2);
-            }
-        }
+            walking = true;
 
-        if (waveslice != 0)
-        {
-            float translateChange = waveslice * bobbingAmount;
-            float totalAxes = Mathf.Abs(horizontal) + Mathf.Abs(vertical);
-            totalAxes = Mathf.Clamp(totalAxes, 0.0f, 1.0f);
-            translateChange = totalAxes * translateChange;
-
-            gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, midpoint + translateChange, gameObject.transform.localPosition.z);
+            bob(walking);
         }
-        else
+        else //if the player isnt moving
         {
-            gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, midpoint, gameObject.transform.localPosition.z);
+            walking = false;
+
+            bob(walking);
+        }
+    }
+
+    void bob(bool _walking)
+    {
+        float waveslice = 0.0f;
+        float walkTranslateChange = 0.0f;
+        float idleTranslateChange = 0.0f;
+
+        bool justSwitched = false;
+
+        switch (_walking)
+        {
+            case true:
+                justSwitched = true;
+
+                if(justSwitched)
+                {
+                    walkTranslateChange = Mathf.Lerp(idleTranslateChange, walkTranslateChange, 0.0f);
+                    justSwitched = false;
+                }
+
+                waveslice = Mathf.Sin(timer);
+
+                timer = timer + walkBobSpeed;
+                if (timer > Mathf.PI * 2)
+                {
+                    timer = timer - (Mathf.PI * 2);
+                }
+
+                walkTranslateChange = waveslice * walkBobAmount;
+                gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, walkTranslateChange, gameObject.transform.localPosition.z);
+
+                //Debug.Log("Walking");
+                break;
+
+            case false:
+                justSwitched = true;
+
+                if (justSwitched)
+                {
+                    idleTranslateChange = Mathf.Lerp(walkTranslateChange, idleTranslateChange, 0.0f);
+                    justSwitched = false;
+                }
+
+                waveslice = Mathf.Sin(timer);
+
+                timer = timer + idleBobSpeed;
+                if (timer > Mathf.PI * 2)
+                {
+                    timer = timer - (Mathf.PI * 2);
+                }
+
+                idleTranslateChange = waveslice * idleBobAmount;
+                gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, idleTranslateChange, gameObject.transform.localPosition.z);
+
+                //Debug.Log("Idling");
+                break;
         }
     }
 }
