@@ -32,11 +32,8 @@ public class V2_DoorOpener : MonoBehaviour
         get => m_isOpen;
         set
         {
-            if (!isLocked)
-            {
-                m_isOpen = value;
-                buttonHandle.handle.hoverInfo = isOpen ? openedHoverInfo : (isLocked ? lockedHoverInfo : closedHoverInfo);
-            }
+            m_isOpen = value;
+            buttonHandle.handle.hoverInfo = isOpen ? openedHoverInfo : (isLocked ? lockedHoverInfo : closedHoverInfo);
         }
     }
 
