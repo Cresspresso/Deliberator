@@ -59,7 +59,7 @@ public class V2_DoorOpener : MonoBehaviour
     {
         if (!m_buttonHandle)
         {
-            m_buttonHandle = GetComponent<V2_ButtonHandle>();
+            m_buttonHandle = GetComponentInChildren<V2_ButtonHandle>();
             if (m_buttonHandle)
             {
                 m_buttonHandle.onClick -= OnClick;

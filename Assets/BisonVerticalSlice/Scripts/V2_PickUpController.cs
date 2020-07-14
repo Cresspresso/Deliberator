@@ -25,6 +25,11 @@ public class V2_PickUpController : MonoBehaviour
 
 	public void InternalOnPickedUp(V2_PickUpHandle sender)
 	{
+		if (currentPickedUpHandle)
+		{
+			currentPickedUpHandle.Drop();
+		}
+
 		currentPickedUpHandle = sender;
 		onPickedUp?.Invoke(this, sender);
 	}

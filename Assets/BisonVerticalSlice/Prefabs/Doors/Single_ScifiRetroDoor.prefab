@@ -25,10 +25,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2377003874981280979}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.23, y: 1.317, z: 0.026770916}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 2265106647794241980}
+  m_Father: {fileID: 94415407549729573}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &2377003874981280978
@@ -152,10 +152,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2377003875294752699}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.23, y: 1.317, z: 0.026770916}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 2265106647794241980}
+  m_Father: {fileID: 94415407549729573}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &2377003875294752698
@@ -279,10 +279,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2377003875774487340}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.23, y: 1.317, z: 0.026770916}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 2265106647794241980}
+  m_Father: {fileID: 94415407549729573}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &2377003875774487339
@@ -381,6 +381,39 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &5771762725963549561
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 94415407549729573}
+  m_Layer: 0
+  m_Name: Handle Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &94415407549729573
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5771762725963549561}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.252, y: 1.304, z: 0.077}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 2377003874981280977}
+  - {fileID: 2377003875774487338}
+  - {fileID: 2377003875294752697}
+  m_Father: {fileID: 2265106647794241980}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6043053860754763323
 GameObject:
   m_ObjectHideFlags: 0
@@ -393,9 +426,6 @@ GameObject:
   - component: {fileID: 1791696116099507742}
   - component: {fileID: 5467910309228649191}
   - component: {fileID: 2377003874806856944}
-  - component: {fileID: 2377003874806856947}
-  - component: {fileID: 2377003874806856946}
-  - component: {fileID: 2377003874806856945}
   m_Layer: 0
   m_Name: Single_ScifiRetroDoor
   m_TagString: Untagged
@@ -479,62 +509,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 5182458458029139976, guid: 6e27252de695f04448e8e7870ac5c8e1, type: 3}
---- !u!114 &2377003874806856947
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6043053860754763323}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b796590ce14c6dc4bb6b508d00284c34, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  doorType: 1
-  openOnAwake: 0
-  m_isLocked: 0
-  anim:
-  - {fileID: 2377003875278897418}
-  lockedSound: {fileID: 2377003874981280978}
-  openingSound: {fileID: 2377003875774487339}
-  closingSound: {fileID: 2377003875294752698}
-  lockedHoverInfo:
-    description: Locked
-    sprite: {fileID: 0}
-  openedHoverInfo:
-    description: Close
-    sprite: {fileID: 0}
-  closedHoverInfo:
-    description: Open
-    sprite: {fileID: 0}
---- !u!114 &2377003874806856946
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6043053860754763323}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70a2ac27432cf3a469e277fb0b02305e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2377003874806856945
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6043053860754763323}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6be2f7e85cf582644b97d1e2d85d347b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_hoverInfo:
-    description: Touch
-    sprite: {fileID: 0}
 --- !u!1 &8559110011575314079
 GameObject:
   m_ObjectHideFlags: 0
@@ -548,6 +522,9 @@ GameObject:
   - component: {fileID: 4683215979189764027}
   - component: {fileID: 2377003875278897527}
   - component: {fileID: 2377003875278897418}
+  - component: {fileID: 8191203593166671303}
+  - component: {fileID: 3534583899829091617}
+  - component: {fileID: 7752449785106641089}
   m_Layer: 0
   m_Name: Single_SciFiRetroDoor
   m_TagString: Untagged
@@ -566,9 +543,7 @@ Transform:
   m_LocalPosition: {x: 0.50070167, y: 0.09480453, z: -0.026770916}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 2377003874981280977}
-  - {fileID: 2377003875774487338}
-  - {fileID: 2377003875294752697}
+  - {fileID: 94415407549729573}
   m_Father: {fileID: 7315645286947347496}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -653,3 +628,69 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &8191203593166671303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8559110011575314079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6be2f7e85cf582644b97d1e2d85d347b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_handlePoint: {fileID: 94415407549729573}
+  m_hoverInfo:
+    description: Touch
+    sprite: {fileID: 0}
+--- !u!114 &3534583899829091617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8559110011575314079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70a2ac27432cf3a469e277fb0b02305e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onClickEvent:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &7752449785106641089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8559110011575314079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b796590ce14c6dc4bb6b508d00284c34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  doorType: 1
+  openOnAwake: 0
+  m_isLocked: 0
+  anim:
+  - {fileID: 2377003875278897418}
+  lockedSound: {fileID: 2377003874981280978}
+  openingSound: {fileID: 2377003875774487339}
+  closingSound: {fileID: 2377003875294752698}
+  lockedSound2: {fileID: 0}
+  delayLockedSound2: 0.05
+  openingSound2: {fileID: 0}
+  delayOpeningSound2: 0.05
+  closingSound2: {fileID: 0}
+  delayClosingSound2: 0.05
+  lockedHoverInfo:
+    description: Locked
+    sprite: {fileID: 0}
+  openedHoverInfo:
+    description: Close
+    sprite: {fileID: 0}
+  closedHoverInfo:
+    description: Open
+    sprite: {fileID: 0}
