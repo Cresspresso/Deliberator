@@ -231,10 +231,10 @@ public class V2_FirstPersonCharacterController : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetButtonDown("Running Toggle"))
-		{
-			isRunningEnabled = !isRunningEnabled;
-		}
+		//if (Input.GetButtonDown("Running Toggle"))
+		//{
+		//	isRunningEnabled = !isRunningEnabled;
+		//}
 
 		UpdateRotation();
 		UpdatePosition();

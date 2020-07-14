@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <author>Elijah Shadbolt</author>
+/// <stage>Alpha Production</stage>
 public class V3_WorldToUI : MonoBehaviour
 {
 	public Transform target = null;

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <author>Elijah Shadbolt</author>
+/// <stage>Alpha Production</stage>
 public class V3_DoorUnlocker : MonoBehaviour
 {
 	public V2_DoorOpener door;
