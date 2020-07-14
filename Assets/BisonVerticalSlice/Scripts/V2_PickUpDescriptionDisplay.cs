@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <author>Elijah Shadbolt</author>
+/// <stage>Alpha Production</stage>
 public class V2_PickUpDescriptionDisplay : MonoBehaviour
 {
 	public Text textElement;
