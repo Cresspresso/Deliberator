@@ -123,6 +123,7 @@ GameObject:
   - component: {fileID: 6310779866146272654}
   - component: {fileID: 8213509130268843868}
   - component: {fileID: 877388009}
+  - component: {fileID: 8763347745011887621}
   m_Layer: 9
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -329,6 +330,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handPoint: {fileID: 107277426}
+--- !u!114 &8763347745011887621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6310779866146272652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6cf5b38f1060ae41ac8aa83aa2016f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  walkBobSpeed: 7
+  walkBobAmount: 0.05
+  idleBobSpeed: 0.5
+  idleBobAmount: 0.05
 --- !u!1 &6310779866630276354
 GameObject:
   m_ObjectHideFlags: 0
