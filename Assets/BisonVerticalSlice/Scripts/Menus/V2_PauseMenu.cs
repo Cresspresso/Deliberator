@@ -56,6 +56,7 @@ public class V2_PauseMenu : MonoBehaviour
 		pauseMenuBackground.SetActive(true);
 		menuNavigation.Clear();
 		menuNavigation.GoInto(menuPanel);
+		AudioListener.pause = true;
 	}
 
 	public void Unpause()
@@ -65,6 +66,7 @@ public class V2_PauseMenu : MonoBehaviour
 		cursorController.enabled = true;
 		pauseMenuBackground.SetActive(false);
 		menuNavigation.Clear();
+		AudioListener.pause = false;
 	}
 
 	private bool initialised = false;
