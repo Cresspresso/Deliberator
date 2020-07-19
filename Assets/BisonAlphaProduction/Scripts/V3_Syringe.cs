@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 using UnityEngine.VFX;
 using DG.Tweening;
 
+/// <author>Elijah Shadbolt</author>
+/// <stage>Alpha Production</stage>
 [RequireComponent(typeof(V2_ButtonHandle))]
 public class V3_Syringe : MonoBehaviour
 {
