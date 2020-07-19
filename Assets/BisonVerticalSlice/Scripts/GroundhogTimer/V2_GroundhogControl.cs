@@ -13,6 +13,7 @@ public class V2_GroundhogControl : MonoBehaviour
 
 	[SerializeField]
 	private float m_remainingDuration = 10.0f;
+	private bool soundPlayed = false;
 
 	public float remainingDuration {
 		get => m_remainingDuration;
@@ -80,7 +81,12 @@ public class V2_GroundhogControl : MonoBehaviour
 	{
 		flashAnim.SetTrigger("TriggerRed");
 
-		gameObject.GetComponent<AudioSource>().Play();
+		if (!soundPlayed)
+		{
+			gameObject.GetComponent<AudioSource>().Play();
+			Debug.Log("Sound play");
+			soundPlayed = true;
+		}
 
 		audioMixer.SetFloat("MasterCenterFreq", 7500.0f);
 		audioMixer.SetFloat("MasterOctaveRange", 5.0f);
