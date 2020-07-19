@@ -86,7 +86,7 @@ public class V2_GroundhogControl : MonoBehaviour
 		audioMixer.SetFloat("MasterOctaveRange", 5.0f);
 		audioMixer.SetFloat("MasterFreqGain", 0.05f);
 
-		yield return new WaitForSeconds(2.0f);
+		yield return new WaitForSeconds(1.5f);
 		Finish();
 	}
 }
