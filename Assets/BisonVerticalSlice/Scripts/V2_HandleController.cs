@@ -6,7 +6,8 @@ using UnityEngine;
 /// <author>Elijah Shadbolt</author>
 public class V2_HandleController : MonoBehaviour
 {
-	public LayerMask handleMask = ~0;
+	public LayerMask handleMask = ~0; //Bitwise NOT of 0 means every layer is selected 
+	public LayerMask handleSphereMask = ~0;
 	public float maxDistance = 5;
 
 	private V2_Handle m_hoveredHandle;
@@ -80,12 +81,28 @@ public class V2_HandleController : MonoBehaviour
 
 	private void RaycastForHandle()
 	{
+		RaycastHit hit;
+
 		var ray = new Ray(transform.position, transform.forward);
 		if (Physics.Raycast(
 			ray,
-			out var hit,
+			out hit,
 			maxDistance,
 			handleMask,
+			QueryTriggerInteraction.Collide))
+		{
+			var otherHandle = hit.collider.GetComponentInParent<V2_Handle>();
+			if (otherHandle && otherHandle.enabled)
+			{
+				hoveredHandle = otherHandle;
+				return;
+			}
+		}
+		if (Physics.Raycast(
+			ray,
+			out hit,
+			maxDistance,
+			handleSphereMask,
 			QueryTriggerInteraction.Collide))
 		{
 			var otherHandle = hit.collider.GetComponentInParent<V2_Handle>();
