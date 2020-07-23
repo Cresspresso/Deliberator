@@ -34,37 +34,27 @@ public class V3_ViewBobbing : MonoBehaviour
 
     void bob(bool _walking)
     {
-        float waveslice = 0.0f;
-        float walkTranslateChange = 0.0f;
-        float idleTranslateChange = 0.0f;
+        float waveslice = Mathf.Sin(timer);
 
-        switch (_walking)
+        if (_walking)
         {
-            case true:
+            timer += (Time.deltaTime * walkBobSpeed);
 
-                waveslice = Mathf.Sin(timer);
+            float walkTranslateChange = waveslice * walkBobAmount;
+            gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, Mathf.Abs(walkTranslateChange), gameObject.transform.localPosition.z);
 
-                timer += (Time.deltaTime * walkBobSpeed);
+            //Debug.Log(Mathf.Abs(walkTranslateChange));
+            //Debug.Log("Walking");
+        }
+        else
+        {
+            timer += (Time.deltaTime * idleBobSpeed);
 
-                walkTranslateChange = waveslice * walkBobAmount;
-                gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, Mathf.Abs(walkTranslateChange), gameObject.transform.localPosition.z);
+            float idleTranslateChange = waveslice * idleBobAmount;
+            gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, Mathf.Abs(idleTranslateChange), gameObject.transform.localPosition.z);
 
-                //Debug.Log(Mathf.Abs(walkTranslateChange));
-                //Debug.Log("Walking");
-                break;
-
-            case false:
-
-                waveslice = Mathf.Sin(timer);
-
-                timer += (Time.deltaTime * idleBobSpeed);
-
-                idleTranslateChange = waveslice * idleBobAmount;
-                gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, Mathf.Abs(idleTranslateChange), gameObject.transform.localPosition.z);
-
-                //Debug.Log(Mathf.Abs(idleTranslateChange));
-                //Debug.Log("Idling");
-                break;
+            //Debug.Log(Mathf.Abs(idleTranslateChange));
+            //Debug.Log("Idling");
         }
     }
 }

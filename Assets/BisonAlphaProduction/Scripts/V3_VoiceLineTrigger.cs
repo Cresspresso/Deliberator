@@ -37,7 +37,7 @@ public class V3_VoiceLineTrigger : MonoBehaviour
 	{
 		if (other.CompareTag("Player"))
 		{
-			if (!hasTriggered)
+			if (!hasTriggered) // prevent from calling it twice
 			{
 				hasTriggered = true;
 				OnTriggered();
