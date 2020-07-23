@@ -23,12 +23,22 @@ public class V3_VoiceLineManager : MonoBehaviour
 {
 	public static V3_VoiceLineManager instance { get; private set; }
 
+
+	//public int GetMyIntVariable() { return m_var; }
+	//private void SetMyIntVariable(int var) { m_var = var; }
+
+	//private int m_var;
+	//public int myIntVar {
+	//	get { return m_var; }
+	//	set { m_var = value; }
+	//}
+
 	private void Awake()
 	{
 		instance = this;
 	}
 
-	[SerializeField]
+	[SerializeField] // show in inspector, but cannot set from other scripts
 	private HashSet<V3_VoiceLineAudioSource> m_vlas = new HashSet<V3_VoiceLineAudioSource>();
 
 	public void Register(V3_VoiceLineAudioSource vla)
@@ -41,11 +51,12 @@ public class V3_VoiceLineManager : MonoBehaviour
 		m_vlas.Remove(vla);
 	}
 
-	private void ForEachVoiceLineAudioSource(Action<V3_VoiceLineAudioSource> action)
+	// `action` is a first class function, i.e. a variable which can be called like a function.
+	private void ForEachVoiceLineAudioSource(System.Action<V3_VoiceLineAudioSource> action)
 	{
 		foreach (var vla in m_vlas)
 		{
-			if (vla)
+			if ((bool)vla) // bool cast returns false if vla was destroyed
 			{
 				action(vla);
 			}
@@ -112,7 +123,7 @@ public class V3_VoiceLineManager : MonoBehaviour
 		m_sectionTimeRemaining = 0.0f;
 		m_currentVoiceLine = null;
 		m_voiceLineQueue.Clear();
-		ForEachVoiceLineAudioSource(s => s.Stop());
+		ForEachVoiceLineAudioSource(s => s.Stop()); // The expression `s => s.Stop()` is a lambda function (first class function).
 	}
 
 	private void TryStartPlaying()
@@ -129,6 +140,7 @@ public class V3_VoiceLineManager : MonoBehaviour
 		}
 	}
 
+	// add sequence of voice lines to back of queue.
 	public void EnqueueSequence(IEnumerable<VoiceLine> voiceLines)
 	{
 		if (voiceLines != null)
@@ -141,6 +153,7 @@ public class V3_VoiceLineManager : MonoBehaviour
 		TryStartPlaying();
 	}
 
+	// replaces queue with new sequence of voice lines.
 	public void ReplaceWithSequence(IEnumerable<VoiceLine> voiceLines)
 	{
 		Stop();
