@@ -6,8 +6,8 @@ using UnityEngine.UI;
 
 public class V3_SettingsMenu : MonoBehaviour
 {
-    public AudioMixer audioMixer;
-    public GameObject player;
+    private AudioMixer audioMixer;
+    private GameObject player;
 
     public Dropdown resolutionDropdown;
 
