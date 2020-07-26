@@ -14,6 +14,7 @@ public class V3_Syringe : MonoBehaviour
 	public string nextSceneName = "";
 	public float delay = 3.0f;
 	public Transform effectsRoot;
+	public float shrinkDuration = 0.5f;
 	public AudioSource celebrationAudio;
 	public VisualEffect vfx;
 
@@ -29,6 +30,23 @@ public class V3_Syringe : MonoBehaviour
 
 	private void OnClick(V2_ButtonHandle buttonHandle, V2_HandleController handleController)
 	{
+		Invoke(nameof(LoadScene), delay);
+		buttonHandle.handle.enabled = false;
+
+		var gc = FindObjectOfType<V2_GroundhogControl>();
+		if (gc)
+		{
+			gc.enabled = false;
+		}
+
+		transform.DOScale(0, shrinkDuration).SetEase(Ease.InCirc);
+
+		var armManager = FindObjectOfType<V3_Arm_Manager>();
+		if (armManager)
+		{
+			armManager.TriggerInject();
+		}
+
 		if (effectsRoot)
 		{
 			effectsRoot.SetParent(null);
@@ -45,12 +63,6 @@ public class V3_Syringe : MonoBehaviour
 		{
 			vfx.Play();
 		}
-
-		buttonHandle.handle.enabled = false;
-
-		transform.DOScale(0, delay * 0.5f).SetEase(Ease.InCirc);
-
-		Invoke(nameof(LoadScene), delay);
 	}
 
 	private void OnDestroy()
