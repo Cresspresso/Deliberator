@@ -1,4 +1,4 @@
 # Deliberator
 MDS DGD 2020 Vertical Slice
 
-Unity 2019.3.10f1
+Unity 2019.4.2f1

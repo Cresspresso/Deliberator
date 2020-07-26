@@ -10,6 +10,7 @@ public class V2_GroundhogControl : MonoBehaviour
 {
 	public Animator flashAnim;
 	public AudioMixer audioMixer;
+	public bool isPaused { get; set; } = false;
 
 	[SerializeField]
 	private float m_remainingDuration = 10.0f;
@@ -43,11 +44,19 @@ public class V2_GroundhogControl : MonoBehaviour
 		}
 		else
 		{
-			remainingDuration -= Time.deltaTime;
-			if (remainingDuration <= 0.0f)
+			if (Input.GetKeyDown(KeyCode.K))
 			{
-				StartCoroutine(PlayerDied());
-				//Finish();
+				isPaused = !isPaused;
+			}
+
+			if (!isPaused)
+			{
+				remainingDuration -= Time.deltaTime;
+				if (remainingDuration <= 0.0f)
+				{
+					StartCoroutine(PlayerDied());
+					//Finish();
+				}
 			}
 		}
 	}
