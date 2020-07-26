@@ -33,7 +33,7 @@ public class V3_VoiceLineAudioSource : MonoBehaviour
 
 	private void OnDestroy()
 	{
-		if (manager)
+		if (manager) // the manager could be destroyed before this one
 		{
 			manager.Unregister(this);
 		}
