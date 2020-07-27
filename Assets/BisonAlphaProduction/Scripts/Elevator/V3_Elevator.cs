@@ -9,6 +9,8 @@ using System.Linq;
 // 3. open appropriate doors
 public class V3_Elevator : MonoBehaviour
 {
+#pragma warning disable CS0649
+
 	[SerializeField]
 	[Tooltip("On Child Object")]
 	private Rigidbody rb;
@@ -33,6 +35,8 @@ public class V3_Elevator : MonoBehaviour
 		new Floor { openBackDoor=true },
 		new Floor { openFrontDoor=true },
 	};
+
+#pragma warning restore CS0649
 
 	public float maxSpeed = 5;
 

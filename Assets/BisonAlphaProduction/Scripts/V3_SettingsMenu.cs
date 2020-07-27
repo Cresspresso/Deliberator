@@ -6,7 +6,11 @@ using UnityEngine.UI;
 
 public class V3_SettingsMenu : MonoBehaviour
 {
+#pragma warning disable CS0649
+    [SerializeField]
     private AudioMixer audioMixer;
+#pragma warning restore CS0649
+
     private GameObject player;
 
     public Dropdown resolutionDropdown;

@@ -17,8 +17,10 @@ public class Old_NotInteractableReason
 [DisallowMultipleComponent]
 public class Old_Interactable : MonoBehaviour
 {
+#pragma warning disable CS0649
 	[SerializeField]
 	private Transform m_location;
+#pragma warning restore CS0649
 	public Transform location => m_location ? m_location : transform;
 
 	public bool showHoverInfo = true;

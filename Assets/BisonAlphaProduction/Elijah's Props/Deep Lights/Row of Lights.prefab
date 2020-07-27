@@ -1,0 +1,901 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1381606094612507434
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1381606094612507432}
+  m_Layer: 0
+  m_Name: Row of Lights
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1381606094612507432
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1381606094612507434}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 21.78, y: 7.55, z: -11.97}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1381606095018470430}
+  - {fileID: 4699451287835923865}
+  - {fileID: 4699451288829922646}
+  - {fileID: 4699451288171452027}
+  - {fileID: 4699451288924175025}
+  - {fileID: 4699451288136975017}
+  - {fileID: 4699451287281635587}
+  - {fileID: 4699451287606530774}
+  - {fileID: 4699451288934578585}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1381606094250453378
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1381606094612507432}
+    m_Modifications:
+    - target: {fileID: 5916530756856354006, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_BoundingSphereOverride.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756856354006, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_BoundingSphereOverride.w
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756856354006, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_UseBoundingSphereOverride
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756856354006, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_BoundingSphereOverride.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756856354006, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_BoundingSphereOverride.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484753, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_Name
+      value: Deep Bowl Light (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c01cd3ad1dc3b694bafe1d458fdb7941, type: 3}
+--- !u!4 &4699451288829922646 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+    type: 3}
+  m_PrefabInstance: {fileID: 1381606094250453378}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1381606094372592973
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1381606094612507432}
+    m_Modifications:
+    - target: {fileID: 5916530756856354006, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_BoundingSphereOverride.w
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756856354006, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_UseBoundingSphereOverride
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756856354006, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_BoundingSphereOverride.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756856354006, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_BoundingSphereOverride.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756856354006, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_BoundingSphereOverride.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484753, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_Name
+      value: Deep Bowl Light (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 32
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c01cd3ad1dc3b694bafe1d458fdb7941, type: 3}
+--- !u!4 &4699451288934578585 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+    type: 3}
+  m_PrefabInstance: {fileID: 1381606094372592973}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1381606094416518757
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1381606094612507432}
+    m_Modifications:
+    - target: {fileID: 5916530756856354006, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_BoundingSphereOverride.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756856354006, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_BoundingSphereOverride.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756856354006, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_BoundingSphereOverride.w
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756856354006, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_UseBoundingSphereOverride
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484753, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_Name
+      value: Deep Bowl Light (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c01cd3ad1dc3b694bafe1d458fdb7941, type: 3}
+--- !u!4 &4699451288924175025 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+    type: 3}
+  m_PrefabInstance: {fileID: 1381606094416518757}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1381606094659368450
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1381606094612507432}
+    m_Modifications:
+    - target: {fileID: 5916530756856354006, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_BoundingSphereOverride.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756856354006, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_BoundingSphereOverride.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756856354006, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_BoundingSphereOverride.w
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756856354006, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_UseBoundingSphereOverride
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484753, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_Name
+      value: Deep Bowl Light (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 28
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c01cd3ad1dc3b694bafe1d458fdb7941, type: 3}
+--- !u!4 &4699451287606530774 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+    type: 3}
+  m_PrefabInstance: {fileID: 1381606094659368450}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1381606094984000983
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1381606094612507432}
+    m_Modifications:
+    - target: {fileID: 5916530756856354006, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_BoundingSphereOverride.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756856354006, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_BoundingSphereOverride.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756856354006, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_BoundingSphereOverride.w
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756856354006, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_UseBoundingSphereOverride
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484753, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_Name
+      value: Deep Bowl Light (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c01cd3ad1dc3b694bafe1d458fdb7941, type: 3}
+--- !u!4 &4699451287281635587 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+    type: 3}
+  m_PrefabInstance: {fileID: 1381606094984000983}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1381606095135683247
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1381606094612507432}
+    m_Modifications:
+    - target: {fileID: 5916530756856354006, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_BoundingSphereOverride.w
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756856354006, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_UseBoundingSphereOverride
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756856354006, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_BoundingSphereOverride.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756856354006, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_BoundingSphereOverride.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756856354006, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_BoundingSphereOverride.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484753, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_Name
+      value: Deep Bowl Light (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c01cd3ad1dc3b694bafe1d458fdb7941, type: 3}
+--- !u!4 &4699451288171452027 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+    type: 3}
+  m_PrefabInstance: {fileID: 1381606095135683247}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1381606095168841341
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1381606094612507432}
+    m_Modifications:
+    - target: {fileID: 5916530756856354006, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_BoundingSphereOverride.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756856354006, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_BoundingSphereOverride.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756856354006, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_BoundingSphereOverride.w
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756856354006, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_UseBoundingSphereOverride
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484753, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_Name
+      value: Deep Bowl Light (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c01cd3ad1dc3b694bafe1d458fdb7941, type: 3}
+--- !u!4 &4699451288136975017 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+    type: 3}
+  m_PrefabInstance: {fileID: 1381606095168841341}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1381606095471243597
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1381606094612507432}
+    m_Modifications:
+    - target: {fileID: 5916530756856354006, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_BoundingSphereOverride.w
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756856354006, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_UseBoundingSphereOverride
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484753, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_Name
+      value: Deep Bowl Light (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c01cd3ad1dc3b694bafe1d458fdb7941, type: 3}
+--- !u!4 &4699451287835923865 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+    type: 3}
+  m_PrefabInstance: {fileID: 1381606095471243597}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &4699451288053778634
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1381606094612507432}
+    m_Modifications:
+    - target: {fileID: 5916530756856354006, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_BoundingSphereOverride.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756856354006, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_BoundingSphereOverride.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756856354006, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_BoundingSphereOverride.w
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756856354006, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_UseBoundingSphereOverride
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484753, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_Name
+      value: Deep Bowl Light
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c01cd3ad1dc3b694bafe1d458fdb7941, type: 3}
+--- !u!4 &1381606095018470430 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5916530756949484756, guid: c01cd3ad1dc3b694bafe1d458fdb7941,
+    type: 3}
+  m_PrefabInstance: {fileID: 4699451288053778634}
+  m_PrefabAsset: {fileID: 0}
