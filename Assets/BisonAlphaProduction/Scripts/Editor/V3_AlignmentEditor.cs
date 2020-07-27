@@ -17,9 +17,8 @@ public class V3_AlignmentEditor : Editor
 		script.Align();
 	}
 
-	private void OnSceneGUI()
+	private static void UpdateAutoAlign(V3_Alignment script)
 	{
-		var script = (V3_Alignment)target;
 		if (script.autoAlignInEditor)
 		{
 			var scriptTransform = script.transform;
@@ -38,13 +37,24 @@ public class V3_AlignmentEditor : Editor
 		}
 	}
 
+	private void OnSceneGUI()
+	{
+		UpdateAutoAlign((V3_Alignment)target);
+	}
+
 	public override void OnInspectorGUI()
 	{
+		var script = (V3_Alignment)target;
+
 		DrawDefaultInspector();
 
 		if (GUILayout.Button("Align"))
 		{
-			Align((V3_Alignment)target);
+			Align(script);
+		}
+		else
+		{
+			UpdateAutoAlign(script);
 		}
 	}
 }

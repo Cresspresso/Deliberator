@@ -11,12 +11,41 @@ public class V3_Alignment : MonoBehaviour
 	[Tooltip("Local space offset vector between each child.")]
 	public Vector3 elementOffset = Vector3.forward;
 
-	[Tooltip("If false")]
+	[Tooltip(@"If false, it will be destroyed on Awake.
+If true, this component will be included at runtime,
+and perform the alignment every Update,
+as long as it is active and enabled.")]
 	public bool keepInGame = false;
 
 #if UNITY_EDITOR
 	public bool autoAlignInEditor = true;
 #endif
+
+	private static float RoundToQuarter(float value) => Mathf.Round(value * 4) / 4;
+
+	private void Reset()
+	{
+		// Estimate a good element offset
+		// based on current children local positions.
+		var cc = transform.childCount;
+		if (cc == 2)
+		{
+			elementOffset = transform.GetChild(1).localPosition;
+		}
+		else if (cc > 2)
+		{
+			var vec = Vector3.zero;
+			for (int i = 1; i < cc; ++i)
+			{
+				vec += (transform.GetChild(i).localPosition) / i;
+			}
+			vec /= (cc - 1);
+			vec.x = RoundToQuarter(vec.x);
+			vec.y = RoundToQuarter(vec.y);
+			vec.z = RoundToQuarter(vec.z);
+			elementOffset = vec;
+		}
+	}
 
 	private void Awake()
 	{
