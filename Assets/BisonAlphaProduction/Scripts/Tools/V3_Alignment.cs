@@ -6,6 +6,7 @@ using UnityEngine;
 /// Aligns all the transform's children into a row.
 /// </summary>
 /// <author>Elijah Shadbolt</author>
+[DisallowMultipleComponent]
 public class V3_Alignment : MonoBehaviour
 {
 	[Tooltip("Local space offset vector between each child.")]
