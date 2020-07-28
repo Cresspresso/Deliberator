@@ -11,6 +11,12 @@ public class V3_TestLights : MonoBehaviour
 		if (other.CompareTag("Player"))
 		{
 			lights.TurnLightsOff();
+
+			foreach (var belt in FindObjectsOfType<V3_ConveyorBelt>())
+			{
+				belt.PowerDown();
+			}
+
 			Destroy(gameObject);
 		}
 	}
