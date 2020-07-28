@@ -9,7 +9,7 @@ using UnityEngine.Rendering;
 /// <author>Elijah Shadbolt</author>
 public class V2_UltraVioletRendererAddon : MonoBehaviour
 {
-	public V2_UltraVioletLight uviLight;
+	public static V2_UltraVioletLight uviLight;
 	private Renderer m_renderer;
 	public Renderer rend {
 		get
@@ -56,13 +56,11 @@ public class V2_UltraVioletRendererAddon : MonoBehaviour
 			uviLight = FindObjectOfType<V2_UltraVioletLight>();
 		}
 
-		if (uviLight)
-		{
-			var mat = rend.material;
-			mat.SetVector("uviLightPosition", uviLight.transform.position);
-			mat.SetVector("uviLightDirection", uviLight.transform.forward);
-			mat.SetFloat("uviSpotAngle", uviLight.spotAngle);
-			mat.SetFloat("uviInnerSpotAngleFraction", uviLight.innerSpotAnglePercent * 0.00999f);
-		}
+		bool has = (bool)uviLight;
+		var mat = rend.material;
+		mat.SetVector("uviLightPosition", has ? uviLight.transform.position : -Vector3.one * 100000);
+		mat.SetVector("uviLightDirection", has ? uviLight.transform.forward : Vector3.down);
+		mat.SetFloat("uviSpotAngle", has ? uviLight.spotAngle : 30.0f);
+		mat.SetFloat("uviInnerSpotAngleFraction", has ? uviLight.innerSpotAnglePercent * 0.00999f : 0.0f);
 	}
 }
