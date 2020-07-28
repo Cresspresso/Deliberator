@@ -8201,7 +8201,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b717edfad640a84b8eb5d164af35a46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sunLight: {fileID: 2035111234}
   lights: {fileID: 33314272}
 --- !u!4 &1598593878
 Transform:
@@ -10193,6 +10192,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 33314273}
     m_Modifications:
+    - target: {fileID: 347253453, guid: cebbcfe7e09ab8a468062234ba38b729, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1789646034, guid: cebbcfe7e09ab8a468062234ba38b729, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1381606094612507432, guid: cebbcfe7e09ab8a468062234ba38b729,
         type: 3}
       propertyPath: m_LocalPosition.x
