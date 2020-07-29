@@ -31,9 +31,10 @@ public class V2_NumPadLock : MonoBehaviour
 	public AudioSource correctSound;
 	public AudioSource incorrectSound;
 
-
+#pragma warning disable CS0649
 	[SerializeField]
 	private V3_KeyCardReader_Sprites padlockSprites;
+#pragma warning restore CS0649
 
 	private void Awake()
 	{
