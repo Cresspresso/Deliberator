@@ -19,8 +19,10 @@ public class Old_MainMenuPlayButton : MonoBehaviour
 		}
 	}
 
+#pragma warning disable CS0649
 	[SerializeField]
 	private Animator m_anim;
+#pragma warning restore CS0649
 	public Animator anim => m_anim;
 
 	public Old_TownNuke nuke;

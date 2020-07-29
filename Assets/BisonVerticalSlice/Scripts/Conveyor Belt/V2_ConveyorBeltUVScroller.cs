@@ -23,7 +23,9 @@ public class V2_ConveyorBeltUVScroller : MonoBehaviour
 	{
 		uv += scrollSpeed * Time.deltaTime;
 		uv.x %= 1.0f;
+		//if (uv.x < 0.0f) uv.x += 1.0f;
 		uv.y %= 1.0f;
+		//if (uv.y < 0.0f) uv.y += 1.0f;
 		meshRenderer.material.SetTextureOffset("_BaseColorMap", uv);
 	}
 }
