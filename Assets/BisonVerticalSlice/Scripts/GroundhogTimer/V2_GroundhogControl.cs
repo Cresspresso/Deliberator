@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
-using UnityEngine.SceneManagement;
 
 /// <author>Elijah Shadbolt</author>
 public class V2_GroundhogControl : MonoBehaviour
@@ -82,7 +81,7 @@ public class V2_GroundhogControl : MonoBehaviour
 		else
 		{
 			Debug.LogError("RewindCapture not found", this);
-			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+			V3_SparGameObject.RestartCurrentScene();
 		}
 	}
 
