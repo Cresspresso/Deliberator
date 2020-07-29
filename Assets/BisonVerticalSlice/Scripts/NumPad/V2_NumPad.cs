@@ -26,6 +26,7 @@ public class V2_NumPad : MonoBehaviour
 	public int maxLength = 4;
 	public bool submitAtMaxLength = true;
 	public bool clearAfterMaxLength = true;
+	public bool clearAfterSubmit = false;
 
 	private StringBuilder stringBuilder = new StringBuilder();
 	public string content { get; private set; }
@@ -38,7 +39,6 @@ public class V2_NumPad : MonoBehaviour
 	[SerializeField]
 	private CodeEvent m_onSubmit = new CodeEvent();
 	public CodeEvent onSubmit => m_onSubmit;
-
 
 
 	private void Start()
@@ -62,6 +62,17 @@ public class V2_NumPad : MonoBehaviour
 	private void Submit()
 	{
 		onSubmit.Invoke(content);
+
+		if (clearAfterSubmit)
+		{
+			Clear();
+		}
+	}
+
+	private void Clear()
+	{
+		stringBuilder.Clear();
+		InvokeCodeChanged();
 	}
 
 	public void OnNumPadKeyPressed(V2_NumPadKeyType type)
@@ -72,9 +83,7 @@ public class V2_NumPad : MonoBehaviour
 		}
 		else if (type == V2_NumPadKeyType.Clear)
 		{
-			// clear
-			stringBuilder.Clear();
-			InvokeCodeChanged();
+			Clear();
 		}
 		else
 		{

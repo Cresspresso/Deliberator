@@ -31,6 +31,10 @@ public class V2_NumPadLock : MonoBehaviour
 	public AudioSource correctSound;
 	public AudioSource incorrectSound;
 
+
+	[SerializeField]
+	private V3_KeyCardReader_Sprites padlockSprites;
+
 	private void Awake()
 	{
 		var pad = this.pad;
@@ -49,12 +53,16 @@ public class V2_NumPadLock : MonoBehaviour
 			onCorrectSubmitted.Invoke();
 
 			correctSound.Play();
+
+			padlockSprites.ShowUnlockedImage();
 		}
 		else
 		{
 			onIncorrectSubmitted.Invoke();
 
 			incorrectSound.Play();
+
+			padlockSprites.ShowShakeImage();
 		}
 	}
 }
