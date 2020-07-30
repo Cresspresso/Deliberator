@@ -376,6 +376,7 @@ GameObject:
   - component: {fileID: 6310779866630276412}
   - component: {fileID: 8348268616147812200}
   - component: {fileID: 5823193698646116665}
+  - component: {fileID: 3353560610258922433}
   m_Layer: 9
   m_Name: Player First Person Character Controller
   m_TagString: Player
@@ -431,12 +432,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_head: {fileID: 6310779866879813242}
+  isInputEnabled: 1
   isLookInputEnabled: 1
   isMoveInputEnabled: 1
   isJumpInputEnabled: 1
+  isRunInputEnabled: 0
   mouseSensitivity: 5
   walkSpeed: 5
-  runSpeed: 8
+  runSpeed: 9
   jumpSpeed: 5
 --- !u!114 &8348268616147812200
 MonoBehaviour:
@@ -465,6 +468,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_fpcc: {fileID: 0}
   m_hc: {fileID: 0}
+  m_crouch: {fileID: 0}
+--- !u!114 &3353560610258922433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6310779866630276354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9f272f750cf8354a8f9ac77a155dd29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isInputEnabled: 1
+  crouchDuration: 0.2
+  crouchHeight: 0.85
+  crouchWalkSpeed: 2.5
+  canRunWhenCrouched: 0
+  crouchRunSpeed: 4.5
+  canJumpWhenCrouched: 0
 --- !u!1 &6310779866879813243
 GameObject:
   m_ObjectHideFlags: 0
@@ -674,7 +697,7 @@ PrefabInstance:
     - target: {fileID: 8664604104831240649, guid: 17c976554968c954ebc62dd4a43292cf,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: 68.456
       objectReference: {fileID: 0}
     - target: {fileID: 8664604104831240649, guid: 17c976554968c954ebc62dd4a43292cf,
         type: 3}

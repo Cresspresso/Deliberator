@@ -40,11 +40,30 @@ public class V2_CursorController : MonoBehaviour
 		}
 	}
 
+	[SerializeField]
+	private V3_Crouch m_crouch;
+	public V3_Crouch crouch {
+		get
+		{
+			if (!m_crouch)
+			{
+				m_crouch = GetComponent<V3_Crouch>();
+				if (!m_crouch)
+				{
+					m_crouch = FindObjectOfType<V3_Crouch>();
+				}
+			}
+			return m_crouch;
+		}
+	}
+
 	private void HideCursor(bool hideCursor)
 	{
-		fpcc.isLookInputEnabled = hideCursor;
-		fpcc.isMoveInputEnabled = hideCursor;
-		fpcc.isJumpInputEnabled = hideCursor;
+		fpcc.isInputEnabled = hideCursor;
+		//fpcc.isLookInputEnabled = hideCursor;
+		//fpcc.isMoveInputEnabled = hideCursor;
+		//fpcc.isJumpInputEnabled = hideCursor;
+		crouch.isInputEnabled = hideCursor;
 		hc.enabled = hideCursor;
 		UncheckedSetCursorHidden(hideCursor);
 	}
