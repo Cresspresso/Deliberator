@@ -55,9 +55,11 @@ public class V2_FirstPersonCharacterController : MonoBehaviour
 		set => m_head = value;
 	}
 
+	public bool isInputEnabled = true;
 	public bool isLookInputEnabled = true;
 	public bool isMoveInputEnabled = true;
 	public bool isJumpInputEnabled = true;
+	public bool isRunInputEnabled = false;
 
 	[SerializeField]
 	public float mouseSensitivity = 5;
@@ -67,8 +69,8 @@ public class V2_FirstPersonCharacterController : MonoBehaviour
 	[SerializeField]
 	public float runSpeed = 10;
 
-	public bool isRunningEnabled { get; private set; } = false;
-	public float moveSpeed => isRunningEnabled ? runSpeed : walkSpeed;
+	public bool isRunning { get; set; } = false;
+	public float moveSpeed => isRunning ? runSpeed : walkSpeed;
 
 	[SerializeField]
 	public float jumpSpeed = 5;
@@ -160,7 +162,7 @@ public class V2_FirstPersonCharacterController : MonoBehaviour
 
 	private void UpdateRotation()
 	{
-		if (isLookInputEnabled)
+		if (isLookInputEnabled && isInputEnabled)
 		{
 			bodyAngle += Input.GetAxis("Mouse X") * mouseSensitivity;
 			headAngle -= Input.GetAxis("Mouse Y") * mouseSensitivity;
@@ -169,7 +171,7 @@ public class V2_FirstPersonCharacterController : MonoBehaviour
 
 	private void UpdatePosition()
 	{
-		var dir = isMoveInputEnabled
+		var dir = (isMoveInputEnabled && isInputEnabled)
 			? new Vector2(
 			Input.GetAxis("Horizontal"),
 			Input.GetAxis("Vertical"))
@@ -177,13 +179,12 @@ public class V2_FirstPersonCharacterController : MonoBehaviour
 		dir = Vector3.ClampMagnitude(dir, 1.0f);
 		var hi = dir.x;
 		var vi = dir.y;
-		Debug.Log(vi);
 
 		var g = Physics.gravity;
 		var up = -g.normalized;
 		verticalVelocity -= g.magnitude * Time.deltaTime;
 
-		if (isJumpInputEnabled && Input.GetButtonDown("Jump"))
+		if (isJumpInputEnabled && isInputEnabled && Input.GetButtonDown("Jump"))
 		{
 			if (!didJump && isTouchingGround && !isGroundSlippery)
 			{
@@ -232,10 +233,10 @@ public class V2_FirstPersonCharacterController : MonoBehaviour
 
 	private void Update()
 	{
-		//if (Input.GetButtonDown("Running Toggle"))
-		//{
-		//	isRunningEnabled = !isRunningEnabled;
-		//}
+		if (isRunInputEnabled)
+		{
+			isRunning = Input.GetButton("Run"); // not really toggle
+		}
 
 		UpdateRotation();
 		UpdatePosition();
