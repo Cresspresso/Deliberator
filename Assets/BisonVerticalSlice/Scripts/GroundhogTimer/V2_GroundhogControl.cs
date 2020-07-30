@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
-using UnityEngine.SceneManagement;
 
 /// <author>Elijah Shadbolt</author>
 public class V2_GroundhogControl : MonoBehaviour
@@ -74,16 +73,17 @@ public class V2_GroundhogControl : MonoBehaviour
 			Debug.LogException(e);
 		}
 
-		var cap = GetComponent<V2_RewindCapture>();
-		if (cap)
-		{
-			cap.PresentRewindCutscene();
-		}
-		else
-		{
-			Debug.LogError("RewindCapture not found", this);
-			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-		}
+		V3_SparGameObject.RestartCurrentScene();
+		//var cap = GetComponent<V2_RewindCapture>();
+		//if (cap)
+		//{
+		//	cap.PresentRewindCutscene();
+		//}
+		//else
+		//{
+		//	Debug.LogError("RewindCapture not found", this);
+		//	V3_SparGameObject.RestartCurrentScene();
+		//}
 	}
 
 	public IEnumerator PlayerDied()

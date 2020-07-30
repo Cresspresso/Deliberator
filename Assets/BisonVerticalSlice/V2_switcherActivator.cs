@@ -25,10 +25,10 @@ public class V2_switcherActivator : MonoBehaviour
         {
             //Debug.Log("Activate Switcher");
 
-            switcher.GetComponent<V2_conveyerSwitcher>().Activate();
+            //switcher.GetComponent<V2_conveyerSwitcher>().Activate();
 
             //Activate AnimationTrigger
-            gameObject.GetComponent<Animator>().SetTrigger("Active");
+            //gameObject.GetComponent<Animator>().SetTrigger("Active");
         }
     }
 }
