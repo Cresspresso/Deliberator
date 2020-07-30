@@ -177,7 +177,6 @@ public class V2_FirstPersonCharacterController : MonoBehaviour
 		dir = Vector3.ClampMagnitude(dir, 1.0f);
 		var hi = dir.x;
 		var vi = dir.y;
-		Debug.Log(vi);
 
 		var g = Physics.gravity;
 		var up = -g.normalized;
