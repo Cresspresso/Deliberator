@@ -14,6 +14,13 @@ public class V3_ViewBobbing : MonoBehaviour
     private float timer = Mathf.PI / 2;
     private bool walking = false;
 
+    private Vector3 initialLocalPosition;
+
+    private void Awake()
+    {
+        initialLocalPosition = transform.localPosition;
+    }
+
     void Update()
     {
         float horizontal = Input.GetAxis("Horizontal");
@@ -41,7 +48,7 @@ public class V3_ViewBobbing : MonoBehaviour
             timer += (Time.deltaTime * walkBobSpeed);
 
             float walkTranslateChange = waveslice * walkBobAmount;
-            gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, Mathf.Abs(walkTranslateChange), gameObject.transform.localPosition.z);
+            gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, initialLocalPosition.y + Mathf.Abs(walkTranslateChange), gameObject.transform.localPosition.z);
 
             //Debug.Log(Mathf.Abs(walkTranslateChange));
             //Debug.Log("Walking");
@@ -51,7 +58,7 @@ public class V3_ViewBobbing : MonoBehaviour
             timer += (Time.deltaTime * idleBobSpeed);
 
             float idleTranslateChange = waveslice * idleBobAmount;
-            gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, Mathf.Abs(idleTranslateChange), gameObject.transform.localPosition.z);
+            gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, initialLocalPosition.y + Mathf.Abs(idleTranslateChange), gameObject.transform.localPosition.z);
 
             //Debug.Log(Mathf.Abs(idleTranslateChange));
             //Debug.Log("Idling");

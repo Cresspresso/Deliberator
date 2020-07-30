@@ -31,6 +31,8 @@ public class V2_KeyCardReader : MonoBehaviour
 	public UnityEvent onInvalidClickEvent = new UnityEvent();
 	public UnityEvent onResetEvent = new UnityEvent();
 
+	private ValidationOutcome? pavo;
+
 	private V2_ButtonHandle m_buttonHandle;
 	public V2_ButtonHandle buttonHandle {
 		get
@@ -130,15 +132,30 @@ public class V2_KeyCardReader : MonoBehaviour
 
 	private void OnClick(V2_ButtonHandle buttonHandle, V2_HandleController handleController)
 	{
-		buttonHandle.enabled = false;
 		var outcome = Validate(handleController);
 		if (outcome == ValidationOutcome.Valid)
 		{
-			InvokeValid(handleController);
+			if (!pavo.HasValue)
+			{
+				InvokeValid(handleController);
+			}
+			else if (pavo.Value != ValidationOutcome.Valid)
+			{
+				ForceIdle();
+				InvokeValid(handleController);
+			}
 		}
 		else
 		{
-			InvokeInvalid(handleController, outcome);
+			if (!pavo.HasValue)
+			{
+				InvokeInvalid(handleController, outcome);
+			}
+			else if (pavo.Value == ValidationOutcome.Valid)
+			{
+				ForceIdle();
+				InvokeInvalid(handleController, outcome);
+			}
 		}
 	}
 
@@ -146,6 +163,7 @@ public class V2_KeyCardReader : MonoBehaviour
 	{
 		try
 		{
+			pavo = reason;
 			//switch (reason)
 			//{
 			//	default:
@@ -166,7 +184,7 @@ public class V2_KeyCardReader : MonoBehaviour
 		}
 		finally
 		{
-			StartCoroutine(Co_BackToIdle());
+			StartCoBackToIdle();
 		}
 	}
 
@@ -174,6 +192,7 @@ public class V2_KeyCardReader : MonoBehaviour
 	{
 		try
 		{
+			pavo = ValidationOutcome.Valid;
 			if (sounds) { sounds.PlayGoodSound(); }
 			if (sprites) { sprites.ShowUnlockedImage(); }
 			onValidClick?.Invoke(this, handleController);
@@ -181,25 +200,37 @@ public class V2_KeyCardReader : MonoBehaviour
 		}
 		finally
 		{
-			StartCoroutine(Co_BackToIdle());
+			StartCoBackToIdle();
 		}
 	}
 
 	public void InvokeValid()
 	{
-		if (!buttonHandle.enabled) { return; }
 		InvokeValid(null);
 	}
 
-	private IEnumerator Co_BackToIdle()
+	private Coroutine co_BackToIdle;
+	private void StartCoBackToIdle()
 	{
-		yield return new WaitForSeconds(idleDelay);
-		buttonHandle.enabled = true;
-		if (sounds) { sounds.PlayEndSound(); }
+		if (co_BackToIdle != null)
+		{
+			StopCoroutine(co_BackToIdle);
+		}
+		co_BackToIdle = StartCoroutine(Co_BackToIdle());
+	}
+	private void ForceIdle()
+	{
+		pavo = null;
 		if (sprites)
 		{
 			sprites.ShowLockedImage();
 		}
 		onResetEvent.Invoke();
+	}
+	private IEnumerator Co_BackToIdle()
+	{
+		yield return new WaitForSeconds(idleDelay);
+		ForceIdle();
+		if (sounds) { sounds.PlayEndSound(); }
 	}
 }

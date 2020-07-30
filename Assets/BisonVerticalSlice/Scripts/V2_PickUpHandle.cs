@@ -34,9 +34,13 @@ public class V2_PickUpHandle : MonoBehaviour
 			buttonHandle.enabled = false;
 			controller.InternalOnPickedUp(this);
 			rb.isKinematic = true;
+			rb.transform.SetParent(controller.handPoint);
+			rb.transform.position = controller.handPoint.position;
+			rb.transform.rotation = controller.handPoint.rotation;
 			foreach (var c in colliders)
 			{
-				Physics.IgnoreCollision(controller.cc, c);
+				c.enabled = false;
+				//Physics.IgnoreCollision(controller.cc, c);
 			}
 			onPickedUp?.Invoke(this, controller);
 		}
@@ -44,6 +48,13 @@ public class V2_PickUpHandle : MonoBehaviour
 
 	public void Drop()
 	{
+		foreach (var c in colliders)
+		{
+			c.enabled = true;
+			//Physics.IgnoreCollision(controller.cc, c, false);
+		}
+		transform.SetParent(null);
+
 		const float hw = 0.7f;
 		const float radius = 0.1f;
 		var hc = controller.handleController;
@@ -62,22 +73,19 @@ public class V2_PickUpHandle : MonoBehaviour
 			var hit = hits.First();
 			var a = ray.GetPoint(Mathf.Max(radius, hit.distance));
 			var b = hit.point + hit.normal * radius;
-			rb.position = (a + b) / 2.0f;
+			transform.position = (a + b) / 2.0f;
 		}
 		else
 		{
-			rb.position = ray.GetPoint(maxDistance);
+			transform.position = ray.GetPoint(maxDistance);
 		}
+
+		rb.isKinematic = false;
 
 		try
 		{
 			controller.InternalOnDropped(this);
 			buttonHandle.enabled = true;
-			rb.isKinematic = false;
-			foreach (var c in colliders)
-			{
-				Physics.IgnoreCollision(controller.cc, c, false);
-			}
 			onDropped?.Invoke(this, controller);
 		}
 		finally
@@ -106,12 +114,12 @@ public class V2_PickUpHandle : MonoBehaviour
 	//	}
 	//}
 
-	private void LateUpdate()
-	{
-		if (isPickedUp)
-		{
-			transform.position = controller.handPoint.position;
-			transform.rotation = controller.handPoint.rotation;
-		}
-	}
+	//private void LateUpdate()
+	//{
+	//	if (isPickedUp)
+	//	{
+	//		transform.position = controller.handPoint.position;
+	//		transform.rotation = controller.handPoint.rotation;
+	//	}
+	//}
 }
