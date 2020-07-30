@@ -8,7 +8,6 @@ public class V3_Crouch : MonoBehaviour
 {
 	public V2_FirstPersonCharacterController fpcc { get; private set; }
 
-	public bool isInputEnabled = true;
 	public bool isCrouched { get; private set; } = false;
 	public float crouchDuration = 1.0f;
 	public float crouchHeight = 1.7f * 0.5f;
@@ -43,7 +42,7 @@ public class V3_Crouch : MonoBehaviour
 
 	private void Update()
 	{
-		if (isInputEnabled)
+		if (fpcc.isInputEnabled)
 		{
 			isCrouched = Input.GetKey(KeyCode.LeftControl);
 		}

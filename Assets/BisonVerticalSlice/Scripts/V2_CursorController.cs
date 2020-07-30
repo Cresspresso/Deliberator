@@ -60,10 +60,6 @@ public class V2_CursorController : MonoBehaviour
 	private void HideCursor(bool hideCursor)
 	{
 		fpcc.isInputEnabled = hideCursor;
-		//fpcc.isLookInputEnabled = hideCursor;
-		//fpcc.isMoveInputEnabled = hideCursor;
-		//fpcc.isJumpInputEnabled = hideCursor;
-		crouch.isInputEnabled = hideCursor;
 		hc.enabled = hideCursor;
 		UncheckedSetCursorHidden(hideCursor);
 	}
