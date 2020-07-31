@@ -7,9 +7,9 @@ using DG.Tweening;
 public class V3_Condensation : MonoBehaviour
 {
     [SerializeField] private bool activate = false;
-    [SerializeField] private Material condensationMaterial;
     [SerializeField] private float fadeSpeed = 0.1f;
 
+    private Material condensationMaterial;
     private Color colorTarget = new Color(1.0f, 1.0f, 1.0f, 1.0f); //fully visible
     private Color colorStart;
     private Color colorCurrent;

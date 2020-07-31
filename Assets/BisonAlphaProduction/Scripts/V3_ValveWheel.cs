@@ -10,11 +10,11 @@ using UnityEngine;
 [RequireComponent(typeof(V2_Handle))]
 public class V3_ValveWheel : MonoBehaviour
 {
-    delegate void DidChangeState(bool _bool);
-    DidChangeState didChangeState;
+    delegate void DidChangeState(); //delegate function 
+    DidChangeState didChangeState; //delegate variable
 
     public float interactableDistance = 2.5f;
-    public GameObject targetObj; // change datatype depending on what component i want to access
+    public V3_Condensation targetObj; // change datatype depending on what component i want to access
 
     private V2_Handle hoverHandle;
     private V3_ProximityCalculator proximityCalculator;
@@ -30,7 +30,7 @@ public class V3_ValveWheel : MonoBehaviour
         animator = gameObject.GetComponent<Animator>();
         hoverHandle = gameObject.GetComponent<V2_Handle>();
 
-        //didChangeState = DoorUnlock;
+        didChangeState = activateCondensation; //set function to call when delegate 
     }
 
     // When clicked on
@@ -46,16 +46,15 @@ public class V3_ValveWheel : MonoBehaviour
 
             hoverHandle.hoverInfo = new V2_HandleHoverInfo("Opened", null);
 
-            //didChangeState(activated);
+            didChangeState(); //call delegate
         }
     }
 
     #region Delegates
-    void DoorUnlock(bool _bool)
+    void activateCondensation()
     {
-        //targetObj.GetComponent<V2_SwingDoor>().isLocked = _bool;
+        targetObj.Activate();
     }
-
     #endregion
 
     public void setActivatable(bool _bool)
