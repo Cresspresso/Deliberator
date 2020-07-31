@@ -30,4 +30,10 @@ public static class V2_Utility
 			return false;
 		}
 	}
+
+	public static int Cycle(int value, int length)
+	{
+		value %= length;
+		return value < 0 ? length + value : value;
+	}
 }

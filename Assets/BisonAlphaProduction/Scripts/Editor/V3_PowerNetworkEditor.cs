@@ -228,7 +228,7 @@ public class V3_PowerNetworkEditor : EditorWindow
 	EdgeKeyPair m_selectedEdge;
 	(int idNode, bool isSourceNode)? m_creatingEdge;
 
-	[MenuItem("Tools/Bison Power Network")]
+	[MenuItem("Tools/Bison/Power Network")]
 	static void ShowWindow()
 	{
 		var window = EditorWindow.GetWindow<V3_PowerNetworkEditor>();
@@ -255,6 +255,23 @@ public class V3_PowerNetworkEditor : EditorWindow
 	void OnGUI()
 	{
 		GUI.BeginGroup(new Rect(pan.x, pan.y, centre.x * 2, centre.y * 2));
+
+		if (m_creatingEdge.HasValue)
+		{
+			Event e = Event.current;
+			switch (e.type)
+			{
+				case EventType.KeyDown:
+					{
+						if (e.keyCode == KeyCode.Escape)
+						{
+							m_creatingEdge = null;
+							e.Use();
+						}
+					}
+					break;
+			}
+		}
 
 		BeginWindows();
 		foreach (var pair in m_nodes)

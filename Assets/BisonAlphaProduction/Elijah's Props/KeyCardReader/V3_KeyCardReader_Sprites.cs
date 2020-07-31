@@ -11,9 +11,18 @@ public class V3_KeyCardReader_Sprites : MonoBehaviour
 	public Image unlockedImage;
 	public Image lockedImage;
 	public Image shakeImage;
+	public Image currentImage { get; private set; }
+	private Tweener shakeTween;
 
-	public static void ShowImage(Image show, params Image[] hide)
+	private void ShowImage(Image show, params Image[] hide)
 	{
+		if (shakeTween != null)
+		{
+			shakeTween.Kill(true);
+			shakeTween = null;
+		}
+
+		currentImage = show;
 		if (show) show.gameObject.SetActive(true);
 
 		foreach (var other in hide)
@@ -26,8 +35,18 @@ public class V3_KeyCardReader_Sprites : MonoBehaviour
 	public void ShowShakeImage()
 	{
 		ShowImage(shakeImage, lockedImage, unlockedImage);
-		shakeImage.transform.DOKill(true);
-		shakeImage.transform.DOShakePosition(4.0f, new Vector3(20.0f, 0, 0), 5, 0);
+		if (shakeImage)
+		{
+			shakeTween = shakeImage.transform.DOShakePosition(4.0f, new Vector3(20.0f, 0, 0), 5, 0)
+				.OnComplete(() =>
+				{
+					shakeTween = null;
+					if (currentImage == shakeImage)
+					{
+						ShowLockedImage();
+					}
+				});
+		}
 	}
 
 	private void Start()

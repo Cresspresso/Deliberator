@@ -51,21 +51,15 @@ public class V2_SigilUI : MonoBehaviour
 
 	private bool isTweening = false;
 
-	private int Cycle(int value, int length)
-	{
-		value %= length;
-		return value < 0 ? length + value : value;
-	}
-
 	private void Update()
 	{
 		if (Input.GetKeyDown(KeyCode.E) && !Input.GetKeyDown(KeyCode.Q))
 		{
-			Transition(Cycle(currentSigilSpriteIndex - 1, m_sigilSprites.Count), right: true);
+			Transition(V2_Utility.Cycle(currentSigilSpriteIndex - 1, m_sigilSprites.Count), right: true);
 		}
 		else if (Input.GetKeyDown(KeyCode.Q))
 		{
-			Transition(Cycle(currentSigilSpriteIndex + 1, m_sigilSprites.Count), right: false);
+			Transition(V2_Utility.Cycle(currentSigilSpriteIndex + 1, m_sigilSprites.Count), right: false);
 		}
 	}
 

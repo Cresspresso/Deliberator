@@ -108,8 +108,29 @@ public class V2_HandleController : MonoBehaviour
 			var otherHandle = hit.collider.GetComponentInParent<V2_Handle>();
 			if (otherHandle && otherHandle.enabled)
 			{
-				hoveredHandle = otherHandle;
-				return;
+				Vector3 handlePosition = otherHandle.handlePoint
+					? otherHandle.handlePoint.position
+					: otherHandle.transform.position;
+
+				var ray2 = new Ray(
+					transform.position,
+					Vector3.ClampMagnitude(handlePosition - transform.position, maxDistance)
+					);
+
+				if (Physics.Raycast(
+					ray2,
+					out hit,
+					maxDistance,
+					handleMask,
+					QueryTriggerInteraction.Collide))
+				{
+					var secondHandle = hit.collider.GetComponentInParent<V2_Handle>();
+					if (secondHandle == otherHandle)
+					{
+						hoveredHandle = otherHandle;
+						return;
+					}
+				}
 			}
 		}
 		hoveredHandle = null;
