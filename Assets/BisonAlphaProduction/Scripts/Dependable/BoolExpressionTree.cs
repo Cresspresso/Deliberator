@@ -19,9 +19,9 @@ namespace Bison.BoolExpressions
 
 		public enum GroupType
 		{
-			And = 0,
-			Or = 1,
-			Xor = 2,
+			And,
+			Or,
+			Xor,
 		}
 
 		[Serializable]
@@ -68,19 +68,25 @@ namespace Bison.BoolExpressions
 		}
 
 		[Serializable]
-		public sealed class Tree
+		public sealed class Arrays
 		{
-			public ExpressionKey root;
 			public Literal[] literalArray;
 			public Dependency[] dependencyArray;
 			public Not[] notArray;
 			public Group[] groupArray;
+		}
+
+		[Serializable]
+		public sealed class Tree
+		{
+			public ExpressionKey root;
+			public Arrays arrays;
 
 			public Tree()
 			{
-				literalArray = new Literal[1] { new Literal() };
-				literalArray[0].value = true;
-				root = new ExpressionKey(ExpressionType.Literal, 0);
+				arrays = new Arrays();
+				arrays.dependencyArray = new[] { new Dependency() };
+				root = new ExpressionKey(ExpressionType.Dependency, 0);
 			}
 		}
 	}

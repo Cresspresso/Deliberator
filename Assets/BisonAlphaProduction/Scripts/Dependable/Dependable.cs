@@ -5,7 +5,7 @@ using UnityEngine;
 public class Dependable : MonoBehaviour
 {
 	[SerializeField]
-	private Bison.BoolExpressions.Serializable.Tree m_tree;
+	private Bison.BoolExpressions.Serializable.Tree m_condition;
 
 	//public virtual bool Evaluate()
 	//{
