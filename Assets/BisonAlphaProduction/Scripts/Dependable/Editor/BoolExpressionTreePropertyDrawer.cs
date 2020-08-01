@@ -648,7 +648,7 @@ namespace Bison.BoolExpressions.Editor
 						qDependency =>
 						{
 							var input = qDependency.input;
-							return "Dep(" + (input ? input.name : "None") + ")";
+							return '"' + (input ? input.name : "None") + '"';
 						},
 						qNot => "!" + GetExpressionString(qNot.operand, visitedKeys),
 						qGroup =>
@@ -707,7 +707,7 @@ namespace Bison.BoolExpressions.Editor
 			public readonly ExpressionKeyPropertyDrawer.Props qRoot;
 			public readonly ExpressionProps.Arrays qArrays;
 
-			public static float spaceBetweenRootAndRawArrays => EditorGUIUtility.singleLineHeight * 1.5f;
+			public static float spaceBetweenRootAndRawArrays => 0;// EditorGUIUtility.singleLineHeight * 1.5f;
 
 			public readonly GUIContent rootLabel, arraysLabel;
 
@@ -773,8 +773,16 @@ namespace Bison.BoolExpressions.Editor
 						{
 							position.y += EditorGUIUtility.standardVerticalSpacing;
 							position.height = EditorGUIUtility.singleLineHeight;
-							string msg = qArrays.GetExpressionString(qRoot.structValue, new HashSet<ExpressionKey>());
-							EditorGUI.LabelField(position, "Expression", msg);
+							string expressionString = qArrays.GetExpressionString(qRoot.structValue, new HashSet<ExpressionKey>());
+							{
+								var oldPosition = position;
+								position = EditorGUI.PrefixLabel(position, new GUIContent("Expression", expressionString));
+								using (EditorDisposable.EditorGUI_indentLevel(0))
+								{
+									EditorGUI.SelectableLabel(position, expressionString);
+								}
+								position = oldPosition;
+							}
 							position.y += position.height;
 
 							var visitedKeys = new HashSet<ExpressionKey>();
