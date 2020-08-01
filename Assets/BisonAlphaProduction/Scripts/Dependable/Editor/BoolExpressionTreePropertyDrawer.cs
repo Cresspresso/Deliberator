@@ -6,6 +6,10 @@ using System;
 using ExpressionKey = Bison.BoolExpressions.Serializable.ExpressionKey;
 using ExpressionType = Bison.BoolExpressions.Serializable.ExpressionType;
 using GroupType = Bison.BoolExpressions.Serializable.GroupType;
+using UnityEditor.Rendering;
+using ICSharpCode.NRefactory.Ast;
+using System.Runtime.CompilerServices;
+using System.Linq;
 
 namespace Bison.BoolExpressions.Editor
 {
@@ -60,6 +64,109 @@ namespace Bison.BoolExpressions.Editor
 		}
 	}
 
+	namespace ExpressionProps
+	{
+		public class Literal
+		{
+			public Literal(SerializedProperty property)
+			{
+				this.property = property;
+				pValue = property.FindPropertyRelative(nameof(Serializable.Literal.value));
+			}
+
+			public readonly SerializedProperty
+				property,
+				pValue;
+
+			public bool value => pValue.boolValue;
+
+			public Serializable.Literal structValue => new Serializable.Literal
+			{
+				value = value,
+			};
+		}
+
+		public class Dependency
+		{
+			public Dependency(SerializedProperty property)
+			{
+				this.property = property;
+				pInput = property.FindPropertyRelative(nameof(Serializable.Dependency.input));
+			}
+
+			public readonly SerializedProperty
+				property,
+				pInput;
+
+			public Dependable input => pInput.objectReferenceValue as Dependable;
+
+			public Serializable.Dependency structValue => new Serializable.Dependency
+			{
+				input = input,
+			};
+		}
+
+		public class Not
+		{
+			public Not(SerializedProperty property)
+			{
+				this.property = property;
+				qOperand = new ExpressionKeyPropertyDrawer.Props(property.FindPropertyRelative(nameof(Serializable.Not.operand)));
+			}
+
+			public readonly SerializedProperty property;
+			public readonly ExpressionKeyPropertyDrawer.Props qOperand;
+
+			public ExpressionKey operand => qOperand.structValue;
+
+			public Serializable.Not structValue => new Serializable.Not
+			{
+				operand = operand,
+			};
+		}
+
+		public class Group
+		{
+			public Group(SerializedProperty property)
+			{
+				this.property = property;
+				pType = property.FindPropertyRelative(nameof(Serializable.Group.type));
+				pOperandSequence = property.FindPropertyRelative(nameof(Serializable.Group.operandSequence));
+			}
+
+			public readonly SerializedProperty
+				property,
+				pType,
+				pOperandSequence;
+
+			public GroupType type => (GroupType)pType.enumValueIndex;
+			public List<ExpressionKey> operandSequence {
+				get
+				{
+					int c = pOperandSequence.arraySize;
+					var ret = new List<ExpressionKey>(c);
+					for (int i = 0; i < c; ++i)
+					{
+						var operand = GetOperandPropsAtIndex(i);
+						ret.Add(operand.structValue);
+					}
+					return ret;
+				}
+			}
+
+			public ExpressionKeyPropertyDrawer.Props GetOperandPropsAtIndex(int i)
+			{
+				return new ExpressionKeyPropertyDrawer.Props(pOperandSequence.GetArrayElementAtIndex(i));
+			}
+
+			public Serializable.Group structValue => new Serializable.Group
+			{
+				type = type,
+				operandSequence = operandSequence,
+			};
+		}
+	}
+
 	[CustomPropertyDrawer(typeof(Serializable.Tree))]
 	public class TreePropertyDrawer : PropertyDrawer
 	{
@@ -74,23 +181,22 @@ namespace Bison.BoolExpressions.Editor
 			public Props(SerializedProperty property)
 			{
 				this.property = property;
-				root = new ExpressionKeyPropertyDrawer.Props(property.FindPropertyRelative(nameof(Serializable.Tree.root)));
-				literalArray = property.FindPropertyRelative(nameof(Serializable.Tree.literalArray));
-				dependencyArray = property.FindPropertyRelative(nameof(Serializable.Tree.dependencyArray));
-				notArray = property.FindPropertyRelative(nameof(Serializable.Tree.notArray));
-				groupArray = property.FindPropertyRelative(nameof(Serializable.Tree.groupArray));
+				qRoot = new ExpressionKeyPropertyDrawer.Props(property.FindPropertyRelative(nameof(Serializable.Tree.root)));
+				pLiteralArray = property.FindPropertyRelative(nameof(Serializable.Tree.literalArray));
+				pDependencyArray = property.FindPropertyRelative(nameof(Serializable.Tree.dependencyArray));
+				pNotArray = property.FindPropertyRelative(nameof(Serializable.Tree.notArray));
+				pGroupArray = property.FindPropertyRelative(nameof(Serializable.Tree.groupArray));
 			}
 
 			public readonly SerializedProperty
 				property,
-				literalArray,
-				dependencyArray,
-				notArray,
-				groupArray;
+				pLiteralArray,
+				pDependencyArray,
+				pNotArray,
+				pGroupArray;
 
-			public readonly ExpressionKeyPropertyDrawer.Props root;
+			public readonly ExpressionKeyPropertyDrawer.Props qRoot;
 
-			public const float padding = 2.0f;
 			public const float verticalSpace = 10.0f;
 			public static float helpBoxHeight => EditorGUIUtility.singleLineHeight * 2;
 
@@ -107,16 +213,16 @@ namespace Bison.BoolExpressions.Editor
 				switch (type)
 				{
 					case ExpressionType.Literal:
-						pArray = literalArray;
+						pArray = pLiteralArray;
 						return true;
 					case ExpressionType.Dependency:
-						pArray = dependencyArray;
+						pArray = pDependencyArray;
 						return true;
 					case ExpressionType.Not:
-						pArray = notArray;
+						pArray = pNotArray;
 						return true;
 					case ExpressionType.Group:
-						pArray = groupArray;
+						pArray = pGroupArray;
 						return true;
 					default:
 						pArray = null;
@@ -159,6 +265,48 @@ namespace Bison.BoolExpressions.Editor
 				}
 			}
 
+			public static R VisitExpressionProps1<R>(
+				ExpressionType type,
+				SerializedProperty pExpression,
+				Func<ExpressionProps.Literal, R> fnLiteral,
+				Func<ExpressionProps.Dependency, R> fnDependency,
+				Func<ExpressionProps.Not, R> fnNot,
+				Func<ExpressionProps.Group, R> fnGroup,
+				Func<R> fnError)
+			{
+				switch (type)
+				{
+					case ExpressionType.Literal: return fnLiteral(new ExpressionProps.Literal(pExpression));
+					case ExpressionType.Dependency: return fnDependency(new ExpressionProps.Dependency(pExpression));
+					case ExpressionType.Not: return fnNot(new ExpressionProps.Not(pExpression));
+					case ExpressionType.Group: return fnGroup(new ExpressionProps.Group(pExpression));
+					default: return fnError();
+				}
+			}
+
+			public R VisitExpressionProps<R>(
+				ExpressionKey key,
+				Func<ExpressionProps.Literal, R> fnLiteral,
+				Func<ExpressionProps.Dependency, R> fnDependency,
+				Func<ExpressionProps.Not, R> fnNot,
+				Func<ExpressionProps.Group, R> fnGroup,
+				Func<GetExpressionPropertyError, R> fnError)
+			{
+				if (TryGetExpressionProperty(key, out var pExpression, out var error))
+				{
+					return VisitExpressionProps1(key.type, pExpression,
+						fnLiteral,
+						fnDependency,
+						fnNot,
+						fnGroup,
+						() => throw new InvalidOperationException("Internal Error"));
+				}
+				else
+				{
+					return fnError(error);
+				}
+			}
+
 			public float GetExpressionHeight(
 				ExpressionKey key,
 				GUIContent label,
@@ -171,69 +319,62 @@ namespace Bison.BoolExpressions.Editor
 
 				try
 				{
-					if (TryGetExpressionProperty(key, out var pExpression, out _))
-					{
-						switch (key.type)
+					return VisitExpressionProps(key,
+						qLiteral =>
 						{
-							case ExpressionType.Literal:
-								{
-									return padding + EditorGUI.GetPropertyHeight(pExpression.FindPropertyRelative(nameof(Serializable.Literal.value)));
-								}
-							case ExpressionType.Dependency:
-								{
-									return padding + EditorGUI.GetPropertyHeight(pExpression.FindPropertyRelative(nameof(Serializable.Dependency.input)));
-								}
-							case ExpressionType.Not:
-								{
-									var operand = new ExpressionKeyPropertyDrawer.Props(
-										pExpression.FindPropertyRelative(nameof(Serializable.Not.operand)));
-
-									float height = padding + operand.GetPropertyHeight(expressionNotOperandLabel);
-
-									height += GetExpressionHeight(operand.structValue, expressionNotOperandLabel, visitedKeys);
-
-									return height;
-								}
-							case ExpressionType.Group:
-								{
-									float height = padding;
-									var pGroupType = pExpression.FindPropertyRelative(nameof(Serializable.Group.type));
-									switch ((GroupType)pGroupType.enumValueIndex)
+							float height = EditorGUIUtility.standardVerticalSpacing;
+							height += EditorGUI.GetPropertyHeight(qLiteral.pValue);
+							return height;
+						},
+						qDependency =>
+						{
+							float height = EditorGUIUtility.standardVerticalSpacing;
+							height += EditorGUI.GetPropertyHeight(qDependency.pInput);
+							return height;
+						},
+						qNot =>
+						{
+							float height = EditorGUIUtility.standardVerticalSpacing;
+							height += qNot.qOperand.GetPropertyHeight(expressionNotOperandLabel);
+							height += GetExpressionHeight(qNot.operand, expressionNotOperandLabel, visitedKeys);
+							return height;
+						},
+						qGroup =>
+						{
+							float height = EditorGUIUtility.standardVerticalSpacing;
+							switch (qGroup.type)
+							{
+								case GroupType.And:
 									{
-										case GroupType.And:
-											{
-												height += EditorGUI.GetPropertyHeight(pGroupType, expressionGroupTypeAndLabel, true);
-											}
-											break;
-										case GroupType.Or:
-											{
-												height += EditorGUI.GetPropertyHeight(pGroupType, expressionGroupTypeOrLabel, true);
-											}
-											break;
-										case GroupType.Xor:
-											{
-												height += EditorGUI.GetPropertyHeight(pGroupType, expressionGroupTypeXorLabel, true);
-											}
-											break;
-										default:
-											{
-												height += helpBoxHeight;
-											}
-											break;
+										height += EditorGUI.GetPropertyHeight(qGroup.pType, expressionGroupTypeAndLabel, true);
 									}
+									break;
+								case GroupType.Or:
+									{
+										height += EditorGUI.GetPropertyHeight(qGroup.pType, expressionGroupTypeOrLabel, true);
+									}
+									break;
+								case GroupType.Xor:
+									{
+										height += EditorGUI.GetPropertyHeight(qGroup.pType, expressionGroupTypeXorLabel, true);
+									}
+									break;
+								default:
+									{
+										height += helpBoxHeight;
+									}
+									break;
+							}
 
-									var pOperandSequence = pExpression.FindPropertyRelative(nameof(Serializable.Group.operandSequence));
-									height += EditorGUI.GetPropertyHeight(pOperandSequence);
+							height += EditorGUI.GetPropertyHeight(qGroup.pOperandSequence);
 
-									return height;
-								}
-							default: throw new InvalidOperationException("Internal Error");
+							return height;
+						},
+						error =>
+						{
+							return helpBoxHeight;
 						}
-					}
-					else
-					{
-						return helpBoxHeight;
-					}
+					);
 				}
 				finally
 				{
@@ -256,104 +397,94 @@ namespace Bison.BoolExpressions.Editor
 				++EditorGUI.indentLevel;
 				try
 				{
-					if (TryGetExpressionProperty(key, out var pExpression, out var error))
-					{
-						switch (key.type)
+					VisitExpressionProps<object>(key,
+						qLiteral =>
 						{
-							case ExpressionType.Literal:
-								{
-									position.y += padding;
-									position.height -= padding;
-									EditorGUI.PropertyField(position, pExpression.FindPropertyRelative(nameof(Serializable.Literal.value)), true);
-									return;
-								}
-							case ExpressionType.Dependency:
-								{
-									position.y += padding;
-									position.height -= padding;
-									EditorGUI.PropertyField(position, pExpression.FindPropertyRelative(nameof(Serializable.Dependency.input)), true);
-									return;
-								}
-							case ExpressionType.Not:
-								{
-									var operand = new ExpressionKeyPropertyDrawer.Props(
-										pExpression.FindPropertyRelative(nameof(Serializable.Not.operand)));
-
-									position.y += padding;
-									position.height = operand.GetPropertyHeight(expressionNotOperandLabel);
-									operand.OnGUI(position, expressionNotOperandLabel);
-									position.y += position.height;
-
-									position.height = GetExpressionHeight(operand.structValue, expressionNotOperandLabel, visitedKeys);
-									OnExpressionGUI(position, operand.structValue, expressionNotOperandLabel, visitedKeys);
-
-									return;
-								}
-							case ExpressionType.Group:
-								{
-									position.y += padding;
-									var pGroupType = pExpression.FindPropertyRelative(nameof(Serializable.Group.type));
-									switch ((GroupType)pGroupType.enumValueIndex)
-									{
-										case GroupType.And:
-											{
-												position.height = EditorGUI.GetPropertyHeight(pGroupType, expressionGroupTypeAndLabel, true);
-												EditorGUI.PropertyField(position, pGroupType, expressionGroupTypeAndLabel, true);
-											}
-											break;
-										case GroupType.Or:
-											{
-												position.height = EditorGUI.GetPropertyHeight(pGroupType, expressionGroupTypeOrLabel, true);
-												EditorGUI.PropertyField(position, pGroupType, expressionGroupTypeOrLabel, true);
-											}
-											break;
-										case GroupType.Xor:
-											{
-												position.height = EditorGUI.GetPropertyHeight(pGroupType, expressionGroupTypeXorLabel, true);
-												EditorGUI.PropertyField(position, pGroupType, expressionGroupTypeXorLabel, true);
-											}
-											break;
-										default:
-											{
-												position.height = helpBoxHeight;
-												EditorGUI.HelpBox(position, "Invalid group type", MessageType.Error);
-											}
-											break;
-									}
-									position.y += position.height;
-
-									++EditorGUI.indentLevel;
-									try
-									{
-										var pOperandSequence = pExpression.FindPropertyRelative(nameof(Serializable.Group.operandSequence));
-										position.height = EditorGUI.GetPropertyHeight(pOperandSequence);
-										EditorGUI.PropertyField(position, pOperandSequence, true);
-									}
-									finally
-									{
-										--EditorGUI.indentLevel;
-									}
-
-									return;
-								}
-							default: throw new InvalidOperationException("Internal Error");
-						}
-					}
-					else
-					{
-						switch (error)
+							position.y += EditorGUIUtility.standardVerticalSpacing;
+							position.height -= EditorGUIUtility.standardVerticalSpacing;
+							EditorGUI.PropertyField(position, qLiteral.pValue, true);
+							return null;
+						},
+						qDependency =>
 						{
-							case GetExpressionPropertyError.IndexOutOfRange:
-								EditorGUI.HelpBox(position, "Index out of range", MessageType.Error);
-								break;
-							case GetExpressionPropertyError.InvalidEnumExpressionType:
-								EditorGUI.HelpBox(position, "Invalid expression type", MessageType.Error);
-								break;
-							default:
-								EditorGUI.HelpBox(position, "Internal error", MessageType.Error);
-								throw new InvalidOperationException();
+							position.y += EditorGUIUtility.standardVerticalSpacing;
+							position.height -= EditorGUIUtility.standardVerticalSpacing;
+							EditorGUI.PropertyField(position, qDependency.pInput, true);
+							return null;
+						},
+						qNot =>
+						{
+							position.y += EditorGUIUtility.standardVerticalSpacing;
+							position.height = qNot.qOperand.GetPropertyHeight(expressionNotOperandLabel);
+							qNot.qOperand.OnGUI(position, expressionNotOperandLabel);
+							position.y += position.height;
+
+							position.height = GetExpressionHeight(qNot.operand, expressionNotOperandLabel, visitedKeys);
+							OnExpressionGUI(position, qNot.operand, expressionNotOperandLabel, visitedKeys);
+							return null;
+						},
+						qGroup =>
+						{
+							position.y += EditorGUIUtility.standardVerticalSpacing;
+							switch (qGroup.type)
+							{
+								case GroupType.And:
+									{
+										position.height = EditorGUI.GetPropertyHeight(qGroup.pType, expressionGroupTypeAndLabel, true);
+										EditorGUI.PropertyField(position, qGroup.pType, expressionGroupTypeAndLabel, true);
+									}
+									break;
+								case GroupType.Or:
+									{
+										position.height = EditorGUI.GetPropertyHeight(qGroup.pType, expressionGroupTypeOrLabel, true);
+										EditorGUI.PropertyField(position, qGroup.pType, expressionGroupTypeOrLabel, true);
+									}
+									break;
+								case GroupType.Xor:
+									{
+										position.height = EditorGUI.GetPropertyHeight(qGroup.pType, expressionGroupTypeXorLabel, true);
+										EditorGUI.PropertyField(position, qGroup.pType, expressionGroupTypeXorLabel, true);
+									}
+									break;
+								default:
+									{
+										position.height = helpBoxHeight;
+										EditorGUI.HelpBox(position, "Invalid group type", MessageType.Error);
+									}
+									break;
+							}
+							position.y += position.height;
+
+							++EditorGUI.indentLevel;
+							try
+							{
+								position.height = EditorGUI.GetPropertyHeight(qGroup.pOperandSequence);
+								EditorGUI.PropertyField(position, qGroup.pOperandSequence, true);
+							}
+							finally
+							{
+								--EditorGUI.indentLevel;
+							}
+
+							return null;
+						},
+						error =>
+						{
+							switch (error)
+							{
+								case GetExpressionPropertyError.IndexOutOfRange:
+									EditorGUI.HelpBox(position, "Index out of range", MessageType.Error);
+									break;
+								case GetExpressionPropertyError.InvalidEnumExpressionType:
+									EditorGUI.HelpBox(position, "Invalid expression type", MessageType.Error);
+									break;
+								default:
+									EditorGUI.HelpBox(position, "Internal error", MessageType.Error);
+									throw new InvalidOperationException("Internal error");
+							}
+							return null;
 						}
-					}
+					);
 				}
 				finally
 				{
@@ -362,11 +493,62 @@ namespace Bison.BoolExpressions.Editor
 				}
 			}
 
+			public string GetExpressionString(
+				ExpressionKey key,
+				HashSet<ExpressionKey> visitedKeys)
+			{
+				if (false == visitedKeys.Add(key))
+				{
+					return "Error(Infinite Recursion)";
+				}
+
+				try
+				{
+					return VisitExpressionProps(key,
+						qLiteral => qLiteral.value.ToString(),
+						qDependency =>
+						{
+							var input = qDependency.input;
+							return "Dep(" + (input ? input.name : "None") + ")";
+						},
+						qNot => "!" + GetExpressionString(qNot.operand, visitedKeys),
+						qGroup =>
+						{
+							int i = (int)qGroup.type;
+							var strings = new string[] {
+								"&&",
+								"||",
+								"^",
+							};
+							if (i < 0 || i >= strings.Length)
+							{
+								return "Error(Invalid Group Type)";
+							}
+							else
+							{
+								return "("
+								+ string.Join(
+									") " + strings[i] + " (",
+									qGroup.operandSequence.Select(operandKey =>
+								GetExpressionString(operandKey, visitedKeys)))
+								+ ")";
+							}
+						},
+						error => "Error(" + error.ToString() + ")"
+						);
+				}
+				finally
+				{
+					visitedKeys.Remove(key);
+				}
+			}
+
 			public float GetPropertyHeight(GUIContent label)
 			{
-				float height = root.GetPropertyHeight(rootLabel);
+				float height = EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
 
-				height += GetExpressionHeight(root.structValue, rootLabel, new HashSet<ExpressionKey>());
+				height += qRoot.GetPropertyHeight(rootLabel);
+				height += GetExpressionHeight(qRoot.structValue, rootLabel, new HashSet<ExpressionKey>());
 
 				height += verticalSpace;
 
@@ -377,13 +559,18 @@ namespace Bison.BoolExpressions.Editor
 
 			public void OnGUI(Rect position, GUIContent label)
 			{
-				position.height = root.GetPropertyHeight(rootLabel);
-				root.OnGUI(position, rootLabel);
+				position.height = EditorGUIUtility.singleLineHeight;
+				string msg = GetExpressionString(qRoot.structValue, new HashSet<ExpressionKey>());
+				EditorGUI.LabelField(position, "Expression", msg);
+				position.y += position.height + EditorGUIUtility.standardVerticalSpacing;
+
+				position.height = qRoot.GetPropertyHeight(rootLabel);
+				qRoot.OnGUI(position, rootLabel);
 				position.y += position.height;
 
 				var visitedKeys = new HashSet<ExpressionKey>();
-				position.height = GetExpressionHeight(root.structValue, rootLabel, visitedKeys);
-				OnExpressionGUI(position, root.structValue, rootLabel, visitedKeys);
+				position.height = GetExpressionHeight(qRoot.structValue, rootLabel, visitedKeys);
+				OnExpressionGUI(position, qRoot.structValue, rootLabel, visitedKeys);
 				position.y += position.height;
 
 				position.y += verticalSpace;

@@ -19,9 +19,9 @@ namespace Bison.BoolExpressions
 
 		public enum GroupType
 		{
-			And,
-			Or,
-			Xor,
+			And = 0,
+			Or = 1,
+			Xor = 2,
 		}
 
 		[Serializable]

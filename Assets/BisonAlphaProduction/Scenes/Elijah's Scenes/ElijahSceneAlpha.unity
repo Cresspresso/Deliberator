@@ -8149,23 +8149,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_tree:
     root:
-      type: 2
+      type: 3
       index: 0
     literalArray:
     - value: 1
+    - value: 0
     dependencyArray:
-    - input: {fileID: 0}
+    - input: {fileID: 1278503048}
     notArray:
+    - operand:
+        type: 3
+        index: 0
     - operand:
         type: 0
         index: 0
     groupArray:
-    - type: 0
+    - type: 1
       operandSequence:
       - type: 0
         index: 0
-      - type: 0
+      - type: 2
+        index: 1
+    - type: 1
+      operandSequence:
+      - type: 2
         index: 0
+      - type: 0
+        index: 1
 --- !u!4 &1278503049
 Transform:
   m_ObjectHideFlags: 0
