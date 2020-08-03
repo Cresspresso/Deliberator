@@ -653,23 +653,10 @@ namespace Bison.BoolExpressions.Editor
 						qNot => "!" + GetExpressionString(qNot.operand, visitedKeys),
 						qGroup =>
 						{
-							int i = (int)qGroup.type;
-							var strings = new string[] {
-								"&&",
-								"||",
-								"^",
-							};
-							if (i < 0 || i >= strings.Length)
-							{
-								return "Error(Invalid Group Type)";
-							}
-							else
-							{
-								var sep = ") " + strings[i] + " (";
-								var items = qGroup.operandSequence.Select(
-									operandKey => GetExpressionString(operandKey, visitedKeys));
-								return "((" + string.Join(sep, items) + "))";
-							}
+							var sep = ") " + Serializable.Group.GetOperatorString(qGroup.type) + " (";
+							var items = qGroup.operandSequence.Select(
+								operandKey => GetExpressionString(operandKey, visitedKeys));
+							return "((" + string.Join(sep, items) + "))";
 						},
 						error => "Error(" + error.ToString() + ")"
 						);

@@ -36,28 +36,31 @@ namespace Bison.BoolExpressions
 				this.index = index;
 			}
 
-			public override string ToString()
-			{
-				return "ExpresionKey(type: " + type.ToString() + ", index: " + index.ToString() + ")";
-			}
+			public override string ToString() => "ExpresionKey(type: " + type.ToString() + ", index: " + index.ToString() + ")";
 		}
 
 		[Serializable]
 		public struct Literal
 		{
 			public bool value;
+
+			public override string ToString() => value.ToString();
 		}
 
 		[Serializable]
 		public struct Dependency
 		{
 			public Dependable input;
+
+			public override string ToString() => '"' + (input ? input.ToString() : "null") + '"';
 		}
 
 		[Serializable]
 		public struct Not
 		{
 			public ExpressionKey operand;
+
+			public override string ToString() => "!" + operand.ToString();
 		}
 
 		[Serializable]
@@ -65,29 +68,126 @@ namespace Bison.BoolExpressions
 		{
 			public GroupType type;
 			public List<ExpressionKey> operandSequence;
+
+			public static string GetOperatorString(GroupType type)
+			{
+				switch (type)
+				{
+					case GroupType.And: return "&&";
+					case GroupType.Or: return "||";
+					case GroupType.Xor: return "^";
+					default: throw new ArgumentException("Invalid " + nameof(GroupType) + " enum value", nameof(type));
+				}
+			}
+
+			public override string ToString() => string.Join(' ' + GetOperatorString(type) + ' ', operandSequence);
 		}
 
 		[Serializable]
 		public sealed class Arrays
 		{
-			public Literal[] literalArray;
-			public Dependency[] dependencyArray;
-			public Not[] notArray;
-			public Group[] groupArray;
+			public Literal[] literalArray = new Literal[0];
+			public Dependency[] dependencyArray = new Dependency[1] { new Dependency() };
+			public Not[] notArray = new Not[0];
+			public Group[] groupArray = new Group[0];
+
+			public R Visit<R>(
+				ExpressionKey key,
+				Func<Literal, R> fnLiteral,
+				Func<Dependency, R> fnDependency,
+				Func<Not, R> fnNot,
+				Func<Group, R> fnGroup)
+			{
+				switch (key.type)
+				{
+					case ExpressionType.Literal: return fnLiteral(literalArray[key.index]);
+					case ExpressionType.Dependency: return fnDependency(dependencyArray[key.index]);
+					case ExpressionType.Not: return fnNot(notArray[key.index]);
+					case ExpressionType.Group: return fnGroup(groupArray[key.index]);
+					default: throw new InvalidOperationException("Invalid " + nameof(ExpressionType) + " enum value");
+				}
+			}
+
+			public bool Evaluate(ExpressionKey key)
+			{
+				return Visit(key,
+					literal => literal.value,
+					dependency =>
+					{
+						var input = dependency.input;
+						return input ? input.Evaluate() : throw new NullReferenceException("Dependency " + key + " is null");
+					},
+					not => Evaluate(not.operand),
+					group =>
+					{
+						var seq = group.operandSequence;
+						if (seq.Count < 2)
+						{
+							throw new InvalidOperationException("Group operandSequence does not have enough elements");
+						}
+						else
+						{
+							Func<bool, ExpressionKey, bool> accumulator;
+							switch (group.type)
+							{
+								case GroupType.And:
+									{
+										accumulator = (total, rhs) => total && Evaluate(rhs);
+									}
+									break;
+								case GroupType.Or:
+									{
+										accumulator = (total, rhs) => total || Evaluate(rhs);
+									}
+									break;
+								case GroupType.Xor:
+									{
+										accumulator = (total, rhs) => total ^ Evaluate(rhs);
+									}
+									break;
+								default:
+									{
+										throw new InvalidOperationException("Invalid " + nameof(GroupType) + " enum value");
+									}
+							}
+							bool first = Evaluate(seq.First());
+							return seq.Skip(1).Aggregate(first, accumulator);
+						}
+					});
+			}
+
+			public string GetExperssionString(ExpressionKey key)
+			{
+				try
+				{
+					return Visit<string>(key,
+						literal => literal.value.ToString(),
+						dependency => '"' + (dependency.input ? dependency.input.name : "null") + '"',
+						not => '!' + GetExperssionString(not.operand),
+						group =>
+						{
+							var sep = ") " + Group.GetOperatorString(group.type) + " (";
+							var seq = group.operandSequence.Select(
+								operand => GetExperssionString(operand));
+							return "((" + string.Join(sep, seq) + "))";
+						}
+						);
+				}
+				catch
+				{
+					return "Error(" + key + ")";
+				}
+			}
 		}
 
 		[Serializable]
 		public sealed class Tree
 		{
-			public ExpressionKey root;
-			public Arrays arrays;
+			public Arrays arrays = new Arrays();
+			public ExpressionKey root = new ExpressionKey(ExpressionType.Dependency, 0);
 
-			public Tree()
-			{
-				arrays = new Arrays();
-				arrays.dependencyArray = new[] { new Dependency() };
-				root = new ExpressionKey(ExpressionType.Dependency, 0);
-			}
+			public bool Evaluate() => arrays.Evaluate(root);
+			public override string ToString() => arrays.GetExperssionString(root);
 		}
 	}
 
