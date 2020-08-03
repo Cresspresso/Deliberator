@@ -9,4 +9,6 @@ public class V2_UltraVioletLight : MonoBehaviour
 
 	[Range(0.0f, 100.0f)]
 	public float innerSpotAnglePercent = 0.0f;
+
+	public float range = 10.0f;
 }
