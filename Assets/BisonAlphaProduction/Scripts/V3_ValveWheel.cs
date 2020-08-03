@@ -15,6 +15,7 @@ public class V3_ValveWheel : MonoBehaviour
 
     public float interactableDistance = 2.5f;
     public V3_Condensation targetObj; // change datatype depending on what component i want to access
+    public ParticleSystem steamParticle;
 
     private V2_Handle hoverHandle;
     private V3_ProximityCalculator proximityCalculator;
@@ -43,6 +44,10 @@ public class V3_ValveWheel : MonoBehaviour
             animator.SetTrigger("Activate");
             activated = true;
             activatable = false;
+            if (steamParticle != null)
+            {
+                steamParticle.Play();
+            }
 
             hoverHandle.hoverInfo = new V2_HandleHoverInfo("Opened", null);
 
