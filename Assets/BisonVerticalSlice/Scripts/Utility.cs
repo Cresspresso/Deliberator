@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public static class V2_Utility
@@ -41,6 +43,17 @@ public static class V2_Utility
 	{
 		value %= length;
 		return value < 0.0f ? length + value : value;
+	}
+
+	public static Transform[] ChildrenToArray(this Transform parent)
+	{
+		var c = parent.childCount;
+		var children = new Transform[c];
+		for (int i = 0; i < c; ++i)
+		{
+			children[i] = parent.GetChild(i);
+		}
+		return children;
 	}
 }
 

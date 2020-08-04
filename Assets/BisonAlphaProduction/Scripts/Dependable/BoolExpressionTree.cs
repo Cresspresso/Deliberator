@@ -36,7 +36,10 @@ namespace Bison.BoolExpressions
 				this.index = index;
 			}
 
-			public override string ToString() => "ExpresionKey(type: " + type.ToString() + ", index: " + index.ToString() + ")";
+			public override string ToString() => nameof(ExpressionKey) + "("
+				+ nameof(type) + ": " + type.ToString()
+				+ ", " + nameof(index) + ": " + index.ToString()
+				+ ")";
 		}
 
 		[Serializable]
@@ -76,7 +79,7 @@ namespace Bison.BoolExpressions
 					case GroupType.And: return "&&";
 					case GroupType.Or: return "||";
 					case GroupType.Xor: return "^";
-					default: throw new ArgumentException("Invalid " + nameof(GroupType) + " enum value", nameof(type));
+					default: throw new ArgumentException("Invalid " + nameof(GroupType) + " enum value (" + (int)type + ")", nameof(type));
 				}
 			}
 
@@ -104,7 +107,7 @@ namespace Bison.BoolExpressions
 					case ExpressionType.Dependency: return fnDependency(dependencyArray[key.index]);
 					case ExpressionType.Not: return fnNot(notArray[key.index]);
 					case ExpressionType.Group: return fnGroup(groupArray[key.index]);
-					default: throw new InvalidOperationException("Invalid " + nameof(ExpressionType) + " enum value");
+					default: throw new InvalidOperationException(key + ": Invalid " + nameof(ExpressionType) + " enum value (" + (int)key.type + ")");
 				}
 			}
 
@@ -115,7 +118,7 @@ namespace Bison.BoolExpressions
 					dependency =>
 					{
 						var input = dependency.input;
-						return input ? input.Evaluate() : throw new NullReferenceException("Dependency " + key + " is null");
+						return input ? input.isPowered : throw new NullReferenceException(key + ": Dependency input is null");
 					},
 					not => Evaluate(not.operand),
 					group =>
@@ -123,7 +126,7 @@ namespace Bison.BoolExpressions
 						var seq = group.operandSequence;
 						if (seq.Count < 2)
 						{
-							throw new InvalidOperationException("Group operandSequence does not have enough elements");
+							throw new InvalidOperationException(key + ": Group operandSequence does not have enough elements");
 						}
 						else
 						{
@@ -147,7 +150,7 @@ namespace Bison.BoolExpressions
 									break;
 								default:
 									{
-										throw new InvalidOperationException("Invalid " + nameof(GroupType) + " enum value");
+										throw new InvalidOperationException(key + ": Invalid " + nameof(GroupType) + " enum value (" + (int)group.type + ")");
 									}
 							}
 							bool first = Evaluate(seq.First());
