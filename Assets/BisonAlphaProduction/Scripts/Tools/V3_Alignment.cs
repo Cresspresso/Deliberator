@@ -18,10 +18,6 @@ and perform the alignment every Update,
 as long as it is active and enabled.")]
 	public bool keepInGame = false;
 
-#if UNITY_EDITOR
-	public bool autoAlignInEditor = true;
-#endif
-
 	private static float RoundToQuarter(float value) => Mathf.Round(value * 4) / 4;
 
 	private void Reset()

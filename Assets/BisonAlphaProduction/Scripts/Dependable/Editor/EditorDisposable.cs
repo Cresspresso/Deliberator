@@ -52,4 +52,12 @@ public static class EditorDisposable
 
 	public static Resource<int> EditorGUI_indentLevel_Increment()
 		=> EditorGUI_indentLevel(EditorGUI.indentLevel + 1);
+
+	public static Resource<int> Undo_IncrementCurrentGroup_Collapse(string name)
+	{
+		Undo.IncrementCurrentGroup();
+		Undo.SetCurrentGroupName(name);
+		var id = Undo.GetCurrentGroup();
+		return New(id, Undo.CollapseUndoOperations);
+	}
 }
