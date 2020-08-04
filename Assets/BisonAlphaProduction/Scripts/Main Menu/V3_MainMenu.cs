@@ -11,5 +11,6 @@ public class V3_MainMenu : MonoBehaviour
 	{
 		menuNavigation = GetComponent<V2_MenuNavigation>();
 		menuNavigation.GoInto(initialPanel);
+		Time.timeScale = 1.0f;
 	}
 }
