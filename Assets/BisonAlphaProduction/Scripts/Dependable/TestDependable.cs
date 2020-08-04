@@ -8,15 +8,12 @@ using UnityEngine;
 public class TestDependable : MonoBehaviour
 {
 	public Dependable dependable { get; private set; }
-	public Renderer rend { get; private set; }
 	public Material matOn, matOff;
 
 	private void Awake()
 	{
 		dependable = GetComponent<Dependable>();
-		dependable.onChanged.AddListener(OnPowerChanged);
 		GetComponent<V2_ButtonHandle>().onClick += OnClick;
-		rend = GetComponent<Renderer>();
 	}
 
 	private void OnClick(V2_ButtonHandle arg1, V2_HandleController arg2)
@@ -30,8 +27,9 @@ public class TestDependable : MonoBehaviour
 		}
 	}
 
-	private void OnPowerChanged(bool isPowered)
+	private void Update()
 	{
-		rend.material = isPowered ? matOn : matOff;
+		bool powered = dependable.Evaluate();
+		GetComponent<Renderer>().material = powered ? matOn : matOff;
 	}
 }

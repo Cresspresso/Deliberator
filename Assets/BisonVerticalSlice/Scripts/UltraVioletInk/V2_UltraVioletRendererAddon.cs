@@ -62,6 +62,5 @@ public class V2_UltraVioletRendererAddon : MonoBehaviour
 		mat.SetVector("uviLightDirection", has ? uviLight.transform.forward : Vector3.down);
 		mat.SetFloat("uviSpotAngle", has ? uviLight.spotAngle : 30.0f);
 		mat.SetFloat("uviInnerSpotAngleFraction", has ? uviLight.innerSpotAnglePercent * 0.00999f : 0.0f);
-		mat.SetFloat("uviRange", has ? uviLight.range : 0.0f);
 	}
 }
