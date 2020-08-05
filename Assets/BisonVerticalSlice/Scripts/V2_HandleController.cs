@@ -49,6 +49,9 @@ public class V2_HandleController : MonoBehaviour
 		}
 	}
 
+	public Vector3 currentRayDirection => transform.forward;
+	public Vector3 currentHitPoint { get; private set; }
+
 	public event Action<V2_HandleController, V2_Handle> onHoverEnter;
 	public event Action<V2_HandleController, V2_Handle> onHoverExit;
 
@@ -95,6 +98,7 @@ public class V2_HandleController : MonoBehaviour
 			if (otherHandle && otherHandle.enabled)
 			{
 				hoveredHandle = otherHandle;
+				currentHitPoint = hit.point;
 				return;
 			}
 		}
@@ -128,11 +132,13 @@ public class V2_HandleController : MonoBehaviour
 					if (secondHandle == otherHandle)
 					{
 						hoveredHandle = otherHandle;
+						currentHitPoint = hit.point;
 						return;
 					}
 				}
 			}
 		}
+		currentHitPoint = transform.position;
 		hoveredHandle = null;
 	}
 
