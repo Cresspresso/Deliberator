@@ -19,14 +19,13 @@ public sealed class Dependable : MonoBehaviour
 	{
 		try
 		{
-			var newValue = condition.Evaluate();
-			isPowered = newValue;
-			onChanged.Invoke(newValue);
+			isPowered = condition.Evaluate();
 		}
 		catch (System.Exception e)
 		{
 			Debug.LogException(e, this);
 		}
+		onChanged.Invoke(isPowered);
 	}
 
 	private void Update()

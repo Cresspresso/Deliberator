@@ -2,59 +2,84 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using System;
+using System.Linq;
 
 [CustomEditor(typeof(V3_Alignment))]
+[CanEditMultipleObjects]
 public class V3_AlignmentEditor : Editor
 {
-	private static void Align(V3_Alignment script)
+	private static bool autoAlignInEditor;
+	private const string aaieKey = "Bison.Alignment.autoAlignInEditor";
+	private const string aaieMenuItem = "Tools/Bison/Alignment: Auto Align in Editor";
+
+	private void OnEnable()
 	{
-		var children = new List<Transform>();
-		foreach (Transform child in script.transform)
-		{
-			children.Add(child);
-		}
-		Undo.RecordObjects(children.ToArray(), "Align");
-		script.Align();
+		autoAlignInEditor = EditorPrefs.GetBool(aaieKey, false);
+		Menu.SetChecked(aaieMenuItem, autoAlignInEditor);
 	}
 
-	private static void UpdateAutoAlign(V3_Alignment script)
+	private void OnDisable()
 	{
-		if (script.autoAlignInEditor)
+		EditorPrefs.SetBool(aaieKey, autoAlignInEditor);
+	}
+
+	[MenuItem(aaieMenuItem)]
+	private static void ToggleAaie()
+	{
+		autoAlignInEditor = !autoAlignInEditor;
+		EditorPrefs.SetBool(aaieKey, autoAlignInEditor);
+		Menu.SetChecked(aaieMenuItem, autoAlignInEditor);
+	}
+
+	/// <returns>true if the alignment operation was performed.</returns>
+	private static bool AutoAlign(V3_Alignment script)
+	{
+		var elementOffset = script.elementOffset;
+		var scriptTransform = script.transform;
+		var childCount = scriptTransform.childCount;
+		for (int i = 0; i < childCount; ++i)
 		{
-			var scriptTransform = script.transform;
-			var childCount = scriptTransform.childCount;
-			var elementOffset = script.elementOffset;
-			for (int i = 0; i < childCount; ++i)
+			var expected = scriptTransform.TransformPoint(elementOffset * i);
+			var actual = scriptTransform.GetChild(i).position;
+			if (Vector3.SqrMagnitude(actual - expected) > 0.001f)
 			{
-				var expected = scriptTransform.TransformPoint(elementOffset * i);
-				var actual = scriptTransform.GetChild(i).position;
-				if (Vector3.SqrMagnitude(actual - expected) > 0.001f)
-				{
-					Align(script);
-					break;
-				}
+				Undo.RecordObjects(script.transform.ChildrenToArray(), "Auto Align");
+				script.Align();
+				return true;
 			}
 		}
+		return false;
 	}
 
 	private void OnSceneGUI()
 	{
-		UpdateAutoAlign((V3_Alignment)target);
+		if (autoAlignInEditor)
+		{
+			AutoAlign((V3_Alignment)target);
+		}
 	}
 
 	public override void OnInspectorGUI()
 	{
-		var script = (V3_Alignment)target;
-
 		DrawDefaultInspector();
 
 		if (GUILayout.Button("Align"))
 		{
-			Align(script);
+			var scripts = targets.OfType<V3_Alignment>();
+			Undo.RecordObjects(scripts.SelectMany(s => s.transform.ChildrenToArray()).ToArray(), "Align");
+			foreach (var script in scripts)
+			{
+				script.Align();
+			}
 		}
-		else
+		else if (autoAlignInEditor)
 		{
-			UpdateAutoAlign(script);
+			var scripts = targets.OfType<V3_Alignment>();
+			foreach (var script in scripts)
+			{
+				AutoAlign(script);
+			}
 		}
 	}
 }
