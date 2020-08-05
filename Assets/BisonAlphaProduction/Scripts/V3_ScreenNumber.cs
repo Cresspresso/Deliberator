@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //This script is for selecting the number matieral to be displayed on the attached gameObject Renderer.
+//Further functionality to randomize may be added to this script in the future
 
 /// <author>Lorenzo Sae-Phoo Zemp</author>
 public class V3_ScreenNumber : MonoBehaviour
 {
-    public int number;
-
+    [SerializeField] private int number;
     [SerializeField] private Material[] numMaterials;
 
     private new Renderer renderer;
