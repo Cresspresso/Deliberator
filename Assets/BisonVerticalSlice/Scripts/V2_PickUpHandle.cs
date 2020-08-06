@@ -48,6 +48,8 @@ public class V2_PickUpHandle : MonoBehaviour
 
 	public void Drop()
 	{
+		if (!controller) { return; }
+
 		foreach (var c in colliders)
 		{
 			c.enabled = true;
