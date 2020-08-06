@@ -18,6 +18,12 @@ public class V3_GenFuseSlot : MonoBehaviour
 		puc = FindObjectOfType<V2_PickUpController>();
 	}
 
+	private void Start()
+	{
+		if (!point) point = transform;
+		TryInsert(point.GetComponentInChildren<V2_PickUpHandle>());
+	}
+
 	private void OnEnable()
 	{
 		buttonHandle.onClick += OnClick;
@@ -53,15 +59,18 @@ public class V3_GenFuseSlot : MonoBehaviour
 	private void OnClick(V2_ButtonHandle buttonHandle, V2_HandleController handleController)
 	{
 		var puc = handleController.GetComponent<V2_PickUpController>();
-		if (puc.currentPickedUpHandle && puc.currentPickedUpHandle.isActiveAndEnabled
-			&& puc.currentPickedUpHandle.CompareTag(fuseTag))
+		TryInsert(puc.currentPickedUpHandle);
+	}
+
+	private bool TryInsert(V2_PickUpHandle puh)
+	{
+		if (puh && puh.isActiveAndEnabled && puh.CompareTag(fuseTag))
 		{
 			theFuse = puc.currentPickedUpHandle;
-			puc.currentPickedUpHandle.Drop();
+			puh.Drop();
 			theFuse.buttonHandle.handle.enabled = false;
 			theFuse.rb.isKinematic = true;
 
-			if (!point) point = transform;
 			theFuse.transform.SetParent(point);
 			theFuse.transform.localPosition = Vector3.zero;
 			theFuse.transform.localRotation = Quaternion.identity;
@@ -69,11 +78,16 @@ public class V3_GenFuseSlot : MonoBehaviour
 			buttonHandle.handle.enabled = false;
 
 			OnFuseInserted();
+			return true;
+		}
+		else
+		{
+			return false;
 		}
 	}
 
 	private void OnFuseInserted()
 	{
-
+		GetComponent<Dependable>().firstLiteral = true;
 	}
 }
