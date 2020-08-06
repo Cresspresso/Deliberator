@@ -66,7 +66,7 @@ public class V3_GenFuseSlot : MonoBehaviour
 	{
 		if (puh && puh.isActiveAndEnabled && puh.CompareTag(fuseTag))
 		{
-			theFuse = puc.currentPickedUpHandle;
+			theFuse = puh;
 			puh.Drop();
 			theFuse.buttonHandle.handle.enabled = false;
 			theFuse.rb.isKinematic = true;
