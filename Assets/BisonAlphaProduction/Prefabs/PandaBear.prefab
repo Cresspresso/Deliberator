@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 6564563573956138766}
   - component: {fileID: 2756490447765433656}
   - component: {fileID: 8466076936632472001}
-  - component: {fileID: 4085171767769717644}
   - component: {fileID: 8982630948384273387}
+  - component: {fileID: 8969502089670113340}
   m_Layer: 0
   m_Name: PandaBear
   m_TagString: Untagged
@@ -81,19 +81,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &4085171767769717644
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7872672660542006557}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.3132886, y: 0.4848618, z: 0.31925356}
-  m_Center: {x: 0, y: 0.23562261, z: 0.032979257}
 --- !u!54 &8982630948384273387
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -110,3 +97,16 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!135 &8969502089670113340
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7872672660542006557}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.2424309
+  m_Center: {x: 0, y: 0.23562261, z: 0.032979257}
