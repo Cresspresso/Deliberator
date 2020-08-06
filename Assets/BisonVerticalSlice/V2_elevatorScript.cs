@@ -35,13 +35,9 @@ public class V2_elevatorScript : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    //When it is clicked on
+    /// <summary>
+    /// When elevator button is clicked on i will either go up or down
+    /// </summary>
     private void OnMouseDown()
     {
         float distanceToButton = Vector3.Distance(player.transform.position, gameObject.transform.position);
@@ -51,7 +47,7 @@ public class V2_elevatorScript : MonoBehaviour
 
         if (distanceToButton < 2.0f && up == true)
         {
-            Debug.Log("Elevator Going Up");
+            //Debug.Log("Elevator Going Up");
             buttonParent.DOMoveY(buttonParentYPosition + elevatorTravelLength,
                 elevatorTravelLength, false);
 
@@ -63,7 +59,7 @@ public class V2_elevatorScript : MonoBehaviour
         }
         else if (distanceToButton < 2.0f && up == false)
         {
-            Debug.Log("Elevator Going Down");
+            //Debug.Log("Elevator Going Down");
             buttonParent.DOMoveY(buttonParentYPosition - elevatorTravelLength,
                 elevatorTravelLength, false);
 
@@ -75,6 +71,11 @@ public class V2_elevatorScript : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Coroutine to wait for a specified amount of seconds before opening the elevators door
+    /// </summary>
+    /// <param name="_door"></param>
+    /// <returns></returns>
     IEnumerator WaitToOpen(GameObject _door)
     {
         yield return new WaitForSeconds(elevatorTravelTime);

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //This following script is for the ValveWheel object where when interacted with
-//it gets activated
+//it gets activated and also triggers and animation
 
 /// <author>Lorenzo Sae-Phoo Zemp</author>
 [RequireComponent(typeof(V3_ProximityCalculator))]
@@ -55,6 +55,9 @@ public class V3_ValveWheel : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Delegate Function
+    /// </summary>
     #region Delegates
     void activateCondensation()
     {
@@ -62,11 +65,19 @@ public class V3_ValveWheel : MonoBehaviour
     }
     #endregion
 
+    /// <summary>
+    /// set wether object can be activated, can be used to lock or unlock 
+    /// </summary>
+    /// <param name="_bool"></param>
     public void setActivatable(bool _bool)
     {
         activatable = _bool;
     }
 
+    /// <summary>
+    /// returns wether or not the valve has been activates
+    /// </summary>
+    /// <returns></returns>
     public bool getActivated()
     {
         return activated;

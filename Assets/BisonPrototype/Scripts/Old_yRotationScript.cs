@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <author>Lorenzo Sae-Phoo Zemp</author>
 public class Old_yRotationScript : MonoBehaviour
 {
     public float rotationSpeed = 100.0f;
