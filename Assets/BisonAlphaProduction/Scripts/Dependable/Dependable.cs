@@ -15,6 +15,11 @@ public sealed class Dependable : MonoBehaviour
 	private UnityEvent_bool m_onChanged = new UnityEvent_bool();
 	public UnityEvent_bool onChanged => m_onChanged;
 
+	public bool firstLiteral {
+		get => condition.arrays.literalArray[0].value;
+		set => condition.arrays.literalArray[0] = new Bison.BoolExpressions.Serializable.Literal(value);
+	}
+
 	private void Start()
 	{
 		try
