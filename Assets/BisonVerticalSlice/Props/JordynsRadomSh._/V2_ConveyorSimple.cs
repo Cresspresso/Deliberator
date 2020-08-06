@@ -20,4 +20,9 @@ public class V2_ConveyorSimple : MonoBehaviour
         rBody.position += transform.forward * speed * Time.fixedDeltaTime;
         rBody.MovePosition(pos);
     }
+    
+    public void SetSpeed(float newSpeed)
+    {
+        speed = newSpeed;
+    }
 }

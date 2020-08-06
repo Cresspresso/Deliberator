@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
 
 /// <author>Lorenzo Sae-Phoo Zemp</author>
 public class V3_Condensation : MonoBehaviour
@@ -24,6 +23,7 @@ public class V3_Condensation : MonoBehaviour
         colorCurrent = colorStart;
     }
 
+    // Update is called every frame
     void Update()
     {
         if (activate && timer <= 1.0)
@@ -37,6 +37,9 @@ public class V3_Condensation : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Function to toggle activate bool to true
+    /// </summary>
     public void Activate()
     {
         activate = true;

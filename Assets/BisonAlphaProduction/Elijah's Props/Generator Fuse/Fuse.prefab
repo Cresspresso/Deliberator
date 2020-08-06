@@ -32,13 +32,13 @@ Transform:
   m_GameObject: {fileID: 3454835535895518260}
   m_LocalRotation: {x: -0.70710677, y: -0.7071068, z: 0.000000400395, w: 0.00000040039504}
   m_LocalPosition: {x: 4.639, y: 1.5879889, z: 6.844}
-  m_LocalScale: {x: 0.01461, y: 0.01461, z: 0.01461}
+  m_LocalScale: {x: 0.01275125, y: 0.01275125, z: 0.01275125}
   m_Children:
   - {fileID: 3454835537194362024}
   - {fileID: 3454835537022998477}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 179.99998, z: 90.00001}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3454835535895518258
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -130,7 +130,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_handlePoint: {fileID: 3454835535895518257}
   m_hoverInfo:
-    description: Touch
+    description: Fuse
     sprite: {fileID: 0}
 --- !u!114 &3454835535895518269
 MonoBehaviour:
@@ -297,7 +297,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 02f899b139ba4f0469d295aaad9ee08e, type: 2}
+  - {fileID: 2100000, guid: 7a3fe1b0f98e374448d31adfd64c8bf2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
