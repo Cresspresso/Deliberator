@@ -11,16 +11,13 @@ using UnityEngine;
 /// the object needs to travel to trigger the sound
 /// </summary>
 
+/// <author> Lorenzo Sae-Phoo Zemp </author>
 public class V2_audioOnVelocity : MonoBehaviour
 {
-    /// <author>
-    /// Lorenzo Sae-Phoo Zemp
-    /// </author>
+    [SerializeField] private bool enableDebugMsg = false;
 
-    public float minMagnitude = 1.0f;
-    public float maxVolume = 0.5f;
-
-    public bool enableDebugMsg = false;
+    [SerializeField] private float minMagnitude = 1.0f;
+    [SerializeField] private float maxVolume = 0.5f;
 
     private AudioSource audioSource;
 
@@ -30,6 +27,10 @@ public class V2_audioOnVelocity : MonoBehaviour
         audioSource = gameObject.GetComponent<AudioSource>();
     }
 
+    /// <summary>
+    /// On collision of object
+    /// </summary>
+    /// <param name="collision"></param>
     void OnCollisionEnter(Collision collision)
     {
         if (enableDebugMsg) { Debug.Log("object relative velocity is: " + collision.relativeVelocity.magnitude); }
