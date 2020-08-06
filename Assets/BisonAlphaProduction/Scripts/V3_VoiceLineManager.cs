@@ -14,6 +14,7 @@ public class VoiceLine
 	public float paddingDuration = 0.1f;
 
 	[Tooltip("Closed Caption")]
+	[TextArea(1, 3)]
 	public string subtitle = "<Missing Subtitle>";
 }
 
@@ -100,12 +101,14 @@ public class V3_VoiceLineManager : MonoBehaviour
 				{
 					m_sectionTimeRemaining = clip.length + m_currentVoiceLine.paddingDuration;
 					Debug.Log("Playing voice line clip. length = " + m_sectionTimeRemaining, this);
+					V3_ClosedCaptions.instance.DisplayNewSubtitle(m_currentVoiceLine.subtitle, m_sectionTimeRemaining);
 					ForEachVoiceLineAudioSource(s => s.Play(clip));
 				}
 				else
 				{
 					m_sectionTimeRemaining = m_currentVoiceLine.clipDurationIfNull + m_currentVoiceLine.paddingDuration;
 					Debug.Log("Playing voice line without clip. length = " + m_sectionTimeRemaining, this);
+					V3_ClosedCaptions.instance.DisplayNewSubtitle(m_currentVoiceLine.subtitle, m_sectionTimeRemaining);
 					ForEachVoiceLineAudioSource(s => s.Stop());
 				}
 			}
