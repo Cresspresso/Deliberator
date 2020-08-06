@@ -10,8 +10,6 @@ public class V3_GenPuzzleSolved : MonoBehaviour
 		GetComponent<Dependable>().onChanged.AddListener(OnPoweredChanged);
 	}
 
-	public V2_levelTransitioner lvt;
-
 	private void OnPoweredChanged(bool isPowered)
 	{
 		if (!enabled) return;
@@ -20,9 +18,6 @@ public class V3_GenPuzzleSolved : MonoBehaviour
 		{
 			enabled = false;
 			Debug.Log("All generators Powered!");
-			lvt.gameObject.SetActive(true);
-			var gc = FindObjectOfType<V2_GroundhogControl>();
-			if (gc) gc.enabled = false;
 		}
 	}
 }
