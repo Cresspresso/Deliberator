@@ -5,12 +5,17 @@ using UnityEngine;
 /// <author> Lorenzo Sae-Phoo Zemp </author>
 public class V2_pressItemSpawner : MonoBehaviour
 {
-    public GameObject blueItem;
-    public GameObject redItem;
-    public GameObject greenItem;
+    [SerializeField] private GameObject blueItem;
+    [SerializeField] private GameObject redItem;
+    [SerializeField] private GameObject greenItem;
 
-    public GameObject CratePress;
+    [SerializeField] private GameObject CratePress;
 
+    /// <summary>
+    /// This function gets triggered when a crate/box object enters its trigger area
+    /// and in turn spawns an object specified in the inspector
+    /// </summary>
+    /// <param name="col"></param>
     void OnTriggerEnter(Collider col)
     {
         //CratePress.transform.parent.GetComponent<Animator>().SetTrigger("PressSlam");
@@ -21,17 +26,26 @@ public class V2_pressItemSpawner : MonoBehaviour
         if (col.tag == "BoxBlue")
         {
             Destroy(col.gameObject);
-            Instantiate(blueItem, gameObject.transform);
+            if (blueItem != null)
+            {
+                Instantiate(blueItem, gameObject.transform);
+            }
         }
         else if (col.tag == "BoxGreen")
         {
             Destroy(col.gameObject);
-            Instantiate(greenItem, gameObject.transform);
+            if (greenItem != null)
+            {
+                Instantiate(greenItem, gameObject.transform);
+            }
         }
         else if (col.tag == "BoxRed")
         {
             Destroy(col.gameObject);
-            Instantiate(redItem, gameObject.transform);
+            if (redItem != null)
+            {
+                Instantiate(redItem, gameObject.transform);
+            }
         }
     }
 }
