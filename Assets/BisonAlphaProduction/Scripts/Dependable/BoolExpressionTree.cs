@@ -47,6 +47,11 @@ namespace Bison.BoolExpressions
 		{
 			public bool value;
 
+			public Literal(bool value)
+			{
+				this.value = value;
+			}
+
 			public override string ToString() => value.ToString();
 		}
 
@@ -54,6 +59,11 @@ namespace Bison.BoolExpressions
 		public struct Dependency
 		{
 			public Dependable input;
+
+			public Dependency(Dependable input)
+			{
+				this.input = input;
+			}
 
 			public override string ToString() => '"' + (input ? input.ToString() : "null") + '"';
 		}
@@ -63,6 +73,11 @@ namespace Bison.BoolExpressions
 		{
 			public ExpressionKey operand;
 
+			public Not(ExpressionKey operand)
+			{
+				this.operand = operand;
+			}
+
 			public override string ToString() => "!" + operand.ToString();
 		}
 
@@ -71,6 +86,12 @@ namespace Bison.BoolExpressions
 		{
 			public GroupType type;
 			public List<ExpressionKey> operandSequence;
+
+			public Group(GroupType type, List<ExpressionKey> operandSequence)
+			{
+				this.type = type;
+				this.operandSequence = operandSequence;
+			}
 
 			public static string GetOperatorString(GroupType type)
 			{
