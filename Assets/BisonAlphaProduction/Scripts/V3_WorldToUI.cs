@@ -22,6 +22,7 @@ using UnityEngine.UI;
 ///		</log>
 /// </changelog>
 /// 
+[NonNull]
 public class V3_WorldToUI : MonoBehaviour
 {
 	/// <summary>
@@ -34,9 +35,8 @@ public class V3_WorldToUI : MonoBehaviour
 	///		</log>
 	/// </changelog>
 	/// 
-	[Tooltip(@"
-The transform representing the point in world space.
-")]
+	[Tooltip(@"The Target Transform represents a point in world space.")]
+	[AllowNull]
 	public Transform target = null;
 
 
@@ -52,10 +52,7 @@ The transform representing the point in world space.
 	///		</log>
 	/// </changelog>
 	/// 
-	[Tooltip(@"
-The RectTransform which will be positioned above the Target in LateUpdate.
-It must be an immediate child of this script's RectTransform.
-")]
+	[Tooltip(@"The Visuals RectTransform will be positioned above the Target in LateUpdate. It must be an immediate child of this script's RectTransform.")]
 	public RectTransform visuals;
 
 
