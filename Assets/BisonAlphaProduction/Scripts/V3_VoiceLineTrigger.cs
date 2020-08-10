@@ -63,10 +63,7 @@ public class V3_VoiceLineTrigger : MonoBehaviour
 	///		</log>
 	/// </changelog>
 	/// 
-	[Tooltip(@"
-If `Enqueue`, voice lines will be pushed to the back of the queue.
-If `Replace`, the queue will be cleared before pushing.
-")]
+	[Tooltip(@"If `Enqueue`, voice lines will be pushed to the back of the queue. If `Replace`, the queue will be cleared before pushing.")]
 	public Mode mode = Mode.Replace;
 
 
@@ -84,9 +81,8 @@ If `Replace`, the queue will be cleared before pushing.
 	///		</log>
 	/// </changelog>
 	/// 
-	[Tooltip(@"
-The sequence of voice lines to start playing.
-")]
+	[Tooltip(@"The sequence of voice lines to start playing.")]
+	[NonEmpty]
 	public List<VoiceLine> voiceLines = new List<VoiceLine> { new VoiceLine() };
 
 
