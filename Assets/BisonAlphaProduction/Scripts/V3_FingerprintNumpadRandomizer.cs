@@ -21,9 +21,11 @@ using System.Linq;
 /// 
 public sealed class V3_FingerprintNumpadRandomizer : V3_Randomizer<string, V3_SparFingerprintRandomizerDatabase>
 {
+	/// <summary>
+	///		<para>Must not be null.</para>
+	/// </summary>
 #pragma warning disable CS0649
 	[SerializeField]
-	[NonNull]
 	private V2_NumPadLock m_numpadLock;
 #pragma warning restore CS0649
 
@@ -33,9 +35,11 @@ public sealed class V3_FingerprintNumpadRandomizer : V3_Randomizer<string, V3_Sp
 
 
 
+	/// <summary>
+	///		<para>Must not be empty.</para>
+	/// </summary>
 #pragma warning disable CS0649
 	[SerializeField]
-	[NonEmpty]
 	private GameObject[] m_fingerPrintPrefabs = new GameObject[1];
 #pragma warning restore CS0649
 
