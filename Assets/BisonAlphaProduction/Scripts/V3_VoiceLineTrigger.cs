@@ -70,6 +70,7 @@ public class V3_VoiceLineTrigger : MonoBehaviour
 
 	/// <summary>
 	///		<para>The sequence of voice lines to start playing.</para>
+	///		<para>Should not be empty.</para>
 	///		<para>See also:</para>
 	///		<para><see cref="V3_VoiceLineManager.EnqueueSequence(IEnumerable{VoiceLine})"/></para>
 	///		<para><see cref="V3_VoiceLineManager.ReplaceWithSequence(IEnumerable{VoiceLine})"/></para>
@@ -82,7 +83,6 @@ public class V3_VoiceLineTrigger : MonoBehaviour
 	/// </changelog>
 	/// 
 	[Tooltip(@"The sequence of voice lines to start playing.")]
-	[NonEmpty]
 	public List<VoiceLine> voiceLines = new List<VoiceLine> { new VoiceLine() };
 
 

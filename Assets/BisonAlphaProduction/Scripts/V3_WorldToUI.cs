@@ -22,11 +22,11 @@ using UnityEngine.UI;
 ///		</log>
 /// </changelog>
 /// 
-[NonNull]
 public class V3_WorldToUI : MonoBehaviour
 {
 	/// <summary>
 	///		<para>The transform representing the point in world space.</para>
+	///		<para>Can be null.</para>
 	/// </summary>
 	/// 
 	/// <changelog>
@@ -35,8 +35,7 @@ public class V3_WorldToUI : MonoBehaviour
 	///		</log>
 	/// </changelog>
 	/// 
-	[Tooltip(@"The Target Transform represents a point in world space.")]
-	[AllowNull]
+	[Tooltip(@"The Target Transform represents a point in world space. Can be null.")]
 	public Transform target = null;
 
 

@@ -16,7 +16,6 @@ using DG.Tweening;
 ///		</log>
 /// </changelog>
 /// 
-[NonNull]
 [RequireComponent(typeof(V2_ButtonHandle))]
 public class V3_Syringe : MonoBehaviour
 {
@@ -37,6 +36,7 @@ public class V3_Syringe : MonoBehaviour
 
 	/// <summary>
 	///		<para>Name of the <see cref="Scene"/> to load after this is collected.</para>
+	///		<para>Must not be an empty string.</para>
 	/// </summary>
 	/// 
 	/// <changelog>
@@ -46,7 +46,6 @@ public class V3_Syringe : MonoBehaviour
 	/// </changelog>
 	/// 
 	[Tooltip(@"Name of the Scene to load after this is collected.")]
-	[NonEmpty]
 	public string nextSceneName = "";
 
 
@@ -70,6 +69,7 @@ public class V3_Syringe : MonoBehaviour
 	///		<para>A <see cref="GameObject"/> with effects to be displayed after this is collected.</para>
 	///		<para>Should be a child of this script's <see cref="Transform"/>.</para>
 	///		<para>When this is collected, the effects root will have its <see cref="Transform.parent"/> set to null, and activate its <see cref="GameObject"/>.</para>
+	///		<para>Must not be null.</para>
 	/// </summary>
 	/// 
 	/// <changelog>
@@ -81,7 +81,6 @@ public class V3_Syringe : MonoBehaviour
 	[Tooltip(@"A with effects to be displayed after this is collected.
 Should be a child of this script's Transform.
 When this is collected, the effects root will have its parent set to null, and activate its GameObject.")]
-	[NonNull]
 	public Transform effectsRoot;
 
 
@@ -106,6 +105,7 @@ Shrink Duration is how long it takes to shrink out of visibility.")]
 	/// <summary>
 	///		<para>An <see cref="AudioSource"/> to play when this is collected.</para>
 	///		<para>Must be a child of <see cref="effectsRoot"/>.</para>
+	///		<para>Can be null.</para>
 	/// </summary>
 	/// 
 	/// <changelog>
@@ -115,7 +115,6 @@ Shrink Duration is how long it takes to shrink out of visibility.")]
 	/// </changelog>
 	/// 
 	[Tooltip(@"An Audio Source to play when this is collected. Must be a child of Effects Root.")]
-	[AllowNull]
 	public AudioSource celebrationAudio;
 
 
@@ -123,6 +122,7 @@ Shrink Duration is how long it takes to shrink out of visibility.")]
 	/// <summary>
 	///		<para>A <see cref="VisualEffect"/> to play when this is collected.</para>
 	///		<para>Must be a child of <see cref="effectsRoot"/>.</para>
+	///		<para>Can be null.</para>
 	/// </summary>
 	/// 
 	/// <changelog>
@@ -131,7 +131,6 @@ Shrink Duration is how long it takes to shrink out of visibility.")]
 	///		</log>
 	/// </changelog>
 	/// 
-	[AllowNull]
 	[Tooltip(@"A Visual Effect to play when this is collected. Must be a child of Effects Root.")]
 	public VisualEffect vfx;
 
