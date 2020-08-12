@@ -15,8 +15,10 @@ public sealed class DelayLiteralDependable : MonoBehaviour
 {
 	public Dependable output { get; private set; }
 
+#pragma warning disable CS0649
 	[SerializeField]
 	private Dependable m_input;
+#pragma warning restore CS0649
 	public Dependable input => m_input;
 
 	public float duration = 1.0f;
