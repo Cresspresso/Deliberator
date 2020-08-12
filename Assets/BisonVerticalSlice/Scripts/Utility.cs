@@ -55,6 +55,8 @@ public static class V2_Utility
 		}
 		return children;
 	}
+
+	public static int GetCurrentSceneBuildIndex() => UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex;
 }
 
 namespace Bison.Utility
