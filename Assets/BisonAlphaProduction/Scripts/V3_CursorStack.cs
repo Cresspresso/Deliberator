@@ -3,6 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+/// <summary>
+///		<para>
+///			When the game goes into different views (e.g. world view, pause menu, vault safe UI),
+///			this singleton ensures the cursor can be moved in the appropriate view
+///			by letting other scripts push and pop the hidden state of the cursor.
+///		</para>
+///		<para>See also:</para>
+///		<para><see cref="V2_CursorController"/></para>
+///		<para><see cref="V2_PauseMenu"/></para>
+///		<para><see cref="V3_VaultSafeHud"/></para>
+/// </summary>
+/// 
+/// <changelog>
+///		<log author="Elijah Shadbolt" date="13/08/2020">
+///			<para>Added comments.</para>
+///		</log>
+/// </changelog>
+/// 
 [RequireComponent(typeof(V2_CursorController))]
 public class V3_CursorStack : MonoBehaviour
 {
@@ -19,7 +37,7 @@ public class V3_CursorStack : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Where True means it is hidden.
+	///		Where True means it is hidden.
 	/// </summary>
 	private Stack<bool> cursorHiddenStack = new Stack<bool>();
 
