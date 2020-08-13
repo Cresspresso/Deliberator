@@ -6,7 +6,7 @@ using UnityEngine;
 /// <summary>
 ///		<para>
 ///			When the game goes into different views (e.g. world view, pause menu, vault safe UI),
-///			this singleton ensures the cursor can be moved in the appropriate view
+///			this singleton ensures the player can move the cursor in specific views
 ///			by letting other scripts push and pop the hidden state of the cursor.
 ///		</para>
 ///		<para>See also:</para>
