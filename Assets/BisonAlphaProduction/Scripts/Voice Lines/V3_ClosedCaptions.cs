@@ -2,7 +2,33 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
+/// <summary>
+///		<para>Spawns <see cref="V3_Subtitle"/> UI text elements when voice lines begin playing.</para>
+///		<para>Singleton manager script.</para>
+///		<para>Attach to a <see cref="RectTransform"/> with anchor point "Bottom Center".</para>
+///		<para>Requires a <see cref="VerticalLayoutGroup"/> with:</para>
+///		<list type="bullet">
+///			<item>Child Alignment = Lower Center</item>
+///			<item>Control Child Size = both true</item>
+///			<item>Use Child Scale = both false</item>
+///			<item>Child Force Expand = both false</item>
+///		</list>
+///		<para>Requires a <see cref="LayoutElement"/> with Preferred Width enabled (e.g. 800).</para>
+///		<para>Requires a <see cref="ContentSizeFitter"/> with both Horizontal and Vertical Fit = Preferred Size.</para>
+///		<para>See also:</para>
+///		<para><see cref="V3_Subtitle"/></para>
+///		<para><see cref="V3_VoiceLineManager"/></para>
+///		<para><see cref="VoiceLine"/></para>
+/// </summary>
+/// 
+/// <changelog>
+///		<log author="Elijah Shadbolt" date="13/08/2020">
+///			<para>Added comments.</para>
+///		</log>
+/// </changelog>
+/// 
 public class V3_ClosedCaptions : MonoBehaviour
 {
 	public V3_Subtitle prefab;

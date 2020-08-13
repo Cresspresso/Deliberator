@@ -4,6 +4,37 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+///		<para>UI element for showing a closed cpation text.</para>
+///		<para>Disappears after a duration.</para>
+///		<para>Prefabs of this script are spawned by the <see cref="V3_ClosedCaptions"/> singleton manager.</para>
+///		<para>Attach to a <see cref="RectTransform"/>.</para>
+///		<para>Requires a <see cref="VerticalLayoutGroup"/> with:</para>
+///		<list type="bullet">
+///			<item>Child Alignment = Middle Center</item>
+///			<item>Control Child Size = both true</item>
+///			<item>Use Child Scale = both false</item>
+///			<item>Child Force Expand = both false</item>
+///		</list>
+///		<para>Requires a <see cref="CanvasGroup"/>. Set the inspector property <see cref="canvasGroup"/>.</para>
+///		<list type="bullet">
+///			<item>Interactable = false</item>
+///			<item>Blocks Raycasts = false</item>
+///		</list>
+///		<para>Requires a child <see cref="Text"/> component. Set the inspector property <see cref="textElement"/>.</para>
+///		<para>Can have an <see cref="Image"/> component attached.</para>
+///		<para>See also:</para>
+///		<para><see cref="V3_ClosedCaptions"/></para>
+///		<para><see cref="V3_VoiceLineManager"/></para>
+///		<para><see cref="VoiceLine"/></para>
+/// </summary>
+/// 
+/// <changelog>
+///		<log author="Elijah Shadbolt" date="13/08/2020">
+///			<para>Added comments.</para>
+///		</log>
+/// </changelog>
+/// 
 public class V3_Subtitle : MonoBehaviour
 {
 	public CanvasGroup canvasGroup;

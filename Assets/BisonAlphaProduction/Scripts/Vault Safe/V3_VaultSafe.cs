@@ -3,6 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+/// <summary>
+///		<para>A safe which the player can open by entering in the correct combination of integers.</para>
+///		<para>
+///			Requires an <see cref="Animator"/> which starts disabled in the inspector.
+///			It will be enabled and start playing when the safe is opened.
+///		</para>
+///		<para>See also:</para>
+///		<para><see cref="V3_VaultSafeHud"/></para>
+/// </summary>
+/// 
+/// <changelog>
+///		<log author="Elijah Shadbolt" date="13/08/2020">
+///			<para>Added comments.</para>
+///		</log>
+/// </changelog>
+/// 
 [RequireComponent(typeof(V2_ButtonHandle))]
 public class V3_VaultSafe : MonoBehaviour
 {

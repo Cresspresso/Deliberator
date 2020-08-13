@@ -4,10 +4,31 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+///		<para>
+///			The user interface for entering the combination to unlock a <see cref="V3_VaultSafe"/>
+///			that the player is interacting with.
+///		</para>
+///		<para>See also:</para>
+///		<para><see cref="V3_VaultSafe"/></para>
+///		<para><see cref="V3_VaultSafeField"/></para>
+/// </summary>
+/// 
+/// <changelog>
+///		<log author="Elijah Shadbolt" date="13/08/2020">
+///			<para>Added comments.</para>
+///		</log>
+/// </changelog>
+/// 
 public class V3_VaultSafeHud : MonoBehaviour
 {
 	public GameObject visuals;
+
+
+
 	private V2_CursorController cursorController;
+
+
 
 #pragma warning disable CS0649
 	[SerializeField]
@@ -15,11 +36,15 @@ public class V3_VaultSafeHud : MonoBehaviour
 #pragma warning restore CS0649
 	public Button submitButton => m_submitButton;
 
+
+
 #pragma warning disable CS0649
 	[SerializeField]
 	private Button m_cancelButton;
 #pragma warning restore CS0649
 	public Button cancelButton => m_cancelButton;
+
+
 
 #pragma warning disable CS0649
 	[SerializeField]
@@ -27,7 +52,11 @@ public class V3_VaultSafeHud : MonoBehaviour
 #pragma warning restore CS0649
 	public V3_VaultSafeField[] fields => m_fields;
 
+
+
 	public V3_VaultSafe currentSafe { get; private set; }
+
+
 
 	private void Awake()
 	{
@@ -38,6 +67,8 @@ public class V3_VaultSafeHud : MonoBehaviour
 
 		visuals.SetActive(false);
 	}
+
+
 
 	private void OnSubmit()
 	{
@@ -62,10 +93,14 @@ public class V3_VaultSafeHud : MonoBehaviour
 		}
 	}
 
+
+
 	private void OnCancel()
 	{
 		Hide();
 	}
+
+
 
 	public void Show(V3_VaultSafe safe)
 	{
@@ -91,6 +126,8 @@ public class V3_VaultSafeHud : MonoBehaviour
 			fields[i].gameObject.SetActive(i < numFields);
 		}
 	}
+
+
 
 	public void Hide()
 	{
