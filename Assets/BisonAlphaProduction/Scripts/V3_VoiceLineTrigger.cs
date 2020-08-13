@@ -125,7 +125,7 @@ public class V3_VoiceLineTrigger : MonoBehaviour
 
 
 	/// <summary>
-	///		<para>Unity Message Method: <a href="https://docs.unity3d.com/ScriptReference/MonoBehaviour.OnTriggerEnter.html"></a></para>
+	///		<para>Unity Message Method: <a href="https://docs.unity3d.com/ScriptReference/MonoBehaviour.OnTriggerEnter.html"/></para>
 	/// </summary>
 	/// 
 	/// <changelog>

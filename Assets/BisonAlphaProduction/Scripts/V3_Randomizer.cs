@@ -184,7 +184,7 @@ public abstract class V3_Randomizer<TValue, TSparRandomizerDatabase> : MonoBehav
 
 
 	/// <summary>
-	///		<para>Unity Message Method: <a href="https://docs.unity3d.com/ScriptReference/MonoBehaviour.Awake.html"></a></para>
+	///		<para>Unity Message Method: <a href="https://docs.unity3d.com/ScriptReference/MonoBehaviour.Awake.html"/></para>
 	///		<para>
 	///			Populates the <see cref="generatedValue"/> property
 	///			either by loading it from the previous iteration of the same scene,
@@ -243,7 +243,7 @@ public abstract class V3_Randomizer<TValue, TSparRandomizerDatabase> : MonoBehav
 
 
 	/// <summary>
-	///		<para>Unity Message Method: <a href="https://docs.unity3d.com/ScriptReference/MonoBehaviour.OnDestroy.html"></a></para>
+	///		<para>Unity Message Method: <a href="https://docs.unity3d.com/ScriptReference/MonoBehaviour.OnDestroy.html"/></para>
 	/// </summary>
 	/// 
 	/// <changelog>

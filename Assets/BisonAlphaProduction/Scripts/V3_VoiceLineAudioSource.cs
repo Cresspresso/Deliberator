@@ -91,7 +91,7 @@ public class V3_VoiceLineAudioSource : MonoBehaviour
 
 
 	/// <summary>
-	///		<para>Unity Message Method: <a href="https://docs.unity3d.com/ScriptReference/MonoBehaviour.Start.html"></a></para>
+	///		<para>Unity Message Method: <a href="https://docs.unity3d.com/ScriptReference/MonoBehaviour.Start.html"/></para>
 	/// </summary>
 	/// 
 	/// <changelog>
@@ -116,7 +116,7 @@ public class V3_VoiceLineAudioSource : MonoBehaviour
 
 
 	/// <summary>
-	///		<para>Unity Message Method: <a href="https://docs.unity3d.com/ScriptReference/MonoBehaviour.OnDestroy.html"></a></para>
+	///		<para>Unity Message Method: <a href="https://docs.unity3d.com/ScriptReference/MonoBehaviour.OnDestroy.html"/></para>
 	/// </summary>
 	/// 
 	/// <changelog>

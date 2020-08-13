@@ -41,7 +41,7 @@ public class V3_VoiceLineManager : MonoBehaviour
 
 
 	/// <summary>
-	///		<para>Unity Message Method: <a href="https://docs.unity3d.com/ScriptReference/MonoBehaviour.Awake.html"></a></para>
+	///		<para>Unity Message Method: <a href="https://docs.unity3d.com/ScriptReference/MonoBehaviour.Awake.html"/></para>
 	/// </summary>
 	/// 
 	/// <changelog>
@@ -232,7 +232,7 @@ public class V3_VoiceLineManager : MonoBehaviour
 
 
 	/// <summary>
-	///		<para>Unity Message Method: <a href="https://docs.unity3d.com/ScriptReference/MonoBehaviour.Update.html"></a></para>
+	///		<para>Unity Message Method: <a href="https://docs.unity3d.com/ScriptReference/MonoBehaviour.Update.html"/></para>
 	/// </summary>
 	/// 
 	/// <changelog>
