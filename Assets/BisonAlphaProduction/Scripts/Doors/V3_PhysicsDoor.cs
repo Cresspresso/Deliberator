@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+/// <summary>
+///		<para>Failed experiment for opening doors both ways using physics joints.</para>
+/// </summary>
 [RequireComponent(typeof(V2_ButtonHandle))]
 public class V3_PhysicsDoor : MonoBehaviour
 {
