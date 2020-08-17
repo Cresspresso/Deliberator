@@ -3,8 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-/// <author>Elijah Shadbolt</author>
-/// <stage>Alpha Production</stage>
+/// <summary>
+///		<para>Displays UI elements depending on whether the player is looking at an interactable <see cref="V2_Handle"/>.</para>
+///		<para>Has a cusror sprite.</para>
+///		<para>Has hover info text.</para>
+///		<para>The hover info text follows the <see cref="V2_Handle"/> being hovered.</para>
+///		<para>See also:</para>
+///		<para><see cref="V2_Handle"/></para>
+///		<para><see cref="V2_HandleController"/></para>
+///		<para><see cref="V2_HandleHoverInfo"/></para>
+/// </summary>
+/// 
+/// <changelog>
+///		<log author="Elijah Shadbolt" date="13/08/2020">
+///			<para>Added comments.</para>
+///		</log>
+/// </changelog>
+/// 
 public class V3_HandleInfoDisplay : MonoBehaviour
 {
 	public Image cursorImage;

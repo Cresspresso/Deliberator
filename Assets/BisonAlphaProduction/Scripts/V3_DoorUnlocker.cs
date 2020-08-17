@@ -4,6 +4,7 @@ using UnityEngine;
 
 /// <author>Elijah Shadbolt</author>
 /// <stage>Alpha Production</stage>
+/// TODO delete this script, or repurpose for door rework
 public class V3_DoorUnlocker : MonoBehaviour
 {
 	public V2_DoorOpener door;

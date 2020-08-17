@@ -58,7 +58,7 @@ public sealed class V3_FingerprintNumpadRandomizer : V3_Randomizer<string, V3_Sp
 
 
 	/// <summary>
-	///		<para>Unity Message Method: <a href="https://docs.unity3d.com/ScriptReference/MonoBehaviour.Awake.html"></a></para>
+	///		<para>Unity Message Method: <a href="https://docs.unity3d.com/ScriptReference/MonoBehaviour.Awake.html"/></para>
 	///		<para>See also:</para>
 	///		<para><see cref="V3_Randomizer{TValue, TSparRandomizerDatabase}.Awake"/></para>
 	/// </summary>

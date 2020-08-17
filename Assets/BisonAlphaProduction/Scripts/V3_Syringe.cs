@@ -137,7 +137,7 @@ Shrink Duration is how long it takes to shrink out of visibility.")]
 
 
 	/// <summary>
-	///		<para>Unity Message Method: <a href="https://docs.unity3d.com/ScriptReference/MonoBehaviour.Awake.html"></a></para>
+	///		<para>Unity Message Method: <a href="https://docs.unity3d.com/ScriptReference/MonoBehaviour.Awake.html"/></para>
 	/// </summary>
 	/// 
 	/// <changelog>
@@ -220,7 +220,7 @@ Shrink Duration is how long it takes to shrink out of visibility.")]
 
 
 	/// <summary>
-	///		<para>Unity Message Method: <a href="https://docs.unity3d.com/ScriptReference/MonoBehaviour.OnDestroy.html"></a></para>
+	///		<para>Unity Message Method: <a href="https://docs.unity3d.com/ScriptReference/MonoBehaviour.OnDestroy.html"/></para>
 	/// </summary>
 	/// 
 	/// <changelog>
