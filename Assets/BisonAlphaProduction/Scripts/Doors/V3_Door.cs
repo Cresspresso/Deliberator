@@ -106,6 +106,8 @@ public class V3_Door : MonoBehaviour
 	/// 
 	public DoorState state { get; private set; } = DoorState.Closed;
 
+	public bool isOpen => state == DoorState.Opened || state == DoorState.Opening;
+
 
 
 	/// <summary>
@@ -218,7 +220,6 @@ public class V3_Door : MonoBehaviour
 			{
 				angle = lockedAnimAngleAmplitude
 					* lockedAnimAngleCurve.Evaluate(lockedAnimLerpValue);
-				Debug.Log(angle);
 			}
 		}
 
@@ -228,6 +229,7 @@ public class V3_Door : MonoBehaviour
 			case DoorState.Opened:
 			default:
 				break;
+
 			case DoorState.Opening:
 			case DoorState.Closing:
 				{
@@ -280,20 +282,13 @@ public class V3_Door : MonoBehaviour
 	/// </summary>
 	public void TryToClose()
 	{
-		switch (state)
+		if (isOpen)
 		{
-			case DoorState.Opened:
-			case DoorState.Opening:
-				{
-					StopLockedAnim();
-					state = DoorState.Closing;
-					direction = Direction.None;
-					V2_Utility.TryElseLog(manager, () => manager.OnClosing(this));
-					V2_Utility.TryElseLog(this, () => InvokeClosing());
-				}
-				return;
-			default:
-				return;
+			StopLockedAnim();
+			state = DoorState.Closing;
+			direction = Direction.None;
+			V2_Utility.TryElseLog(manager, () => manager.OnClosing(this));
+			V2_Utility.TryElseLog(this, () => InvokeClosing());
 		}
 	}
 
@@ -311,20 +306,13 @@ public class V3_Door : MonoBehaviour
 	/// </summary>
 	public void TryToOpen(Direction direction)
 	{
-		switch (state)
+		if (!isOpen)
 		{
-			case DoorState.Closing:
-			case DoorState.Closed:
-				{
-					StopLockedAnim();
-					state = DoorState.Opening;
-					this.direction = direction;
-					V2_Utility.TryElseLog(manager, () => manager.OnOpening(this));
-					V2_Utility.TryElseLog(this, () => InvokeOpening());
-				}
-				return;
-			default:
-				return;
+			StopLockedAnim();
+			state = DoorState.Opening;
+			this.direction = direction;
+			V2_Utility.TryElseLog(manager, () => manager.OnOpening(this));
+			V2_Utility.TryElseLog(this, () => InvokeOpening());
 		}
 	}
 

@@ -48,19 +48,22 @@ public class V3_DoorManager : MonoBehaviour
 		}
 	}
 
+	[SerializeField]
+	private bool m_openOnUnlocked = true;
+	public bool openOnUnlocked => m_openOnUnlocked;
+
 
 
 	private void OnDependablePoweredChanged(bool isUnlocked)
 	{
-		Debug.Log("Changed");
 		isLocked = !isUnlocked;
 		if (isLocked)
 		{
-			TryToClose();
+			V2_Utility.TryElseLog(this, InvokeLocked);
 		}
 		else
 		{
-			TryToOpen(FindObjectOfType<V2_FirstPersonCharacterController>());
+			V2_Utility.TryElseLog(this, InvokeUnlocked);
 		}
 	}
 
@@ -133,6 +136,7 @@ public class V3_DoorManager : MonoBehaviour
 
 
 	public DoorState state { get; private set; } = DoorState.Closed;
+	public bool isOpen => state == DoorState.Opened || state == DoorState.Opening;
 
 
 
@@ -168,6 +172,33 @@ public class V3_DoorManager : MonoBehaviour
 
 
 
+	private void InvokeLocked()
+	{
+		TryToClose();
+	}
+
+
+
+	private void InvokeUnlocked()
+	{
+		if (openOnUnlocked)
+		{
+			TryToOpen(FindObjectOfType<V2_FirstPersonCharacterController>());
+		}
+	}
+
+
+
+	public void PlayLockedAnim()
+	{
+		foreach (var door in m_doors)
+		{
+			door.PlayLockedAnim();
+		}
+	}
+
+
+
 	public void TryToOpen(V2_FirstPersonCharacterController fpcc) => TryToOpen(fpcc.head.forward);
 
 
@@ -176,31 +207,18 @@ public class V3_DoorManager : MonoBehaviour
 	{
 		if (isLocked)
 		{
-			foreach (var door in m_doors)
-			{
-				door.PlayLockedAnim();
-			}
+			PlayLockedAnim();
 			return;
 		}
 
-		switch (state)
+		if (!isOpen)
 		{
-			case DoorState.Opened:
-			case DoorState.Opening:
-			default:
-				break;
-
-			case DoorState.Closed:
-			case DoorState.Closing:
-				{
-					state = DoorState.Opening;
-					foreach (var door in m_doors)
-					{
-						door.TryToOpen(fpccHeadForward);
-					}
-					V2_Utility.TryElseLog(this, InvokeOpening);
-				}
-				break;
+			state = DoorState.Opening;
+			foreach (var door in m_doors)
+			{
+				door.TryToOpen(fpccHeadForward);
+			}
+			V2_Utility.TryElseLog(this, InvokeOpening);
 		}
 	}
 
@@ -208,24 +226,14 @@ public class V3_DoorManager : MonoBehaviour
 
 	public void TryToClose()
 	{
-		switch (state)
+		if (isOpen)
 		{
-			case DoorState.Closed:
-			case DoorState.Closing:
-			default:
-				return;
-
-			case DoorState.Opened:
-			case DoorState.Opening:
-				{
-					state = DoorState.Closing;
-					foreach (var door in m_doors)
-					{
-						door.TryToClose();
-					}
-					V2_Utility.TryElseLog(this, InvokeClosing);
-				}
-				return;
+			state = DoorState.Closing;
+			foreach (var door in m_doors)
+			{
+				door.TryToClose();
+			}
+			V2_Utility.TryElseLog(this, InvokeClosing);
 		}
 	}
 
@@ -233,20 +241,13 @@ public class V3_DoorManager : MonoBehaviour
 
 	public void TryToToggle(Vector3 fpccHeadForward)
 	{
-		switch (state)
+		if (isOpen)
 		{
-			case DoorState.Closed:
-			case DoorState.Closing:
-				{
-					TryToOpen(fpccHeadForward);
-				}
-				break;
-			case DoorState.Opened:
-			case DoorState.Opening:
-				{
-					TryToClose();
-				}
-				break;
+			TryToClose();
+		}
+		else
+		{
+			TryToOpen(fpccHeadForward);
 		}
 	}
 }

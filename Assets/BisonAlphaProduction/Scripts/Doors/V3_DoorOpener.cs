@@ -26,24 +26,117 @@ public class V3_DoorOpener : MonoBehaviour
 		Toggle,
 		Open,
 		Close,
+		LockedLabel,
 	}
 	public Mode mode = Mode.Toggle;
 
-	private Action<V3_DoorManager> GetAction(Vector3 fpccHeadForward)
+	private void Apply(V3_DoorManager door, Vector3 fpccHeadForward)
 	{
 		switch (mode)
 		{
-			case Mode.Toggle: return door => door.TryToToggle(fpccHeadForward);
-			case Mode.Open: return door => door.TryToOpen(fpccHeadForward);
-			case Mode.Close: return door => door.TryToClose();
-			default: throw new Exception("invalid enum value");
+			case Mode.Toggle:
+				door.TryToToggle(fpccHeadForward);
+				break;
+
+			case Mode.Open:
+				door.TryToOpen(fpccHeadForward);
+				break;
+
+			case Mode.Close:
+				door.TryToClose();
+				break;
+
+			case Mode.LockedLabel:
+				{
+					if (door.isLocked)
+					{
+						door.PlayLockedAnim();
+					}
+					/// else do nothing
+				}
+				break;
+
+			default:
+				throw new Exception("invalid enum value");
 		}
 	}
 
 
 
 	[SerializeField]
-	private V3_DoorManager[] m_doors = new V3_DoorManager[1];
+	private V3_DoorManager m_door;
+	public V3_DoorManager door => m_door;
+
+
+
+	[SerializeField]
+	private V2_HandleHoverInfo m_lockedInfo = new V2_HandleHoverInfo("Locked");
+	public V2_HandleHoverInfo lockedInfo => m_lockedInfo;
+
+	[SerializeField]
+	private V2_HandleHoverInfo m_openInfo = new V2_HandleHoverInfo("Open");
+	public V2_HandleHoverInfo openInfo => m_openInfo;
+
+	[SerializeField]
+	private V2_HandleHoverInfo m_closeInfo = new V2_HandleHoverInfo("Close");
+	public V2_HandleHoverInfo closeInfo => m_closeInfo;
+
+	private void Update()
+	{
+		var handle = buttonHandle.handle;
+		if (door.isLocked)
+		{
+			handle.enabled = true;
+			handle.hoverInfo = lockedInfo;
+		}
+		else
+		{
+			switch (mode)
+			{
+				default:
+				case Mode.Toggle:
+					{
+						handle.enabled = true;
+						handle.hoverInfo = door.isOpen ? closeInfo : openInfo;
+					}
+					break;
+
+				case Mode.Open:
+					{
+						if (door.isOpen)
+						{
+							handle.enabled = false;
+						}
+						else
+						{
+							handle.enabled = true;
+							handle.hoverInfo = openInfo;
+						}
+					}
+					break;
+
+				case Mode.Close:
+					{
+						if (door.isOpen)
+						{
+							handle.enabled = true;
+							handle.hoverInfo = closeInfo;
+						}
+						else
+						{
+							handle.enabled = false;
+						}
+					}
+					break;
+
+				case Mode.LockedLabel:
+					{
+						handle.enabled = false;
+					}
+					break;
+			}
+		}
+	}
 
 
 
@@ -77,12 +170,16 @@ public class V3_DoorOpener : MonoBehaviour
 	private void OnClick(V2_ButtonHandle buttonHandle, V2_HandleController handleController)
 	{
 		var fpcc = handleController.GetComponentInParent<V2_FirstPersonCharacterController>();
-		var action = GetAction(fpcc.head.forward);
-		foreach (var door in m_doors) action(door);
+		Apply(door, fpcc.head.forward);
 	}
 
 	private void Awake()
 	{
 		PrepareButtonHandle();
+
+		if (!door)
+		{
+			Debug.LogError("Door is null", this);
+		}
 	}
 }
