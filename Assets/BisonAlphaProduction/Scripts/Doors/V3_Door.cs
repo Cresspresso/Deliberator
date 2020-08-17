@@ -229,7 +229,7 @@ public class V3_Door : MonoBehaviour
 			}
 			else
 			{
-				angle = lockedAnimAngleAmplitude
+				angle = lockedAnimAngleAmplitude * (isHingeOnLeft ? -1 : 1)
 					* lockedAnimAngleCurve.Evaluate(lockedAnimLerpValue);
 			}
 		}
