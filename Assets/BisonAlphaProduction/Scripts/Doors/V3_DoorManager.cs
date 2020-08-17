@@ -1,0 +1,252 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+
+/// <summary>
+///		<para>A set of doors which can be locked or unlocked by the <see cref="Dependable"/>.</para>
+///		<para>Could be a single door or double doors. There is an unlimited number of doors.</para>
+///		<para>See also:</para>
+///		<para><see cref="V3_Door"/></para>
+/// </summary>
+/// 
+/// <changelog>
+///		<log author="Elijah Shadbolt" date="17/08/2020">
+///			<para>Created this script as a replacement for <see cref="V2_DoorOpener"/> by Elijah and Lorenzo.</para>
+///		</log>
+/// </changelog>
+/// 
+[RequireComponent(typeof(Dependable))]
+public class V3_DoorManager : MonoBehaviour
+{
+	private Dependable m_dependable;
+
+	/// <summary>
+	///		<para>Determines whether this door is Locked or not.</para>
+	/// </summary>
+	public Dependable dependable {
+		get
+		{
+			PrepareDependable();
+			return m_dependable;
+		}
+	}
+
+	private void PrepareDependable()
+	{
+		if (!m_dependable)
+		{
+			m_dependable = GetComponent<Dependable>();
+			if (!m_dependable)
+			{
+				Debug.LogError("ButtonHandle is null", this);
+			}
+			else
+			{
+				m_dependable.onChanged.AddListener(OnDependablePoweredChanged);
+			}
+		}
+	}
+
+
+
+	private void OnDependablePoweredChanged(bool isUnlocked)
+	{
+		Debug.Log("Changed");
+		isLocked = !isUnlocked;
+		if (isLocked)
+		{
+			TryToClose();
+		}
+		else
+		{
+			TryToOpen(FindObjectOfType<V2_FirstPersonCharacterController>());
+		}
+	}
+
+
+
+	[Tooltip("Children of this DoorOpener.")]
+	[SerializeField]
+	private V3_Door[] m_doors = new V3_Door[1];
+	public IEnumerable<V3_Door> doors => m_doors;
+
+	[SerializeField]
+	private float m_initialSoundDelay = 0.05f;
+
+
+
+	public void OnOpening(V3_Door door)
+	{
+
+	}
+
+
+
+	public void OnClosing(V3_Door door)
+	{
+
+	}
+
+
+
+	public void OnOpened(V3_Door door)
+	{
+		if (m_doors.All(d => d.state == DoorState.Opened))
+		{
+			state = DoorState.Opened;
+			V2_Utility.TryElseLog(this, InvokeOpened);
+		}
+	}
+
+
+
+	public void OnClosed(V3_Door door)
+	{
+		if (m_doors.All(d => d.state == DoorState.Closed))
+		{
+			state = DoorState.Closed;
+			V2_Utility.TryElseLog(this, InvokeClosed);
+		}
+	}
+
+
+
+	private void Awake()
+	{
+		PrepareDependable();
+
+		for (int i = 0; i < m_doors.Length; ++i)
+		{
+			var door = m_doors[i];
+
+			if (door.manager)
+			{
+				Debug.LogError($"'{name}': Door '{door.name}' already has a manager '{door.manager.name}'", this);
+			}
+			door.manager = this;
+
+			door.sounds.soundDelay = m_initialSoundDelay * i;
+		}
+	}
+
+
+
+	public DoorState state { get; private set; } = DoorState.Closed;
+
+
+
+	public bool isLocked { get; private set; }
+
+
+
+	private void InvokeOpened()
+	{
+
+	}
+
+
+
+	private void InvokeClosed()
+	{
+
+	}
+
+
+
+	private void InvokeOpening()
+	{
+
+	}
+
+
+
+	private void InvokeClosing()
+	{
+
+	}
+
+
+
+	public void TryToOpen(V2_FirstPersonCharacterController fpcc) => TryToOpen(fpcc.head.forward);
+
+
+
+	public void TryToOpen(Vector3 fpccHeadForward)
+	{
+		if (isLocked)
+		{
+			foreach (var door in m_doors)
+			{
+				door.PlayLockedAnim();
+			}
+			return;
+		}
+
+		switch (state)
+		{
+			case DoorState.Opened:
+			case DoorState.Opening:
+			default:
+				break;
+
+			case DoorState.Closed:
+			case DoorState.Closing:
+				{
+					state = DoorState.Opening;
+					foreach (var door in m_doors)
+					{
+						door.TryToOpen(fpccHeadForward);
+					}
+					V2_Utility.TryElseLog(this, InvokeOpening);
+				}
+				break;
+		}
+	}
+
+
+
+	public void TryToClose()
+	{
+		switch (state)
+		{
+			case DoorState.Closed:
+			case DoorState.Closing:
+			default:
+				return;
+
+			case DoorState.Opened:
+			case DoorState.Opening:
+				{
+					state = DoorState.Closing;
+					foreach (var door in m_doors)
+					{
+						door.TryToClose();
+					}
+					V2_Utility.TryElseLog(this, InvokeClosing);
+				}
+				return;
+		}
+	}
+
+
+
+	public void TryToToggle(Vector3 fpccHeadForward)
+	{
+		switch (state)
+		{
+			case DoorState.Closed:
+			case DoorState.Closing:
+				{
+					TryToOpen(fpccHeadForward);
+				}
+				break;
+			case DoorState.Opened:
+			case DoorState.Opening:
+				{
+					TryToClose();
+				}
+				break;
+		}
+	}
+}
