@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(V2_NumPad))]
+[RequireComponent(typeof(Dependable))]
 public class V2_NumPadLock : MonoBehaviour
 {
 	[SerializeField]
@@ -51,6 +52,12 @@ public class V2_NumPadLock : MonoBehaviour
 	{
 		if (code == passcode)
 		{
+			var dep = GetComponent<Dependable>();
+			if (dep)
+			{
+				dep.firstLiteral = true;
+			}
+
 			onCorrectSubmitted.Invoke();
 
 			correctSound.Play();
