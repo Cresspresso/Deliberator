@@ -35,6 +35,10 @@ public sealed class V3_FingerprintNumpadRandomizer : V3_Randomizer<string, V3_Sp
 
 
 
+	public int numAvailableCharacters = 2;
+
+
+
 	/// <summary>
 	///		<para>Must not be empty.</para>
 	/// </summary>
@@ -140,25 +144,40 @@ public sealed class V3_FingerprintNumpadRandomizer : V3_Randomizer<string, V3_Sp
 	/// 
 	protected override string Generate()
 	{
-		var desiredCharactersCount = 2;
+		var desiredPasscodeLength = numpadLock.pad.maxLength;
+
+		var desiredCharactersCount = Mathf.Clamp(numAvailableCharacters, 1, desiredPasscodeLength);
 
 		/// Generate a set of two digits.
-		var usableCharacters = new List<char>("0123456789");
-		int e = usableCharacters.Count - desiredCharactersCount;
-		for (int rcount = e; rcount != 0; --rcount)
+		var availableCharacters = new List<char>("0123456789");
+		for (int r = availableCharacters.Count; r != desiredCharactersCount; --r)
 		{
-			usableCharacters.RemoveAt(Random.Range(0, rcount));
+			int j = Random.Range(0, r);
+			availableCharacters.RemoveAt(j);
 		}
-		Debug.Assert(usableCharacters.Count == desiredCharactersCount, this);
+		Debug.Assert(availableCharacters.Count == desiredCharactersCount, this);
 
-		/// Generate a random combination of those digits.
-		/// (set of usable characters) choose (passcode length)
-		var count = numpadLock.pad.maxLength;
-		var passcode = "";
-		for (int i = 0; i < count; i++)
+		/// Generate a random combination of those digits,
+		/// with each digit occuring at least once.
+		var passcode = new List<char>();
+
+		/// Shuffle available characters for at least one occurrence per char.
+		var unusedCharacters = new List<char>(availableCharacters);
+		for (int r = desiredCharactersCount; r != 0; --r)
 		{
-			passcode += usableCharacters[Random.Range(0, desiredCharactersCount)];
+			int j = Random.Range(0, r);
+			passcode.Add(unusedCharacters[j]);
+			unusedCharacters.RemoveAt(j);
 		}
-		return passcode;
+
+		/// Insert remaining characters randomly.
+		for (int i = desiredCharactersCount; i < desiredPasscodeLength; ++i)
+		{
+			int j = Random.Range(0, desiredCharactersCount);
+			int insertionIndex = Random.Range(0, passcode.Count);
+			passcode.Insert(insertionIndex, availableCharacters[j]);
+		}
+
+		return new string(passcode.ToArray());
 	}
 }

@@ -155,6 +155,17 @@ public class V3_Door : MonoBehaviour
 		}
 	}
 
+
+
+	[Tooltip("When looking forwards (along its local Z axis),"
+		+ " is the hinge on the left side of the door?")]
+	[SerializeField]
+	private bool isHingeOnLeft = false;
+
+	public enum OpeningMode { AwayFromPlayer, TowardsPlayer, Clockwise, Anticlockwise }
+	[SerializeField]
+	private OpeningMode openingMode = OpeningMode.AwayFromPlayer;
+
 	[SerializeField]
 	float m_angleClockwise = 90;
 	public float angleClockwise => m_angleClockwise;
@@ -218,7 +229,7 @@ public class V3_Door : MonoBehaviour
 			}
 			else
 			{
-				angle = lockedAnimAngleAmplitude
+				angle = lockedAnimAngleAmplitude * (isHingeOnLeft ? -1 : 1)
 					* lockedAnimAngleCurve.Evaluate(lockedAnimLerpValue);
 			}
 		}
@@ -318,15 +329,36 @@ public class V3_Door : MonoBehaviour
 
 
 
-	public Direction GetDesiredDirection(Vector3 fpccHeadForward)
+	private Direction GetDirectionAwayFromPlayer(Vector3 fpccHeadForward)
 	{
 		if (Vector3.Dot(fpccHeadForward, transform.forward) < 0)
 		{
-			return Direction.Anticlockwise;
+			return isHingeOnLeft ? Direction.Clockwise : Direction.Anticlockwise;
 		}
 		else
 		{
-			return Direction.Clockwise;
+			return isHingeOnLeft ? Direction.Anticlockwise : Direction.Clockwise;
+		}
+	}
+
+
+
+	public Direction GetDesiredDirection(Vector3 fpccHeadForward)
+	{
+		switch (openingMode)
+		{
+			case OpeningMode.AwayFromPlayer:
+			default:
+				return GetDirectionAwayFromPlayer(fpccHeadForward);
+
+			case OpeningMode.TowardsPlayer:
+				return GetDirectionAwayFromPlayer(-fpccHeadForward);
+
+			case OpeningMode.Clockwise:
+				return Direction.Clockwise;
+
+			case OpeningMode.Anticlockwise:
+				return Direction.Anticlockwise;
 		}
 	}
 

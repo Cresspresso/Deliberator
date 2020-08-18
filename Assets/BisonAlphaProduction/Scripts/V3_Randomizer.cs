@@ -218,24 +218,24 @@ public abstract class V3_Randomizer<TValue, TSparRandomizerDatabase> : MonoBehav
 			m_generatorID = Mathf.RoundToInt(transform.position.sqrMagnitude);
 		}
 
-		if (s_currentlyAlive.Contains(m_generatorID))
+		if (s_currentlyAlive.Contains(generatorID))
 		{
 			Debug.LogError("Randomizer with same ID already exists in the scene.", this);
 		}
 		else
 		{
 			isAlive = true;
-			s_currentlyAlive.Add(m_generatorID);
+			s_currentlyAlive.Add(generatorID);
 
 			var database = V3_SparGameObject.FindOrCreateComponent<TSparRandomizerDatabase>();
-			if (database.dictionary.TryGetValue(m_generatorID, out var value))
+			if (database.dictionary.TryGetValue(generatorID, out var value))
 			{
 				generatedValue = value;
 			}
 			else
 			{
 				generatedValue = Generate();
-				database.dictionary.Add(m_generatorID, generatedValue);
+				database.dictionary.Add(generatorID, generatedValue);
 			}
 		}
 	}
@@ -258,7 +258,7 @@ public abstract class V3_Randomizer<TValue, TSparRandomizerDatabase> : MonoBehav
 		if (isAlive)
 		{
 			/// Unregister this script's ID.
-			s_currentlyAlive.Remove(m_generatorID);
+			s_currentlyAlive.Remove(generatorID);
 		}
 	}
 }
