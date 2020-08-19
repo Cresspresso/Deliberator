@@ -56,10 +56,14 @@ public class V2_UltraVioletRendererAddon : MonoBehaviour
 			uviLight = FindObjectOfType<V2_UltraVioletLight>();
 		}
 
+#if UNITY_EDITOR
+		bool has = false;
+#else
 		bool has = (bool)uviLight;
+#endif
 		var mat = rend.material;
-		mat.SetVector("uviLightPosition", has ? uviLight.transform.position : -Vector3.one * 100000);
-		mat.SetVector("uviLightDirection", has ? uviLight.transform.forward : Vector3.down);
+		mat.SetVector("uviLightPosition", has ? uviLight.transform.position : transform.TransformPoint(-1.0f * Vector3.forward));
+		mat.SetVector("uviLightDirection", has ? uviLight.transform.forward : transform.forward);
 		mat.SetFloat("uviSpotAngle", has ? uviLight.spotAngle : 30.0f);
 		mat.SetFloat("uviInnerSpotAngleFraction", has ? uviLight.innerSpotAnglePercent * 0.00999f : 0.0f);
 		mat.SetFloat("uviRange", has ? uviLight.range : 0.0f);
