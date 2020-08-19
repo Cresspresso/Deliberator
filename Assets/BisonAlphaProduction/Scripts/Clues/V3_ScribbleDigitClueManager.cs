@@ -16,12 +16,10 @@ public class V3_ScribbleDigitClueManagerData
 	///		</para>
 	/// </summary>
 	public readonly int[] locationIndexForClues;
-	public readonly int[] textureIndexForClues;
 
-	public V3_ScribbleDigitClueManagerData(int[] locationIndexForClues, int[] textureIndexForClues)
+	public V3_ScribbleDigitClueManagerData(int[] locationIndexForClues)
 	{
 		this.locationIndexForClues = locationIndexForClues;
-		this.textureIndexForClues = textureIndexForClues;
 	}
 }
 
@@ -74,7 +72,6 @@ public class V3_ScribbleDigitClueManager : V3_Randomizer<V3_ScribbleDigitClueMan
 		}
 
 		var locationIndexForClues = new int[sequenceClues.Count];
-		var textureIndexForClues = new int[sequenceClues.Count];
 		for (int i = 0; i < sequenceClues.Count; ++i)
 		{
 			if (locset.Count == 0)
@@ -83,15 +80,9 @@ public class V3_ScribbleDigitClueManager : V3_Randomizer<V3_ScribbleDigitClueMan
 				break;
 			}
 
-			/// randomly select a character from the passcode for the clue
+			/// randomly select a location index for the clue
 			int r = Random.Range(0, locset.Count);
-
-			int loc = locset[r];
-			locationIndexForClues[i] = loc;
-
-			int digit = passcode[loc] - '0';
-			textureIndexForClues[i] = digit;
-
+			locationIndexForClues[i] = locset[r];
 			locset.RemoveAt(r);
 		}
 		if (locset.Count != 0)
@@ -99,7 +90,7 @@ public class V3_ScribbleDigitClueManager : V3_Randomizer<V3_ScribbleDigitClueMan
 			Debug.LogError("not enough sequence clues", this);
 		}
 
-		return new V3_ScribbleDigitClueManagerData(locationIndexForClues, textureIndexForClues);
+		return new V3_ScribbleDigitClueManagerData(locationIndexForClues);
 	}
 
 	private void Start()
@@ -108,9 +99,10 @@ public class V3_ScribbleDigitClueManager : V3_Randomizer<V3_ScribbleDigitClueMan
 		{
 			for (int i = 0; i < sequenceClues.Count; ++i)
 			{
+				int locationIndex = generatedValue.locationIndexForClues[i];
 				sequenceClues[i].Init(
-					generatedValue.locationIndexForClues[i],
-					generatedValue.textureIndexForClues[i]
+					locationIndex,
+					numpadLock.passcode[locationIndex] - '0'
 				);
 			}
 		}
