@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public abstract class V3_INumPadLockRandomizer : V3_Randomizer<int[], V3_NumPadLockRandomizerSparDb>
+public abstract class V3_INumPadLockRandomizer : V3_Randomizer<int[], V3_SparDb_NumPadLockRandomizer>
 {
 	[SerializeField]
 	private V2_NumPadLock m_numpadLock;

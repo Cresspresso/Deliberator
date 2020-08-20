@@ -12,39 +12,67 @@ using UnityEngine;
 ///		<log author="Elijah Shadbolt" date="19/08/2020">
 ///			<para>Added this script.</para>
 ///		</log>
+///		<log author="Elijah Shadbolt" date="20/08/2020">
+///			<para>Added `mapVariableIDFromPasscodeDigit`.</para>
+///		</log>
 /// </changelog>
 /// 
 public class V3_ScribbleSequenceClue : MonoBehaviour
 {
+#pragma warning disable CS0649
 	[SerializeField]
-	private Renderer m_symbolRenderer;
-	public Renderer symbolRenderer => m_symbolRenderer;
+	private V3_TextureReplacer m_symbol;
+#pragma warning restore CS0649
+	public V3_TextureReplacer symbol => m_symbol;
 
+
+
+#pragma warning disable CS0649
 	[SerializeField]
 	private Transform m_locationsParent;
+#pragma warning restore CS0649
 	public Transform locationsParent => m_locationsParent;
 
+
+
 	[SerializeField]
-	private Texture2D[] m_textures = new Texture2D[10];
-	public IReadOnlyList<Texture2D> textures => m_textures;
+	private V3_ScribbleSequenceClueSet m_seqClueSet;
+	public V3_ScribbleSequenceClueSet seqClueSet => m_seqClueSet;
+
+
+
+	[SerializeField]
+	private bool m_showAsVariable = false;
+	public bool showAsVariable => m_showAsVariable;
+
+
 
 	/// <summary>
 	///		<para>Called by <see cref="V3_ScribbleClueManager"/>.</para>
 	/// </summary>
-	/// <param name="locationIndex">Which digit in the sequence this clue should reveal.</param>
-	/// <param name="textureIndex">What texture to display (e.g. a digit or a letter).</param>
-	public void Init(int locationIndex, int textureIndex)
+	/// <param name="locationIndex">"The first digit is 5" would mean locationIndex is 0.</param>
+	public void Init(int locationIndex, int digit)
 	{
-		symbolRenderer.material.SetTexture("_BaseColorMap", m_textures[textureIndex]);
-
 		if (locationIndex >= locationsParent.childCount)
 		{
 			Debug.LogError("Not enough locations (children of " + locationsParent.name + ")", this);
 		}
 		else
 		{
-			symbolRenderer.transform.SetParent(locationsParent.GetChild(locationIndex));
-			symbolRenderer.transform.localPosition = Vector3.zero;
+			symbol.transform.SetParent(locationsParent.GetChild(locationIndex));
+			symbol.transform.localPosition = Vector3.zero;
+		}
+
+
+
+		if (showAsVariable)
+		{
+			symbol.currentTextureIndex = seqClueSet.generatedValue
+				.mapVariableIDFromPasscodeDigit[digit];
+		}
+		else
+		{
+			symbol.currentTextureIndex = digit;
 		}
 	}
 }

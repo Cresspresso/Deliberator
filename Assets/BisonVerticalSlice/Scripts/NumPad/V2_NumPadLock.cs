@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -21,6 +22,7 @@ public class V2_NumPadLock : MonoBehaviour
 	}
 
 	public string passcode = "1234";
+	public int[] passcodeInts => passcode.Select(c => (int)(c - '0')).ToArray();
 
 	[SerializeField]
 	private UnityEvent m_onCorrectSubmitted = new UnityEvent();

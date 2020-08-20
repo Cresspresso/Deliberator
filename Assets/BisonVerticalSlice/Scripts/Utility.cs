@@ -57,6 +57,28 @@ public static class V2_Utility
 	}
 
 	public static int GetCurrentSceneBuildIndex() => UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex;
+
+	public static T ExtractRandomElement<T>(IList<T> list)
+	{
+		if (list.Count == 0)
+		{
+			throw new InvalidOperationException("List is empty");
+		}
+		int i = UnityEngine.Random.Range(0, list.Count);
+		T v = list[i];
+		list.RemoveAt(i);
+		return v;
+	}
+
+	public static List<int> ListFromRange(int length)
+	{
+		var list = new List<int>(length);
+		for (int i = 0; i < length; ++i)
+		{
+			list.Add(i);
+		}
+		return list;
+	}
 }
 
 namespace Bison.Utility
