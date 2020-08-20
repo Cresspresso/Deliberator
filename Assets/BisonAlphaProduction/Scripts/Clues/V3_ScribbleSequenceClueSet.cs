@@ -118,18 +118,15 @@ public class V3_ScribbleSequenceClueSet : V3_Randomizer<V3_SparData_ScribbleSequ
 		var mapVariableIDFromPasscodeDigit = new Dictionary<int, int>();
 		foreach (var digit in availableDigits)
 		{
-			try
+			if (unusedVariableIDs.Count == 0)
 			{
-				mapVariableIDFromPasscodeDigit.Add(
-					digit,
-					V2_Utility.ExtractRandomElement(unusedVariableIDs)
-				);
-			}
-			catch (InvalidOperationException)
-			{
-				Debug.LogError(nameof(numVariableIDs) + " is too few.", this);
 				break;
 			}
+
+			mapVariableIDFromPasscodeDigit.Add(
+				digit,
+				V2_Utility.ExtractRandomElement(unusedVariableIDs)
+			);
 		}
 
 

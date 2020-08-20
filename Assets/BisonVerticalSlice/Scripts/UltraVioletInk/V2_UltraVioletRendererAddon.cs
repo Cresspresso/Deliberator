@@ -56,10 +56,9 @@ public class V2_UltraVioletRendererAddon : MonoBehaviour
 			uviLight = FindObjectOfType<V2_UltraVioletLight>();
 		}
 
-#if UNITY_EDITOR
-		bool has = false;
-#else
 		bool has = (bool)uviLight;
+#if UNITY_EDITOR
+		has = has && UnityEditor.EditorApplication.isPlaying;
 #endif
 		var mat = rend.material;
 		mat.SetVector("uviLightPosition", has ? uviLight.transform.position : transform.TransformPoint(-1.0f * Vector3.forward));
