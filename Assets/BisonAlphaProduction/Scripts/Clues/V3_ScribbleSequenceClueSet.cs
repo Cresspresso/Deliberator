@@ -15,6 +15,8 @@ public class V3_SparData_ScribbleSequenceClueSet
 
 	public readonly IReadOnlyDictionary<int, int> mapVariableIDFromPasscodeDigit;
 	public readonly IReadOnlyDictionary<int, int> mapPasscodeDigitFromVariableID;
+	public IEnumerable<int> variableIDs => mapPasscodeDigitFromVariableID.Keys;
+	public IEnumerable<int> passcodeDigits => mapVariableIDFromPasscodeDigit.Keys;
 
 
 
@@ -74,7 +76,8 @@ public class V3_ScribbleSequenceClueSet : V3_Randomizer<V3_SparData_ScribbleSequ
 
 
 
-	private const int m_numVariableIDs = 2;
+	[SerializeField]
+	private int m_numVariableIDs = 2;
 	public int numVariableIDs => m_numVariableIDs;
 
 

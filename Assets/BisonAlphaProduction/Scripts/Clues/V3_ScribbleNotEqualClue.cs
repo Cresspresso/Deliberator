@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class V3_SparData_ScribbleNotEqualClue
@@ -34,7 +35,7 @@ public class V3_ScribbleNotEqualClue : V3_Randomizer<V3_SparData_ScribbleNotEqua
 
 	protected override V3_SparData_ScribbleNotEqualClue Generate()
 	{
-		var availableVariableIDs = V2_Utility.ListFromRange(seqClueSet.numVariableIDs);
+		var availableVariableIDs = seqClueSet.generatedValue.variableIDs.ToList();
 
 		int lhsVariableID = V2_Utility.ExtractRandomElement(availableVariableIDs);
 		int rhsVariableID = V2_Utility.ExtractRandomElement(availableVariableIDs);

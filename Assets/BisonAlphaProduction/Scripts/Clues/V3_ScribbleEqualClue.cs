@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class V3_SparData_ScribbleEqualClue
@@ -30,8 +31,10 @@ public class V3_ScribbleEqualClue : V3_Randomizer<V3_SparData_ScribbleEqualClue,
 
 	protected override V3_SparData_ScribbleEqualClue Generate()
 	{
+		var availableVariableIDs = seqClueSet.generatedValue.variableIDs.ToList();
+		
 		return new V3_SparData_ScribbleEqualClue(
-			variableID: Random.Range(0, seqClueSet.numVariableIDs)
+			variableID: V2_Utility.ExtractRandomElement(availableVariableIDs) 
 		);
 	}
 
