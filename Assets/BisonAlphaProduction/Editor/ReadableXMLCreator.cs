@@ -6,8 +6,11 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-//This script is for the ReadableXMLCreator Editor tool to create a usable XML for Readable Objects
-
+/// <summary>
+/// This script is for the Readable XML Creator plugin created below
+/// for usage please enter the text and enter what the file should be named.
+/// XML will be saved in .../Readables/XML/
+/// </summary>
 /// <author>Lorenzo Sae-Phoo Zemp</author>
 public class ReadableXMLCreator : EditorWindow
 {
@@ -55,7 +58,6 @@ public class ReadableXMLCreator : EditorWindow
         saveItems.text = text;
 
         XmlSerializer serializer = new XmlSerializer(typeof(ReadableProperties));
-        Debug.Log(Application.dataPath + "/BisonAlphaProduction/Readables/XML/" + fileName + ".xml");
         FileStream stream = new FileStream(Application.dataPath + "/BisonAlphaProduction/Readables/XML/" + fileName + ".xml", FileMode.Create);
         serializer.Serialize(stream, saveItems);
         stream.Close();
