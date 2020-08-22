@@ -183,6 +183,10 @@ public abstract class V3_Randomizer<TValue, TSparRandomizerDatabase> : MonoBehav
 
 
 
+	protected virtual bool PopulateOnAwake => true;
+
+
+
 	/// <summary>
 	///		<para>Unity Message Method: <a href="https://docs.unity3d.com/ScriptReference/MonoBehaviour.Awake.html"/></para>
 	///		<para>
@@ -209,6 +213,9 @@ public abstract class V3_Randomizer<TValue, TSparRandomizerDatabase> : MonoBehav
 	///		<log author="Elijah Shadbolt" date="11/08/2020">
 	///			<para>Updated comments.</para>
 	///		</log>
+	///		<log author="Elijah Shadbolt" date="20/08/2020">
+	///			<para>Separated stuff from Awake into new Populate function.</para>
+	///		</log>
 	/// </changelog>
 	/// 
 	protected virtual void Awake()
@@ -218,24 +225,66 @@ public abstract class V3_Randomizer<TValue, TSparRandomizerDatabase> : MonoBehav
 			m_generatorID = Mathf.RoundToInt(transform.position.sqrMagnitude);
 		}
 
-		if (s_currentlyAlive.Contains(m_generatorID))
+		if (PopulateOnAwake)
+		{
+			Populate();
+		}
+	}
+
+
+
+	/// <summary>
+	///		<para>
+	///			Populates the <see cref="generatedValue"/> property
+	///			either by loading it from the previous iteration of the same scene,
+	///			or generating a new value.
+	///		</para>
+	///		<para>
+	///			If this virtual method is overridden, it must be called
+	///			from the derived class like so:
+	///		</para>
+	///		<code>
+	///			protected override void Awake()
+	///			{
+	///				base.Awake();
+	///				/* ... use this.generatedValue ... */
+	///			}
+	///		</code>
+	///		<para>See also:</para>
+	///		<para><see cref="V3_FingerprintNumpadRandomizer.Awake"/></para>
+	/// </summary>
+	/// 
+	/// <changelog>
+	///		<log author="Elijah Shadbolt" date="20/08/2020">
+	///			<para>Separated stuff from Awake into new Populate function.</para>
+	///		</log>
+	/// </changelog>
+	/// 
+	protected void Populate()
+	{
+		if (isAlive)
+		{
+			return;
+		}
+
+		if (s_currentlyAlive.Contains(generatorID))
 		{
 			Debug.LogError("Randomizer with same ID already exists in the scene.", this);
 		}
 		else
 		{
 			isAlive = true;
-			s_currentlyAlive.Add(m_generatorID);
+			s_currentlyAlive.Add(generatorID);
 
 			var database = V3_SparGameObject.FindOrCreateComponent<TSparRandomizerDatabase>();
-			if (database.dictionary.TryGetValue(m_generatorID, out var value))
+			if (database.dictionary.TryGetValue(generatorID, out var value))
 			{
 				generatedValue = value;
 			}
 			else
 			{
 				generatedValue = Generate();
-				database.dictionary.Add(m_generatorID, generatedValue);
+				database.dictionary.Add(generatorID, generatedValue);
 			}
 		}
 	}
@@ -258,7 +307,7 @@ public abstract class V3_Randomizer<TValue, TSparRandomizerDatabase> : MonoBehav
 		if (isAlive)
 		{
 			/// Unregister this script's ID.
-			s_currentlyAlive.Remove(m_generatorID);
+			s_currentlyAlive.Remove(generatorID);
 		}
 	}
 }

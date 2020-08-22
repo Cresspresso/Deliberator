@@ -110,7 +110,7 @@ namespace Bison.BoolExpressions
 		[Serializable]
 		public sealed class Arrays
 		{
-			public Literal[] literalArray = new Literal[0];
+			public Literal[] literalArray = new Literal[1] { new Literal() };
 			public Dependency[] dependencyArray = new Dependency[1] { new Dependency() };
 			public Not[] notArray = new Not[0];
 			public Group[] groupArray = new Group[0];

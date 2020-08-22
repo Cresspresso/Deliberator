@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(V2_NumPad))]
+[RequireComponent(typeof(Dependable))]
 public class V2_NumPadLock : MonoBehaviour
 {
 	[SerializeField]
@@ -20,6 +22,7 @@ public class V2_NumPadLock : MonoBehaviour
 	}
 
 	public string passcode = "1234";
+	public int[] passcodeInts => passcode.Select(c => (int)(c - '0')).ToArray();
 
 	[SerializeField]
 	private UnityEvent m_onCorrectSubmitted = new UnityEvent();
@@ -51,6 +54,12 @@ public class V2_NumPadLock : MonoBehaviour
 	{
 		if (code == passcode)
 		{
+			var dep = GetComponent<Dependable>();
+			if (dep)
+			{
+				dep.firstLiteral = true;
+			}
+
 			onCorrectSubmitted.Invoke();
 
 			correctSound.Play();

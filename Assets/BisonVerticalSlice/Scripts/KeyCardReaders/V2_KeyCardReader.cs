@@ -7,6 +7,7 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(V2_ButtonHandle))]
+[RequireComponent(typeof(Dependable))]
 public class V2_KeyCardReader : MonoBehaviour
 {
 	public int minClearanceLevel = 1;
@@ -193,6 +194,13 @@ public class V2_KeyCardReader : MonoBehaviour
 		try
 		{
 			pavo = ValidationOutcome.Valid;
+
+			var dep = GetComponent<Dependable>();
+			if (dep)
+			{
+				dep.firstLiteral = true;
+			}
+
 			if (sounds) { sounds.PlayGoodSound(); }
 			if (sprites) { sprites.ShowUnlockedImage(); }
 			onValidClick?.Invoke(this, handleController);
