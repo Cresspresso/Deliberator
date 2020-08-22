@@ -28,7 +28,8 @@ public class V3_SettingsMenu : MonoBehaviour
 
         if (PlayerPrefs.HasKey("MouseSensitivity"))
         {
-            mouseSensitivity = PlayerPrefs.GetFloat("MouseSensitivity", 2.0f);
+            Debug.Log("MouseSensitivity Exists");
+            mouseSensitivity = PlayerPrefs.GetFloat("MouseSensitivity");
         }
     }
 
@@ -109,6 +110,8 @@ public class V3_SettingsMenu : MonoBehaviour
     /// <param name="_sensitivity"></param>
     public void SetSensitivity (float _sensitivity)
     {
+        Debug.Log("Sensitivity Changed");
+
         PlayerPrefs.SetFloat("MouseSensitivity", _sensitivity);
         mouseSensitivity = _sensitivity;
         player.GetComponent<V2_FirstPersonCharacterController>().mouseSensitivity = mouseSensitivity;

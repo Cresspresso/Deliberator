@@ -10,10 +10,7 @@ public class V3_ProximityCalculator : MonoBehaviour
     [Tooltip("Tag for other object to calculate distance")]
     public string obj1Tag; 
 
-    //These are serialized to see if acquiring these objects was successful
-#pragma warning disable CS0649
-    [SerializeField] private Transform objectTransform;
-#pragma warning restore CS0649
+    private Transform objectTransform;
     private Transform selfTransform;
 
     // Start is called before the first frame update
