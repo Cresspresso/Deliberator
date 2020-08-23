@@ -2,18 +2,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+///		<para>A place to put a generator fuse.</para>
+///		<para>One bit of a bitset lock to power something.</para>
+/// </summary>
+/// 
+/// <changelog>
+///		<log author="Elijah Shadbolt" date="24/08/2020">
+///			<para>Added the ability to take fuses out after they are inserted.</para>
+///		</log>
+/// </changelog>
+/// 
 [RequireComponent(typeof(V2_ButtonHandle))]
+[RequireComponent(typeof(Dependable))]
 public class V3_GenFuseSlot : MonoBehaviour
 {
+	public Dependable dependable { get; private set; }
+
 	public Transform point;
 	public V2_PickUpHandle theFuse { get; private set; } = null;
-	public bool hasFuse => hasFuse;
+	public bool hasFuse => theFuse;
 
 	public V2_ButtonHandle buttonHandle { get; private set; }
 	private V2_PickUpController puc;
 
 	private void Awake()
 	{
+		dependable = GetComponent<Dependable>();
 		buttonHandle = GetComponent<V2_ButtonHandle>();
 		puc = FindObjectOfType<V2_PickUpController>();
 	}
@@ -59,25 +74,32 @@ public class V3_GenFuseSlot : MonoBehaviour
 	private void OnClick(V2_ButtonHandle buttonHandle, V2_HandleController handleController)
 	{
 		var puc = handleController.GetComponent<V2_PickUpController>();
-		TryInsert(puc.currentPickedUpHandle);
+		if (!puc)
+		{
+			Debug.LogError("pick up controller not found", this);
+		}
+		else
+		{
+			TryInsert(puc.currentPickedUpHandle);
+		}
 	}
 
-	private bool TryInsert(V2_PickUpHandle puh)
+	private bool TryInsert(V2_PickUpHandle puHandle)
 	{
-		if (puh && puh.isActiveAndEnabled && puh.CompareTag(fuseTag))
+		if (puHandle && puHandle.isActiveAndEnabled && puHandle.CompareTag(fuseTag))
 		{
-			theFuse = puh;
-			puh.Drop();
-			theFuse.buttonHandle.handle.enabled = false;
+			theFuse = puHandle;
+			puHandle.Drop();
 			theFuse.rb.isKinematic = true;
 
 			theFuse.transform.SetParent(point);
 			theFuse.transform.localPosition = Vector3.zero;
 			theFuse.transform.localRotation = Quaternion.identity;
 
-			buttonHandle.handle.enabled = false;
+			dependable.firstLiteral = true;
 
-			OnFuseInserted();
+			puHandle.onPickedUp += OnTheFusePickedUp;
+			InvokeFuseInserted();
 			return true;
 		}
 		else
@@ -86,8 +108,21 @@ public class V3_GenFuseSlot : MonoBehaviour
 		}
 	}
 
-	private void OnFuseInserted()
+	private void InvokeFuseInserted()
 	{
-		GetComponent<Dependable>().firstLiteral = true;
+	}
+
+	private void InvokeFuseExtracted()
+	{
+	}
+
+	private void OnTheFusePickedUp(V2_PickUpHandle puHandle, V2_PickUpController puc)
+	{
+		if (theFuse == puHandle)
+		{
+			theFuse = null;
+			dependable.firstLiteral = false;
+			InvokeFuseExtracted();
+		}
 	}
 }

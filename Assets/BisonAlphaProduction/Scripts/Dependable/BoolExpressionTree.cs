@@ -141,7 +141,7 @@ namespace Bison.BoolExpressions
 						var input = dependency.input;
 						return input ? input.isPowered : throw new NullReferenceException(key + ": Dependency input is null");
 					},
-					not => Evaluate(not.operand),
+					not => !Evaluate(not.operand),
 					group =>
 					{
 						var seq = group.operandSequence;

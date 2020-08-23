@@ -1,0 +1,50 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+/// <summary>
+///		<para>Powers a conveyor belt line and crusher.</para>
+///		<para>Powered by a few generators (<see cref="V3_Generator"/>).</para>
+/// </summary>
+/// 
+/// <changelog>
+///		<log author="Elijah Shadbolt" date="24/08/2020">
+///			<para>Added this script.</para>
+///		</log>
+/// </changelog>
+/// 
+[RequireComponent(typeof(Dependable))]
+public class V3_ConveyorBeltPower : MonoBehaviour
+{
+	public Dependable dependable { get; private set; }
+
+	[SerializeField]
+	private V3_ConveyorBelt[] m_belts;
+	public IReadOnlyList<V3_ConveyorBelt> belts => m_belts;
+
+	private void Awake()
+	{
+		dependable = GetComponent<Dependable>();
+		dependable.onChanged.AddListener(OnPoweredChanged);
+	}
+
+	private void OnPoweredChanged(bool isPowered)
+	{
+		if (isPowered)
+		{
+			Debug.Log("PowerUpBelts");
+			foreach (var belt in belts)
+			{
+				belt.PowerUp();
+			}
+		}
+		else
+		{
+			Debug.Log("PowerDownBelts");
+			foreach (var belt in belts)
+			{
+				belt.PowerDown();
+			}
+		}
+	}
+}
