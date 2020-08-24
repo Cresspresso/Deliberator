@@ -10,35 +10,51 @@ public class V3_ConveyorBelt : MonoBehaviour
 
 	public float animDuration = 1.0f;
 
-	public bool isAnimationPlaying { get; private set; } = false;
-
 	public Vector2 initialScrollSpeed { get; private set; }
 	public float initialPushSpeed { get; private set; }
 	public float initialVolume { get; private set; }
 
+	public bool isUp { get; private set; } = false;
+
+	public bool startPoweredDown = false;
+
 	private void Awake()
 	{
-		scroller = GetComponent<V2_ConveyorBeltUVScroller>();
+		scroller = GetComponentInChildren<V2_ConveyorBeltUVScroller>();
 		initialScrollSpeed = scroller.scrollSpeed;
 
-		phy = GetComponent<V2_ConveyorSimple>();
+		phy = GetComponentInChildren<V2_ConveyorSimple>();
 		initialPushSpeed = phy.speed;
 
-		sfx = GetComponent<AudioSource>();
+		sfx = GetComponentInChildren<AudioSource>();
 		initialVolume = sfx.volume;
+	}
+
+	private void Start()
+	{
+		if (startPoweredDown)
+		{
+			InvokePoweredDownEnd();
+		}
 	}
 
 	public void PowerDown()
 	{
-		if (!isAnimationPlaying)
+		if (isUp && coPowerDown == null)
 		{
-			StartCoroutine(CoPowerDown());
+			if (coPowerUp != null)
+			{
+				StopCoroutine(coPowerUp);
+				InvokePoweredUpEnd();
+			}
+			coPowerDown = StartCoroutine(CoPowerDown());
 		}
 	}
 
-	IEnumerator CoPowerDown()
+	private Coroutine coPowerDown;
+	private IEnumerator CoPowerDown()
 	{
-		isAnimationPlaying = true;
+		isUp = false;
 
 		initialScrollSpeed = scroller.scrollSpeed;
 		initialPushSpeed = phy.speed;
@@ -54,6 +70,11 @@ public class V3_ConveyorBelt : MonoBehaviour
 			yield return new WaitForEndOfFrame();
 		}
 
+		InvokePoweredDownEnd();
+	}
+
+	private void InvokePoweredDownEnd()
+	{
 		scroller.scrollSpeed = Vector2.zero;
 		phy.speed = 0.0f;
 		sfx.volume = 0.0f;
@@ -62,20 +83,27 @@ public class V3_ConveyorBelt : MonoBehaviour
 		phy.enabled = false;
 		sfx.enabled = false;
 
-		isAnimationPlaying = false;
+		coPowerDown = null;
 	}
 
 	public void PowerUp()
 	{
-		if (!isAnimationPlaying)
+		if (!isUp && coPowerUp == null)
 		{
-			StartCoroutine(CoPowerUp());
+			if (coPowerDown != null)
+			{
+				StopCoroutine(coPowerDown);
+				InvokePoweredDownEnd();
+			}
+			coPowerUp = StartCoroutine(CoPowerUp());
 		}
 	}
 
-	IEnumerator CoPowerUp()
+	private Coroutine coPowerUp;
+	private IEnumerator CoPowerUp()
 	{
-		isAnimationPlaying = true;
+		isUp = true;
+
 		scroller.enabled = true;
 		phy.enabled = true;
 		sfx.enabled = true;
@@ -90,10 +118,15 @@ public class V3_ConveyorBelt : MonoBehaviour
 			yield return new WaitForEndOfFrame();
 		}
 
+		InvokePoweredUpEnd();
+	}
+
+	private void InvokePoweredUpEnd()
+	{
 		scroller.scrollSpeed = initialScrollSpeed;
 		phy.speed = initialPushSpeed;
 		sfx.volume = initialVolume;
 
-		isAnimationPlaying = false;
+		coPowerUp = null;
 	}
 }
