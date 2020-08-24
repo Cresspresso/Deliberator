@@ -3,16 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// <para>Turns on/off all lights in sequence.</para>
-/// <para>
-/// Each child Transform of this GameObject is considered a row of lights.
-/// A row of lights is a parent Transform with lights as children.
-/// </para>
-/// <para>
-/// All child audio sources will be played when the row is turned off.
-/// </para>
+///		<para>Turns on/off all lights in sequence.</para>
+///		<para>
+///			Each child Transform of this GameObject is considered a row of lights.
+///			A row of lights is a parent Transform with lights as children.
+///		</para>
+///		<para>
+///			All child audio sources will be played when the row is turned off.
+///		</para>
 /// </summary>
-/// <author>Elijah Shadbolt</author>
+/// 
+/// <changelog>
+///		<log author="Elijah Shadbolt" date="25/08/2020">
+///			<para>Added method <see cref="TurnLightsOn"/>.</para>
+///		</log>
+/// </changelog>
+/// 
 public class V3_LightsPowerSeq : MonoBehaviour
 {
 	public float delayBetweenRows = 1.0f;
@@ -28,6 +34,16 @@ public class V3_LightsPowerSeq : MonoBehaviour
 			isAnimationPlaying = true;
 			isLightsOn = false;
 			StartCoroutine(CoEnableLights(false));
+		}
+	}
+
+	public void TurnLightsOn()
+	{
+		if (!isLightsOn && !isAnimationPlaying)
+		{
+			isAnimationPlaying = true;
+			isLightsOn = true;
+			StartCoroutine(CoEnableLights(true));
 		}
 	}
 
