@@ -125,4 +125,13 @@ public class V3_GenFuseSlot : MonoBehaviour
 			InvokeFuseExtracted();
 		}
 	}
+
+	public void DisableMeddling()
+	{
+		buttonHandle.handle.enabled = false;
+		if (theFuse)
+		{
+			theFuse.buttonHandle.handle.enabled = false;
+		}
+	}
 }

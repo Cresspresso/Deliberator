@@ -156,6 +156,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8167360384370232367}
   - component: {fileID: 8293478592613106728}
+  - component: {fileID: 3688390912130467659}
+  - component: {fileID: 1649799697642167243}
   m_Layer: 0
   m_Name: GlassChamber_Open
   m_TagString: Untagged
@@ -203,6 +205,43 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &3688390912130467659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8796544181214123669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30e802f72146e764a899d2aca2c2e555, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  condition:
+    arrays:
+      literalArray:
+      - value: 0
+      dependencyArray:
+      - input: {fileID: 0}
+      notArray: []
+      groupArray: []
+    root:
+      type: 1
+      index: 0
+--- !u!114 &1649799697642167243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8796544181214123669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 706dc3efc74dddc4b807722e31ea7239, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_anim: {fileID: 8293478592613106728}
+  m_doorColliderGO: {fileID: 1918510889722327630}
 --- !u!1001 &1478918035534715770
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -647,6 +686,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3e0395c4d475c934ea9bb5edd869d4fa, type: 3}
+--- !u!1 &1918510889722327630 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7918221448597135205, guid: 3e0395c4d475c934ea9bb5edd869d4fa,
+    type: 3}
+  m_PrefabInstance: {fileID: 8609975430018821419}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &302122778513441781 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8308468522192072414, guid: 3e0395c4d475c934ea9bb5edd869d4fa,

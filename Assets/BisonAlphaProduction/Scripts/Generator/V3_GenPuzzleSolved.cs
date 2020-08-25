@@ -51,15 +51,9 @@ public class V3_GenPuzzleSolved : MonoBehaviour
 			levelTransitioner.gameObject.SetActive(true);
 
 			var gc = FindObjectOfType<V2_GroundhogControl>();
-			if (gc) gc.enabled = false;
-
-			/// Prevent player from changing generator fuses anymore.
-			foreach (var generator in generators)
+			if (gc)
 			{
-				foreach (var slot in generator.slots)
-				{
-					slot.buttonHandle.handle.enabled = false;
-				}
+				gc.enabled = false;
 			}
 		}
 	}

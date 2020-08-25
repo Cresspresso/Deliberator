@@ -88,7 +88,7 @@ public class V3_Crouch : MonoBehaviour
 		var rayDown = new Ray(transform.position, -transform.up);
 		float rayDistance = capsuleSpineHeight * 0.5f + skinWidth;
 		// If we would expand into something below us...
-		if (Physics.SphereCast(rayDown, radiusMinusSkin, out var hitBelow, rayDistance, collisionMask))
+		if (Physics.SphereCast(rayDown, radiusMinusSkin, out var hitBelow, rayDistance, collisionMask, QueryTriggerInteraction.Ignore))
 		{
 			// Let's expand from our feet upwards.
 			var sphereBelowDist = hitBelow.distance - skinWidth;
@@ -96,7 +96,7 @@ public class V3_Crouch : MonoBehaviour
 			var rayUpFromBelow = new Ray(sphereBelowCentre, -rayDown.direction);
 			// If we would also expand into something above us...
 			var dist2 = capsuleSpineHeight - skinWidth;
-			if (Physics.SphereCast(rayUpFromBelow, radiusMinusSkin, out var hitAbove, dist2, collisionMask))
+			if (Physics.SphereCast(rayUpFromBelow, radiusMinusSkin, out var hitAbove, dist2, collisionMask, QueryTriggerInteraction.Ignore))
 			{
 				var sphereAboveFromBelowDist = hitAbove.distance - skinWidth;
 				var heightHere = sphereAboveFromBelowDist + radius * 2;
@@ -108,7 +108,7 @@ public class V3_Crouch : MonoBehaviour
 			// If there is nothing below us to expand into...
 			var rayUp = new Ray(rayDown.origin, -rayDown.direction);
 			// If we would expand into something above us...
-			if (Physics.SphereCast(rayUp, radiusMinusSkin, out var hitAbove, rayDistance, collisionMask))
+			if (Physics.SphereCast(rayUp, radiusMinusSkin, out var hitAbove, rayDistance, collisionMask, QueryTriggerInteraction.Ignore))
 			{
 				var sphereAboveFromCentreDist = hitAbove.distance - skinWidth;
 				var heightHere = sphereAboveFromCentreDist * 2 + radius * 2;
