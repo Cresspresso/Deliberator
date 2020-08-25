@@ -17,6 +17,7 @@ using UnityEngine;
 public class V3_Generator : MonoBehaviour
 {
 	public Dependable dependable { get; private set; }
+	public IReadOnlyCollection<V3_GenFuseSlot> slots { get; private set; }
 
 	[SerializeField]
 	private V3_KeyCardReader_Sprites m_lockSprites;
@@ -26,6 +27,8 @@ public class V3_Generator : MonoBehaviour
 	{
 		dependable = GetComponent<Dependable>();
 		dependable.onChanged.AddListener(OnPoweredChanged);
+
+		slots = dependable.GetDependencyComponents<V3_GenFuseSlot>();
 	}
 
 	private void OnPoweredChanged(bool isPowered)

@@ -202,6 +202,44 @@ namespace Bison.BoolExpressions
 					return "Error(" + key + ")";
 				}
 			}
+
+			public ICollection<Dependable> GetDependencies(ExpressionKey key, ICollection<Dependable> set)
+			{
+				return Visit<ICollection<Dependable>>(key,
+					literal => set,
+					dependency =>
+					{
+						if (dependency.input)
+						{
+							set.Add(dependency.input);
+						}
+						return set;
+					},
+					not => GetDependencies(not.operand, set),
+					group =>
+					{
+						var exceptions = new List<Exception>();
+						foreach (var operandKey in group.operandSequence)
+						{
+							try
+							{
+								GetDependencies(operandKey, set);
+							}
+							catch (Exception e)
+							{
+								exceptions.Add(e);
+							}
+						}
+						if (exceptions.Count > 0)
+						{
+							var e = new Exception("One or more group operands threw an exception");
+							e.Data.Add("exceptions", exceptions);
+							throw e;
+						}
+						return set;
+					}
+					);
+			}
 		}
 
 		[Serializable]
@@ -212,6 +250,7 @@ namespace Bison.BoolExpressions
 
 			public bool Evaluate() => arrays.Evaluate(root);
 			public override string ToString() => arrays.GetExperssionString(root);
+			public ICollection<Dependable> GetDependencies(ICollection<Dependable> set) => arrays.GetDependencies(root, set);
 		}
 	}
 
