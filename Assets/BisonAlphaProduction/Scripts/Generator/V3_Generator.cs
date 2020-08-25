@@ -36,10 +36,21 @@ public class V3_Generator : MonoBehaviour
 		if (isPowered)
 		{
 			lockSprites.ShowUnlockedImage();
+
+			DisableMeddling();
 		}
 		else
 		{
 			lockSprites.ShowLockedImage();
+		}
+	}
+
+	/// Prevents the player from changing this generator's fuses anymore.
+	public void DisableMeddling()
+	{
+		foreach (var slot in slots)
+		{
+			slot.DisableMeddling();
 		}
 	}
 }

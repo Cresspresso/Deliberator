@@ -57,7 +57,7 @@ GameObject:
   - component: {fileID: 623143113292680517}
   - component: {fileID: 623143113292680516}
   - component: {fileID: 623143113292680515}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Ultra Violet Flashlight
   m_TagString: Ultra Violet Flashight Pickup
   m_Icon: {fileID: 0}
@@ -154,7 +154,7 @@ GameObject:
   - component: {fileID: 623143114237334197}
   - component: {fileID: 623143114237334195}
   - component: {fileID: 623143114237334194}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Ultra Violet Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -373,8 +373,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.9453687, y: 8.999668, z: 8.999674}
-  m_Center: {x: -13.029527, y: -0.0000017174458, z: 8.989933e-16}
+  m_Size: {x: 1.6777141, y: 8.999668, z: 8.999674}
+  m_Center: {x: -12.663356, y: -0.0000017174458, z: -4.879994e-15}
 --- !u!65 &2744900924012583508
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -386,8 +386,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 6, z: 6}
-  m_Center: {x: 13, y: -0.0000017174458, z: 1.1835205e-14}
+  m_Size: {x: 3.0139596, y: 6, z: 6}
+  m_Center: {x: 11.993036, y: -0.0000017174458, z: 1.5459097e-14}
 --- !u!135 &5971705051158188519
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -399,7 +399,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 4.035045
+  m_Radius: 3.9
   m_Center: {x: -9.46874, y: -0.0000017174458, z: 4.706973e-14}
 --- !u!136 &9094689927127559096
 CapsuleCollider:
@@ -412,7 +412,7 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 3
-  m_Height: 28
+  m_Height: 27
   m_Direction: 0
   m_Center: {x: 0.000003814698, y: -0.0000019073486, z: -5.421011e-20}
 --- !u!1 &2652793084943438165
@@ -426,7 +426,7 @@ GameObject:
   - component: {fileID: 6316779443304157618}
   - component: {fileID: 4231392651548484361}
   - component: {fileID: 443111142664032651}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -629,7 +629,7 @@ GameObject:
   - component: {fileID: 3905765561135820157}
   - component: {fileID: 5921564998709307526}
   - component: {fileID: 62610470626784519}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Spot Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -887,6 +887,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Torch Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 7097491020110669151, guid: 97c89f83f64a03e43a3401b9156f30c9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8810039735568994691, guid: 97c89f83f64a03e43a3401b9156f30c9,
         type: 3}
