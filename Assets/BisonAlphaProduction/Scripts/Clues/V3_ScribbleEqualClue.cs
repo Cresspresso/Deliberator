@@ -15,16 +15,22 @@ public class V3_SparData_ScribbleEqualClue
 
 public class V3_ScribbleEqualClue : V3_Randomizer<V3_SparData_ScribbleEqualClue, V3_SparDb_ScribbleEqualClue>
 {
+#pragma warning disable CS0649
 	[SerializeField]
 	private V3_ScribbleSequenceClueSet m_seqClueSet;
+#pragma warning restore CS0649
 	public V3_ScribbleSequenceClueSet seqClueSet => m_seqClueSet;
 
+#pragma warning disable CS0649
 	[SerializeField]
 	private V3_TextureReplacer m_variable;
+#pragma warning restore CS0649
 	public V3_TextureReplacer variable => m_variable;
 
+#pragma warning disable CS0649
 	[SerializeField]
 	private V3_TextureReplacer m_digit;
+#pragma warning restore CS0649
 	public V3_TextureReplacer digit => m_digit;
 
 

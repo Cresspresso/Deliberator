@@ -17,16 +17,22 @@ using UnityEngine;
 /// 
 public class V3_DoorSounds : MonoBehaviour
 {
+#pragma warning disable CS0649
 	[SerializeField]
 	private AudioSource m_lockedSound;
+#pragma warning restore CS0649
 	public AudioSource lockedSound => m_lockedSound;
 
+#pragma warning disable CS0649
 	[SerializeField]
 	private AudioSource m_openingSound;
+#pragma warning restore CS0649
 	public AudioSource openingSound => m_openingSound;
 
+#pragma warning disable CS0649
 	[SerializeField]
 	private AudioSource m_closingSound;
+#pragma warning restore CS0649
 	public AudioSource closingSound => m_closingSound;
 
 	public float soundDelay { get; set; } = 0.0f;
