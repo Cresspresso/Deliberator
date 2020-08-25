@@ -35,14 +35,18 @@ public class V3_ScribbleSequenceClue : MonoBehaviour
 
 
 
+#pragma warning disable CS0649
 	[SerializeField]
 	private V3_ScribbleSequenceClueSet m_seqClueSet;
+#pragma warning restore CS0649
 	public V3_ScribbleSequenceClueSet seqClueSet => m_seqClueSet;
 
 
 
+#pragma warning disable CS0649
 	[SerializeField]
 	private bool m_showAsVariable = false;
+#pragma warning restore CS0649
 	public bool showAsVariable => m_showAsVariable;
 
 

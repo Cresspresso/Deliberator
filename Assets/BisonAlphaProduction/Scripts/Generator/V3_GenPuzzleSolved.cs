@@ -4,20 +4,37 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 
+/// <summary>
+///		<para>The event that is triggered when all 6 <see cref="V3_Generator"/> engines are powered.</para>
+///		<para>The <see cref="Dependable.condition"/> should be an AND group of V3_Generator Dependencies.</para>
+/// </summary>
+/// 
+/// <changelog>
+///		<log author="Elijah Shadbolt" date="25/08/2020">
+///			<para>Added this script.</para>
+///		</log>
+/// </changelog>
+/// 
 [RequireComponent(typeof(Dependable))]
 public class V3_GenPuzzleSolved : MonoBehaviour
 {
 	public Dependable dependable { get; private set; }
 	public IReadOnlyCollection<V3_Generator> generators { get; private set; }
 
+#pragma warning disable CS0649
 	[SerializeField]
 	private V3_LightsPowerSeq m_lights;
+#pragma warning restore CS0649
 	public V3_LightsPowerSeq lights => m_lights;
 
+#pragma warning disable CS0649
 	[SerializeField]
 	[FormerlySerializedAs("lvt")]
 	private V2_levelTransitioner m_levelTransitioner;
+#pragma warning restore CS0649
 	public V2_levelTransitioner levelTransitioner => m_levelTransitioner;
+
+
 
 	private void Awake()
 	{
