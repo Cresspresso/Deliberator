@@ -49,6 +49,9 @@ public class V3_SceneTransitionRoom : MonoBehaviour
 	private string m_nextSceneName = "PLACEHOLDER";
 	public string nextSceneName => m_nextSceneName;
 
+	[Tooltip("Will only load the next level after this is true AND the trigger has triggered.")]
+	public bool canLoadLevel = true;
+
 #pragma warning restore CS0649
 
 
@@ -119,8 +122,6 @@ public class V3_SceneTransitionRoom : MonoBehaviour
 
 	public void OnTriggeredByPlayer()
 	{
-		Debug.Log("OnTriggeredByPlayer " + V2_Utility.GetCurrentSceneBuildIndex());
-
 		if (doesPlayerSpawnHere)
 		{
 			return;
@@ -151,6 +152,8 @@ public class V3_SceneTransitionRoom : MonoBehaviour
 				yield return new WaitUntil(() => door.state == DoorState.Closed);
 			}
 		}
+
+		yield return new WaitUntil(() => this.canLoadLevel);
 
 		var oldGO = V3_SparGameObject.instance;
 		V3_SparGameObject.Destroy(); /// prevent saving data from this old scene.
