@@ -34,6 +34,17 @@ public class V3_Syringe : MonoBehaviour
 
 
 
+	/// 
+	/// <changelog>
+	///		<log author="Elijah Shadbolt" date="26/08/2020">
+	///			<para>Added this property.</para>
+	///		</log>
+	/// </changelog>
+	/// 
+	public bool doLoadScene = true;
+
+
+
 	/// <summary>
 	///		<para>Name of the <see cref="Scene"/> to load after this is collected.</para>
 	///		<para>Must not be an empty string.</para>
@@ -153,7 +164,10 @@ Shrink Duration is how long it takes to shrink out of visibility.")]
 		buttonHandle.onClick += OnClick;
 
 		/// Check that the <see cref="nextSceneName"/> string in the inspector is valid.
-		Debug.Assert(!string.IsNullOrWhiteSpace(nextSceneName), this);
+		if (doLoadScene)
+		{
+			Debug.Assert(!string.IsNullOrWhiteSpace(nextSceneName), this);
+		}
 
 		/// Prevent effects from playing immediately (if it isn't already disabled).
 		effectsRoot.gameObject.SetActive(false);
@@ -174,7 +188,10 @@ Shrink Duration is how long it takes to shrink out of visibility.")]
 	private void OnClick(V2_ButtonHandle buttonHandle, V2_HandleController handleController)
 	{
 		/// Load the next scene after a delay.
-		Invoke(nameof(LoadScene), delay);
+		if (doLoadScene)
+		{
+			Invoke(nameof(LoadScene), delay);
+		}
 
 		/// Prevent the button from being clicked twice.
 		buttonHandle.handle.enabled = false;
