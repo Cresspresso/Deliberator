@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 /// <summary>
 ///		<para>Closes the door behind the player and loads the next scene.</para>
@@ -27,18 +28,21 @@ public class V3_SceneTransitionRoom : MonoBehaviour
 
 	[Tooltip("The door out of this room into the following scene.")]
 	[SerializeField]
-	private V3_DoorManager m_exitDoor;
-	public V3_DoorManager exitDoor => m_exitDoor;
+	[FormerlySerializedAs("m_exitDoor")]
+	private V3_DoorManager m_doorOutOfHere;
+	public V3_DoorManager doorOutOfHere => m_doorOutOfHere;
 
 	[Tooltip("The door into this room from the preceding scene.")]
 	[SerializeField]
-	private V3_DoorManager m_entryDoor;
-	public V3_DoorManager entryDoor => m_entryDoor;
+	[FormerlySerializedAs("m_entryDoor")]
+	private V3_DoorManager m_doorIntoHere;
+	public V3_DoorManager doorIntoHere => m_doorIntoHere;
 
 	[Tooltip("Set this to True if this is where the player spawns at the start of the scene.")]
 	[SerializeField]
-	private bool m_isEntry;
-	public bool isEntry => m_isEntry;
+	[FormerlySerializedAs("m_isEntry")]
+	private bool m_doesPlayerSpawnHere;
+	public bool doesPlayerSpawnHere => m_doesPlayerSpawnHere;
 
 	[Tooltip("The name of the scene to load")]
 	[SerializeField]
@@ -60,14 +64,6 @@ public class V3_SceneTransitionRoom : MonoBehaviour
 
 
 
-	private static void SetDoorLocked(V3_DoorManager door, bool locked)
-	{
-		door.dependable.firstLiteral = !locked;
-		door.openOnUnlocked = locked;
-	}
-
-
-
 	private void Awake()
 	{
 		if (s_aliveRooms.ContainsKey(roomID))
@@ -79,15 +75,35 @@ public class V3_SceneTransitionRoom : MonoBehaviour
 		s_aliveRooms.Add(roomID, this);
 		isAlive = true;
 
-		if (isEntry)
+		/// if the player spawns in this room
+		if (doesPlayerSpawnHere)
 		{
-			SetDoorLocked(entryDoor, true);
-			SetDoorLocked(exitDoor, false);
+			/// lock the door into this room
+			if (doorIntoHere)
+			{
+				doorIntoHere.dependable.firstLiteral = false;
+			}
+
+			/// unlock the door out of this room
+			if (doorOutOfHere)
+			{
+				doorOutOfHere.dependable.firstLiteral = true;
+				doorOutOfHere.openOnUnlocked = false;
+			}
 		}
 		else
 		{
-			SetDoorLocked(entryDoor, false);
-			SetDoorLocked(exitDoor, true);
+			/// unlock the door into this room
+			if (doorIntoHere)
+			{
+				doorIntoHere.dependable.firstLiteral = true;
+			}
+
+			/// lock the door out of this room
+			if (doorOutOfHere)
+			{
+				doorOutOfHere.dependable.firstLiteral = false;
+			}
 		}
 	}
 
@@ -103,6 +119,13 @@ public class V3_SceneTransitionRoom : MonoBehaviour
 
 	public void OnTriggeredByPlayer()
 	{
+		Debug.Log("OnTriggeredByPlayer " + V2_Utility.GetCurrentSceneBuildIndex());
+
+		if (doesPlayerSpawnHere)
+		{
+			return;
+		}
+
 		if (co_load != null)
 		{
 			return;
@@ -116,11 +139,17 @@ public class V3_SceneTransitionRoom : MonoBehaviour
 	private Coroutine co_load;
 	private IEnumerator Co_Load()
 	{
-		var door = entryDoor;
-		SetDoorLocked(door, true);
-		if (door.state == DoorState.Closing)
+		/// Close the door behind the player.
+		if (doorIntoHere)
 		{
-			yield return new WaitUntil(() => door.state == DoorState.Closed);
+			doorIntoHere.TryToClose();
+			doorIntoHere.dependable.firstLiteral = false;
+
+			if (doorIntoHere.state == DoorState.Closing)
+			{
+				var door = doorIntoHere;
+				yield return new WaitUntil(() => door.state == DoorState.Closed);
+			}
 		}
 
 		var oldGO = V3_SparGameObject.instance;
