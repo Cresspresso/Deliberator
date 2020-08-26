@@ -91,7 +91,11 @@ public static class V3_SparGameObject
 	/// 
 	public static void Destroy()
 	{
-		if (m_instance) GameObject.Destroy(m_instance);
+		if (m_instance)
+		{
+			m_instance.SetActive(false);
+			GameObject.Destroy(m_instance);
+		}
 		m_instance = null;
 	}
 
@@ -146,6 +150,25 @@ public static class V3_SparGameObject
 		var script = go.GetComponent<T>();
 		if (!script) script = go.AddComponent<T>();
 		return script;
+	}
+
+
+
+	/// <summary>
+	///		<para>Can return <see langword="null"/> if the <see cref="instance"/> does not exist or the <see cref="Component"/> does not exist on it.</para>
+	/// </summary>
+	/// 
+	/// <changelog>
+	///		<log author="Elijah Shadbolt" date="26/08/2020">
+	///			<para>Created this method.</para>
+	///		</log>
+	/// </changelog>
+	/// 
+	public static T GetComponent<T>() where T : Component
+	{
+		var go = instance;
+		if (!go) return null;
+		return go.GetComponent<T>();
 	}
 
 
@@ -247,5 +270,13 @@ public static class V3_SparGameObject
 	{
 		OnSceneUnload_BeginPreserve();
 		SceneManager.LoadScene(sceneBuildIndex);
+	}
+
+
+
+	public static void LoadScene(string sceneName)
+	{
+		OnSceneUnload_BeginPreserve();
+		SceneManager.LoadScene(sceneName);
 	}
 }

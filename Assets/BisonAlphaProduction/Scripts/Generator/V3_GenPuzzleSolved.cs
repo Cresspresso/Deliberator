@@ -27,13 +27,6 @@ public class V3_GenPuzzleSolved : MonoBehaviour
 #pragma warning restore CS0649
 	public V3_LightsPowerSeq lights => m_lights;
 
-#pragma warning disable CS0649
-	[SerializeField]
-	[FormerlySerializedAs("lvt")]
-	private V2_levelTransitioner m_levelTransitioner;
-#pragma warning restore CS0649
-	public V2_levelTransitioner levelTransitioner => m_levelTransitioner;
-
 
 
 	private void Awake()
@@ -42,11 +35,6 @@ public class V3_GenPuzzleSolved : MonoBehaviour
 		dependable.onChanged.AddListener(OnPoweredChanged);
 
 		generators = dependable.GetDependencyComponents<V3_Generator>();
-	}
-
-	private void Start()
-	{
-		levelTransitioner.gameObject.SetActive(false);
 	}
 
 	private void OnPoweredChanged(bool isPowered)
@@ -64,8 +52,6 @@ public class V3_GenPuzzleSolved : MonoBehaviour
 				lights.delayBetweenRows = 0.1f;
 				lights.TurnLightsOn();
 			}
-
-			levelTransitioner.gameObject.SetActive(true);
 
 			var gc = FindObjectOfType<V2_GroundhogControl>();
 			if (gc)

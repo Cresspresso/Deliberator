@@ -48,9 +48,14 @@ public class V3_DoorManager : MonoBehaviour
 		}
 	}
 
+#pragma warning disable CS0649
 	[SerializeField]
 	private bool m_openOnUnlocked = true;
-	public bool openOnUnlocked => m_openOnUnlocked;
+#pragma warning restore CS0649
+	public bool openOnUnlocked {
+		get => m_openOnUnlocked;
+		set => m_openOnUnlocked = value; /// should be set in Awake
+	}
 
 
 
