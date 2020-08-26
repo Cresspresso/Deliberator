@@ -55,23 +55,31 @@ public class V3_Elevator : MonoBehaviour
 	private void Start()
 	{
 		desiredFloor = floors[0];
-		if (desiredFloor.openBackDoor) { backDoor.Open(); }
-		if (desiredFloor.openFrontDoor) { frontDoor.Open(); }
+
+		if (desiredFloor.openBackDoor && backDoor.isActiveAndEnabled)
+		{
+			backDoor.Open();
+		}
+
+		if (desiredFloor.openFrontDoor && frontDoor.isActiveAndEnabled)
+		{
+			frontDoor.Open();
+		}
 	}
 
 	private void Update()
 	{
 		if (state == State.ClosingDoors)
 		{
-			if (doors.All(d => !d.isAnimationPlaying))
+			if (doors.All(d => !d.isActiveAndEnabled || !d.isAnimationPlaying))
 			{
 				state = State.Travelling;
 			}
 		}
 		else if (state == State.OpeningDoors)
 		{
-			bool isBackDoorFinished = !desiredFloor.openBackDoor || !backDoor.isAnimationPlaying;
-			bool isFrontDoorFinished = !desiredFloor.openFrontDoor || !frontDoor.isAnimationPlaying;
+			bool isBackDoorFinished = !desiredFloor.openBackDoor || !backDoor.isActiveAndEnabled || !backDoor.isAnimationPlaying;
+			bool isFrontDoorFinished = !desiredFloor.openFrontDoor || !frontDoor.isActiveAndEnabled || !frontDoor.isAnimationPlaying;
 			if (isBackDoorFinished && isFrontDoorFinished)
 			{
 				state = State.Idle;
@@ -88,8 +96,16 @@ public class V3_Elevator : MonoBehaviour
 			if (Vector3.SqrMagnitude(rb.position - targetPosition) < 0.001f)
 			{
 				state = State.OpeningDoors;
-				if (desiredFloor.openBackDoor) { backDoor.Open(); }
-				if (desiredFloor.openFrontDoor) { frontDoor.Open(); }
+
+				if (desiredFloor.openBackDoor && backDoor.isActiveAndEnabled)
+				{
+					backDoor.Open();
+				}
+
+				if (desiredFloor.openFrontDoor && frontDoor.isActiveAndEnabled)
+				{
+					frontDoor.Open();
+				}
 			}
 		}
 	}

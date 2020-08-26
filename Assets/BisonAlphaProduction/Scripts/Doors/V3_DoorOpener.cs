@@ -63,23 +63,33 @@ public class V3_DoorOpener : MonoBehaviour
 
 
 
+#pragma warning disable CS0649
 	[SerializeField]
 	private V3_DoorManager m_door;
+#pragma warning restore CS0649
 	public V3_DoorManager door => m_door;
 
 
 
+#pragma warning disable CS0649
 	[SerializeField]
 	private V2_HandleHoverInfo m_lockedInfo = new V2_HandleHoverInfo("Locked");
+#pragma warning restore CS0649
 	public V2_HandleHoverInfo lockedInfo => m_lockedInfo;
 
+#pragma warning disable CS0649
 	[SerializeField]
 	private V2_HandleHoverInfo m_openInfo = new V2_HandleHoverInfo("Open");
+#pragma warning restore CS0649
 	public V2_HandleHoverInfo openInfo => m_openInfo;
 
+#pragma warning disable CS0649
 	[SerializeField]
 	private V2_HandleHoverInfo m_closeInfo = new V2_HandleHoverInfo("Close");
+#pragma warning restore CS0649
 	public V2_HandleHoverInfo closeInfo => m_closeInfo;
+
+
 
 	private void Update()
 	{
@@ -141,7 +151,6 @@ public class V3_DoorOpener : MonoBehaviour
 
 
 	private V2_ButtonHandle m_buttonHandle;
-
 	public V2_ButtonHandle buttonHandle {
 		get
 		{
@@ -149,7 +158,6 @@ public class V3_DoorOpener : MonoBehaviour
 			return m_buttonHandle;
 		}
 	}
-
 	private void PrepareButtonHandle()
 	{
 		if (!m_buttonHandle)
