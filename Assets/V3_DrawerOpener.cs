@@ -6,12 +6,16 @@ using UnityEngine;
 /// This script manages the interactions between the player and the drawer
 /// </summary>
 /// <author>Lorenzo Sae-Phoo Zemp</author>
+[RequireComponent(typeof(V2_ButtonHandle))]
 public class V3_DrawerOpener : MonoBehaviour
 {
     private Animator animator;
     private V2_Handle handle;
 
     private bool isOpen = false;
+
+    [SerializeField] private AudioSource sourceOpen;
+    [SerializeField] private AudioSource sourceClose;
 
     // Start is called before the first frame update
     void Start()
@@ -28,11 +32,13 @@ public class V3_DrawerOpener : MonoBehaviour
         {
             handle.hoverInfo = new V2_HandleHoverInfo("Close", null);
             animator.SetTrigger("TriggerOpen");
+            sourceOpen.Play();
         } 
         else
         {
             handle.hoverInfo = new V2_HandleHoverInfo("Open", null);
             animator.SetTrigger("TriggerClose");
+            sourceClose.Play();
         }
 
     }
