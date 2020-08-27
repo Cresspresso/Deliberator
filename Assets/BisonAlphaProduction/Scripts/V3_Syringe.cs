@@ -14,6 +14,11 @@ using DG.Tweening;
 ///		<log author="Elijah Shadbolt" date="11/08/2020">
 ///			<para>Added comments.</para>
 ///		</log>
+///		<log author="Elijah Shadbolt" date="27/08/2020">
+///			<para>Removed doLoadLevel property.</para>
+///			<para>Removed nextLevelName property.</para>
+///			<para>Added sceneTransitionRoom property.</para>
+///		</log>
 /// </changelog>
 /// 
 [RequireComponent(typeof(V2_ButtonHandle))]
@@ -31,22 +36,6 @@ public class V3_Syringe : MonoBehaviour
 	/// </changelog>
 	/// 
 	public V2_ButtonHandle buttonHandle { get; private set; }
-
-
-
-	/// <summary>
-	///		<para>Name of the <see cref="Scene"/> to load after this is collected.</para>
-	///		<para>Must not be an empty string.</para>
-	/// </summary>
-	/// 
-	/// <changelog>
-	///		<log author="Elijah Shadbolt" date="11/08/2020">
-	///			<para>Added comments.</para>
-	///		</log>
-	/// </changelog>
-	/// 
-	[Tooltip(@"Name of the Scene to load after this is collected.")]
-	public string nextSceneName = "";
 
 
 
@@ -136,6 +125,10 @@ Shrink Duration is how long it takes to shrink out of visibility.")]
 
 
 
+	public V3_SceneTransitionRoom sceneTransitionRoom;
+
+
+
 	/// <summary>
 	///		<para>Unity Message Method: <a href="https://docs.unity3d.com/ScriptReference/MonoBehaviour.Awake.html"/></para>
 	/// </summary>
@@ -151,9 +144,6 @@ Shrink Duration is how long it takes to shrink out of visibility.")]
 		/// Subscribe to this button's onClick event
 		buttonHandle = GetComponent<V2_ButtonHandle>();
 		buttonHandle.onClick += OnClick;
-
-		/// Check that the <see cref="nextSceneName"/> string in the inspector is valid.
-		Debug.Assert(!string.IsNullOrWhiteSpace(nextSceneName), this);
 
 		/// Prevent effects from playing immediately (if it isn't already disabled).
 		effectsRoot.gameObject.SetActive(false);
@@ -174,7 +164,10 @@ Shrink Duration is how long it takes to shrink out of visibility.")]
 	private void OnClick(V2_ButtonHandle buttonHandle, V2_HandleController handleController)
 	{
 		/// Load the next scene after a delay.
-		Invoke(nameof(LoadScene), delay);
+		if (sceneTransitionRoom)
+		{
+			Invoke(nameof(EnableTransitionRoom), delay);
+		}
 
 		/// Prevent the button from being clicked twice.
 		buttonHandle.handle.enabled = false;
@@ -241,19 +234,8 @@ Shrink Duration is how long it takes to shrink out of visibility.")]
 
 
 
-	/// <summary>
-	///		<para>Loads the next scene.</para>
-	///		<para>Invoked by <see cref="OnClick(V2_ButtonHandle, V2_HandleController)"/>.</para>
-	/// </summary>
-	/// 
-	/// <changelog>
-	///		<log author="Elijah Shadbolt" date="11/08/2020">
-	///			Added comments.
-	///		</log>
-	/// </changelog>
-	/// 
-	private void LoadScene()
+	private void EnableTransitionRoom()
 	{
-		SceneManager.LoadScene(nextSceneName);
+		sceneTransitionRoom.canLoadLevel = true;
 	}
 }

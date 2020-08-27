@@ -27,14 +27,6 @@ public class V3_SceneTransitionRoomTrigger : MonoBehaviour
 		}
 	}
 
-	private void Awake()
-	{
-		if (room.isEntry)
-		{
-			gameObject.SetActive(false);
-		}
-	}
-
 	private void OnTriggerEnter(Collider other)
 	{
 		if (!isActiveAndEnabled)

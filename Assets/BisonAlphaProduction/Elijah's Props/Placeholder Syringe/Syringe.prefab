@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 2476952364261650875}
   - component: {fileID: 5433784670893515013}
   m_Layer: 0
-  m_Name: Placeholder Syringe
+  m_Name: Syringe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -124,11 +124,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb8a2da4770e4724ca71192ce7803011, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextSceneName: 
-  delay: 4
+  delay: 4.5
   effectsRoot: {fileID: 9078447985998427707}
+  shrinkDuration: 0.5
   celebrationAudio: {fileID: 9006539365594022551}
   vfx: {fileID: 2905088708915028914}
+  sceneTransitionRoom: {fileID: 0}
 --- !u!1 &8220058104345206362
 GameObject:
   m_ObjectHideFlags: 0
