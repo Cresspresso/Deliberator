@@ -155,6 +155,17 @@ public class V3_SceneTransitionRoom : MonoBehaviour
 
 		yield return new WaitUntil(() => this.canLoadLevel);
 
+		var fpcc = FindObjectOfType<V2_FirstPersonCharacterController>();
+		Debug.Assert(fpcc, "could not find fpcc", this);
+		//fpcc.isInputEnabled = false;
+
+		var fadeAnim = GameObject.FindGameObjectWithTag("SceneFader").GetComponent<Animator>();
+		if (fadeAnim)
+		{
+			fadeAnim.SetTrigger("Fade");
+			yield return new WaitForSeconds(1.0f);
+		}
+
 		var oldGO = V3_SparGameObject.instance;
 		V3_SparGameObject.Destroy(); /// prevent saving data from this old scene.
 
@@ -164,7 +175,6 @@ public class V3_SceneTransitionRoom : MonoBehaviour
 
 		sparData.sceneTransitionRoomID = roomID;
 
-		var fpcc = FindObjectOfType<V2_FirstPersonCharacterController>();
 		sparData.fpccLocalHeadForward = transform.InverseTransformDirection(fpcc.head.forward);
 		sparData.fpccLocalPosition = transform.InverseTransformPoint(fpcc.position);
 
