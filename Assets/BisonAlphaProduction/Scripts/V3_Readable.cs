@@ -50,6 +50,7 @@ public class V3_Readable : MonoBehaviour
     //If object is clicked on
     private void OnMouseDown()
     {
+        print("hi");
         if (proximityCalculator.GetDistance() < interactableDistance)
         {
             //Debug.Log("Interacted with readable object");
