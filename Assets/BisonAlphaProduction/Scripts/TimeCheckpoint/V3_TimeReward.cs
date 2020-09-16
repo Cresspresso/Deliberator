@@ -1,13 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(V2_ButtonHandle))]
 public class V3_TimeReward : MonoBehaviour
 {
 	public V2_GroundhogControl groundhogControl { get; private set; }
 
-	public float rewardDuration = 60;
+	[FormerlySerializedAs("rewardDuration")]
+	public float rewardAmount = 60;
 	public bool isAdditive = true;
 
 	private void Awake()
@@ -20,11 +22,11 @@ public class V3_TimeReward : MonoBehaviour
 	{
 		if (isAdditive)
 		{
-			groundhogControl.remainingDuration += rewardDuration;
+			groundhogControl.stamina += rewardAmount;
 		}
 		else
 		{
-			groundhogControl.remainingDuration = rewardDuration;
+			groundhogControl.stamina = rewardAmount;
 		}
 
 		buttonHandle.handle.enabled = false;

@@ -13,8 +13,8 @@ public class V2_GroundhogTimerDisplay : MonoBehaviour
 	private void Awake()
 	{
 		var gd = FindObjectOfType<V2_GroundhogControl>();
-		gd.RemainingDurationChanged -= OnRemainingDurationChanged;
-		gd.RemainingDurationChanged += OnRemainingDurationChanged;
+		gd.StaminaChanged -= OnRemainingDurationChanged;
+		gd.StaminaChanged += OnRemainingDurationChanged;
 	}
 
 	private void OnRemainingDurationChanged(float remainingDuration)
@@ -29,7 +29,7 @@ public class V2_GroundhogTimerDisplay : MonoBehaviour
 		var gd = FindObjectOfType<V2_GroundhogControl>();
 		if (gd)
 		{
-			gd.RemainingDurationChanged -= OnRemainingDurationChanged;
+			gd.StaminaChanged -= OnRemainingDurationChanged;
 		}
 	}
 }

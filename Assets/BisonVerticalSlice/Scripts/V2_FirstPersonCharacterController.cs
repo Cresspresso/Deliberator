@@ -169,6 +169,8 @@ public class V2_FirstPersonCharacterController : MonoBehaviour
 		}
 	}
 
+	public Vector3 displacementThisFrame { get; private set; }
+
 	private void UpdatePosition()
 	{
 		var dir = (isMoveInputEnabled && isInputEnabled)
@@ -216,7 +218,10 @@ public class V2_FirstPersonCharacterController : MonoBehaviour
 		velocity += up * verticalVelocity;
 
 		var displacement = velocity * Time.deltaTime;
+		var oldPosition = this.position;
 		var collisionFlags = cc.Move(displacement);
+		var newPosition = this.position;
+		this.displacementThisFrame = newPosition - oldPosition;
 
 		if ((collisionFlags & CollisionFlags.Below) != 0)
 		{
