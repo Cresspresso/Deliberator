@@ -987,6 +987,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlightMaterial: {fileID: 2100000, guid: cd75e320730322e40beb0b70584c69ca, type: 2}
+  meshRenderer: {fileID: 0}
+  originalMaterial: {fileID: 0}
 --- !u!1 &721599524
 GameObject:
   m_ObjectHideFlags: 0
@@ -1094,6 +1096,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlightMaterial: {fileID: 2100000, guid: cd75e320730322e40beb0b70584c69ca, type: 2}
+  meshRenderer: {fileID: 0}
+  originalMaterial: {fileID: 0}
 --- !u!4 &739520563 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4374529912389620133, guid: e04081eac683e3d4a8acf0e19d230795,
@@ -1119,6 +1123,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlightMaterial: {fileID: 2100000, guid: cd75e320730322e40beb0b70584c69ca, type: 2}
+  meshRenderer: {fileID: 0}
+  originalMaterial: {fileID: 0}
 --- !u!65 &751752380
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1966,6 +1972,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 662243383961330400, guid: da2e313101695e7449b7e3b48c583dd9,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: cd75e320730322e40beb0b70584c69ca, type: 2}
     - target: {fileID: 4495675121377966885, guid: da2e313101695e7449b7e3b48c583dd9,
         type: 3}
       propertyPath: m_Name

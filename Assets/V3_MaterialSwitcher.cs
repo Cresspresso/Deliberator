@@ -6,8 +6,8 @@ public class V3_MaterialSwitcher : MonoBehaviour
 {
     [SerializeField] private Material highlightMaterial; //highlight object shadergraph material
 
-    private MeshRenderer meshRenderer;
-    private Material originalMaterial;
+    [SerializeField]private MeshRenderer meshRenderer;
+    [SerializeField]private Material originalMaterial;
 
     // Start is called before the first frame update
     void Start()
@@ -16,11 +16,6 @@ public class V3_MaterialSwitcher : MonoBehaviour
         originalMaterial = gameObject.GetComponent<MeshRenderer>().material;
 
         highlightMaterial.SetTexture("Texture2D_2B8148A2", originalMaterial.mainTexture);
-    }
-
-    void Update()
-    {
-
     }
 
     //Test function, OnMouseOver is called every frame that the mouse is over the collider of the object
@@ -37,5 +32,6 @@ public class V3_MaterialSwitcher : MonoBehaviour
     void OnMouseExit()
     {
         meshRenderer.material = originalMaterial;
+        Debug.Log("material back to original");
     }
 }
