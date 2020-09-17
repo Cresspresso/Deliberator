@@ -8,7 +8,7 @@ public class V3_PaperClue : MonoBehaviour
 	[TextArea(3, 8)]
 	[SerializeField]
 	private string m_content = "Placeholder";
-	public string content => m_content;
+	public string content { get => m_content; set => m_content = value; }
 
 	private V2_ButtonHandle m_buttonHandle;
 	public V2_ButtonHandle buttonHandle {
