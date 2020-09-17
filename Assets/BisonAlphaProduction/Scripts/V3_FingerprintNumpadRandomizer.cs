@@ -21,7 +21,7 @@ using System.Linq;
 /// 
 public sealed class V3_FingerprintNumpadRandomizer : V3_INumPadLockRandomizer
 {
-	public const int numAvailableCharacters = 2;
+	public int numAvailableCharacters = 2;
 
 
 

@@ -22,7 +22,7 @@ public class V2_DeathPlane : MonoBehaviour
 		if (fpcc.position.y < transform.position.y)
 		{
 			enabled = false;
-			FindObjectOfType<V2_GroundhogControl>().PlayerDied();
+			FindObjectOfType<V2_GroundhogControl>().Die();
 		}
 	}
 }

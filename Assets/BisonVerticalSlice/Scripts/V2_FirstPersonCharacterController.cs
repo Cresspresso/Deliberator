@@ -14,7 +14,12 @@ using UnityEngine;
 /// alongside a CharacterController.
 /// 2. Assign the <see cref="head"/> to be a child of the root GameObject.
 /// </setup>
-/// <author>Elijah Shadbolt</author>
+/// 
+/// <changelog>
+///		<log author="Elijah Shadbolt" date="17/09/2020">
+///			<para>Made it so player stops being able to walk when they run out of stamina/time.</para>
+///		</log>
+/// </changelog>
 public class V2_FirstPersonCharacterController : MonoBehaviour
 {
 	private CharacterController m_cc;
@@ -169,9 +174,13 @@ public class V2_FirstPersonCharacterController : MonoBehaviour
 		}
 	}
 
+	public Vector3 displacementThisFrame { get; private set; }
+
 	private void UpdatePosition()
 	{
-		var dir = (isMoveInputEnabled && isInputEnabled)
+		var dir = (isMoveInputEnabled
+			&& isInputEnabled
+			&& !V2_GroundhogControl.instance.hasFinished)
 			? new Vector2(
 			Input.GetAxis("Horizontal"),
 			Input.GetAxis("Vertical"))
@@ -184,7 +193,10 @@ public class V2_FirstPersonCharacterController : MonoBehaviour
 		var up = -g.normalized;
 		verticalVelocity -= g.magnitude * Time.deltaTime;
 
-		if (isJumpInputEnabled && isInputEnabled && Input.GetButtonDown("Jump"))
+		if (isJumpInputEnabled
+			&& isInputEnabled
+			&& !V2_GroundhogControl.instance.hasFinished
+			&& Input.GetButtonDown("Jump"))
 		{
 			if (!didJump && isTouchingGround && !isGroundSlippery)
 			{
@@ -216,7 +228,10 @@ public class V2_FirstPersonCharacterController : MonoBehaviour
 		velocity += up * verticalVelocity;
 
 		var displacement = velocity * Time.deltaTime;
+		var oldPosition = this.position;
 		var collisionFlags = cc.Move(displacement);
+		var newPosition = this.position;
+		this.displacementThisFrame = newPosition - oldPosition;
 
 		if ((collisionFlags & CollisionFlags.Below) != 0)
 		{

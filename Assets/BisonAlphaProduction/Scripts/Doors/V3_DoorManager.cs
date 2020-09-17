@@ -204,11 +204,11 @@ public class V3_DoorManager : MonoBehaviour
 
 
 
-	public void TryToOpen(V2_FirstPersonCharacterController fpcc) => TryToOpen(fpcc.head.forward);
+	public void TryToOpen(V2_FirstPersonCharacterController fpcc) => TryToOpen(fpcc.position);
 
 
 
-	public void TryToOpen(Vector3 fpccHeadForward)
+	public void TryToOpen(Vector3 fpccPosition)
 	{
 		if (isLocked)
 		{
@@ -221,7 +221,7 @@ public class V3_DoorManager : MonoBehaviour
 			state = DoorState.Opening;
 			foreach (var door in m_doors)
 			{
-				door.TryToOpen(fpccHeadForward);
+				door.TryToOpen(fpccPosition);
 			}
 			V2_Utility.TryElseLog(this, InvokeOpening);
 		}
@@ -244,7 +244,7 @@ public class V3_DoorManager : MonoBehaviour
 
 
 
-	public void TryToToggle(Vector3 fpccHeadForward)
+	public void TryToToggle(Vector3 fpccPosition)
 	{
 		if (isOpen)
 		{
@@ -252,7 +252,7 @@ public class V3_DoorManager : MonoBehaviour
 		}
 		else
 		{
-			TryToOpen(fpccHeadForward);
+			TryToOpen(fpccPosition);
 		}
 	}
 }

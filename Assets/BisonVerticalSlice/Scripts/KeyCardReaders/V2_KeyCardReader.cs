@@ -193,6 +193,8 @@ public class V2_KeyCardReader : MonoBehaviour
 	{
 		try
 		{
+			this.buttonHandle.handle.enabled = false;
+
 			pavo = ValidationOutcome.Valid;
 
 			var dep = GetComponent<Dependable>();
@@ -208,7 +210,7 @@ public class V2_KeyCardReader : MonoBehaviour
 		}
 		finally
 		{
-			StartCoBackToIdle();
+			//StartCoBackToIdle();
 		}
 	}
 

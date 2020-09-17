@@ -55,6 +55,20 @@ public class V3_Syringe : MonoBehaviour
 
 
 	/// <summary>
+	///		<para>Reward for collecting.</para>
+	/// </summary>
+	/// 
+	/// <changelog>
+	///		<log author="Elijah Shadbolt" date="17/09/2020">
+	///			<para>Added this property.</para>
+	///		</log>
+	/// </changelog>
+	/// 
+	public float staminaReward = 60;
+
+
+
+	/// <summary>
 	///		<para>A <see cref="GameObject"/> with effects to be displayed after this is collected.</para>
 	///		<para>Should be a child of this script's <see cref="Transform"/>.</para>
 	///		<para>When this is collected, the effects root will have its <see cref="Transform.parent"/> set to null, and activate its <see cref="GameObject"/>.</para>
@@ -176,7 +190,7 @@ Shrink Duration is how long it takes to shrink out of visibility.")]
 		var gc = FindObjectOfType<V2_GroundhogControl>();
 		if (gc)
 		{
-			gc.enabled = false;
+			gc.stamina += staminaReward;
 		}
 
 		/// Play the shrinking animation.
