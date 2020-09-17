@@ -35,6 +35,8 @@ public class V2_GroundhogControl : MonoBehaviour
 
 	public bool isPaused { get; set; } = false;
 
+	public static V2_GroundhogControl instance { get; private set; }
+
 #pragma warning disable CS0649
 	[FormerlySerializedAs("m_remainingDuration")]
 	[SerializeField]
@@ -42,12 +44,14 @@ public class V2_GroundhogControl : MonoBehaviour
 #pragma warning restore CS0649
 
 	public event Action<float> StaminaChanged;
+	public event Action<float> StaminaDecreasedDelta;
 
 	public bool hasFinished { get; private set; } = false;
 	public event Action Finished;
 
 	private void Awake()
 	{
+		instance = this;
 		crouch = FindObjectOfType<V3_Crouch>();
 	}
 
@@ -64,7 +68,9 @@ public class V2_GroundhogControl : MonoBehaviour
 		float distanceMoved = v.magnitude;
 		if (distanceMoved > 0.001f)
 		{
-			stamina -= drainAmount * distanceMoved;
+			float delta = drainAmount * distanceMoved;
+			stamina -= delta;
+			StaminaDecreasedDelta?.Invoke(delta);
 		}
 	}
 

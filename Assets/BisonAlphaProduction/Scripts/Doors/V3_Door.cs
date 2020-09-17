@@ -308,7 +308,7 @@ public class V3_Door : MonoBehaviour
 	/// <summary>
 	///		<para>Called by <see cref="V3_DoorManager"/>.</para>
 	/// </summary>
-	public void TryToOpen(Vector3 fpccHeadForward) => TryToOpen(GetDesiredDirection(fpccHeadForward));
+	public void TryToOpen(Vector3 fpccPosition) => TryToOpen(GetDesiredDirection(fpccPosition));
 
 
 
@@ -329,9 +329,16 @@ public class V3_Door : MonoBehaviour
 
 
 
-	private Direction GetDirectionAwayFromPlayer(Vector3 fpccHeadForward)
+	private Direction GetDirectionAwayFromPlayer(Vector3 fpccPosition)
 	{
-		if (Vector3.Dot(fpccHeadForward, transform.forward) < 0)
+		var plane = new Plane(transform.forward, transform.position);
+		bool isPlayerInFront = plane.GetSide(fpccPosition);
+		Debug.DrawLine(transform.position, fpccPosition, Color.blue, 3);
+		Debug.DrawRay(transform.position, transform.right, Color.red, 3);
+		Debug.DrawRay(transform.position, -transform.right, Color.yellow, 3);
+		Debug.DrawRay(transform.position, transform.up, Color.green, 3);
+		Debug.DrawRay(transform.position, transform.forward * 1 * (isPlayerInFront ? 1 : -1), Color.cyan, 3);
+		if (isPlayerInFront)
 		{
 			return isHingeOnLeft ? Direction.Clockwise : Direction.Anticlockwise;
 		}
@@ -341,18 +348,26 @@ public class V3_Door : MonoBehaviour
 		}
 	}
 
+	public static Direction InvertDirection(Direction v)
+	{
+		switch (v)
+		{
+			case Direction.Anticlockwise: return Direction.Clockwise;
+			case Direction.Clockwise: return Direction.Anticlockwise;
+			default: return v;
+		}
+	}
 
-
-	public Direction GetDesiredDirection(Vector3 fpccHeadForward)
+	public Direction GetDesiredDirection(Vector3 fpccPosition)
 	{
 		switch (openingMode)
 		{
 			case OpeningMode.AwayFromPlayer:
 			default:
-				return GetDirectionAwayFromPlayer(fpccHeadForward);
+				return GetDirectionAwayFromPlayer(fpccPosition);
 
 			case OpeningMode.TowardsPlayer:
-				return GetDirectionAwayFromPlayer(-fpccHeadForward);
+				return InvertDirection(GetDirectionAwayFromPlayer(fpccPosition));
 
 			case OpeningMode.Clockwise:
 				return Direction.Clockwise;
