@@ -52,12 +52,6 @@ public class V3_GenPuzzleSolved : MonoBehaviour
 				lights.delayBetweenRows = 0.1f;
 				lights.TurnLightsOn();
 			}
-
-			var gc = FindObjectOfType<V2_GroundhogControl>();
-			if (gc)
-			{
-				gc.enabled = false;
-			}
 		}
 	}
 }
