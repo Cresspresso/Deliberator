@@ -333,11 +333,6 @@ public class V3_Door : MonoBehaviour
 	{
 		var plane = new Plane(transform.forward, transform.position);
 		bool isPlayerInFront = plane.GetSide(fpccPosition);
-		Debug.DrawLine(transform.position, fpccPosition, Color.blue, 3);
-		Debug.DrawRay(transform.position, transform.right, Color.red, 3);
-		Debug.DrawRay(transform.position, -transform.right, Color.yellow, 3);
-		Debug.DrawRay(transform.position, transform.up, Color.green, 3);
-		Debug.DrawRay(transform.position, transform.forward * 1 * (isPlayerInFront ? 1 : -1), Color.cyan, 3);
 		if (isPlayerInFront)
 		{
 			return isHingeOnLeft ? Direction.Clockwise : Direction.Anticlockwise;
