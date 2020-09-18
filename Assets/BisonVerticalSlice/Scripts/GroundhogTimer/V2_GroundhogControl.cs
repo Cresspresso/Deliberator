@@ -47,7 +47,6 @@ public class V2_GroundhogControl : MonoBehaviour
 	public event Action<float> StaminaDecreasedDelta;
 
 	public bool hasFinished { get; private set; } = false;
-	public event Action Finished;
 
 	private void Awake()
 	{
