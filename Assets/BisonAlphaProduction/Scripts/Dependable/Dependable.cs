@@ -71,10 +71,7 @@ public sealed class Dependable : MonoBehaviour
 		onChanged.Invoke(isPowered);
 	}
 
-	/// <summary>
-	///		<para>Unity event method.</para>
-	/// </summary>
-	private void Update()
+	public bool ReEvaluate()
 	{
 		/// Check if the outcome of the boolean expression has changed.
 		try
@@ -91,6 +88,15 @@ public sealed class Dependable : MonoBehaviour
 		{
 			Debug.LogException(e, this);
 		}
+		return isPowered;
+	}
+
+	/// <summary>
+	///		<para>Unity event method.</para>
+	/// </summary>
+	private void Update()
+	{
+		ReEvaluate();
 	}
 
 	/// <summary>
