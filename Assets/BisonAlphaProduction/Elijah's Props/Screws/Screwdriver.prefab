@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4349146385015701431}
   - component: {fileID: 4349146385015701430}
   - component: {fileID: 7259191374031671442}
+  - component: {fileID: 1337363680330778641}
   m_Layer: 12
   m_Name: Screwdriver
   m_TagString: Screwdriver
@@ -111,6 +112,19 @@ CapsuleCollider:
   m_Height: 0.32
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!65 &1337363680330778641
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4349146385015701429}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.04, y: 0.04, z: 0.1}
+  m_Center: {x: 0, y: 0, z: -0.08}
 --- !u!1 &4349146385588927565
 GameObject:
   m_ObjectHideFlags: 0
