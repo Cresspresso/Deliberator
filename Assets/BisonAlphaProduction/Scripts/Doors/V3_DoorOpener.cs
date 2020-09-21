@@ -30,16 +30,16 @@ public class V3_DoorOpener : MonoBehaviour
 	}
 	public Mode mode = Mode.Toggle;
 
-	private void Apply(V3_DoorManager door, Vector3 fpccHeadForward)
+	private void Apply(V3_DoorManager door, Vector3 fpccPosition)
 	{
 		switch (mode)
 		{
 			case Mode.Toggle:
-				door.TryToToggle(fpccHeadForward);
+				door.TryToToggle(fpccPosition);
 				break;
 
 			case Mode.Open:
-				door.TryToOpen(fpccHeadForward);
+				door.TryToOpen(fpccPosition);
 				break;
 
 			case Mode.Close:
@@ -178,7 +178,7 @@ public class V3_DoorOpener : MonoBehaviour
 	private void OnClick(V2_ButtonHandle buttonHandle, V2_HandleController handleController)
 	{
 		var fpcc = handleController.GetComponentInParent<V2_FirstPersonCharacterController>();
-		Apply(door, fpcc.head.forward);
+		Apply(door, fpcc.position);
 	}
 
 	private void Awake()

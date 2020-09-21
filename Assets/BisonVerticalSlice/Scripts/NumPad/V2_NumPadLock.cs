@@ -39,19 +39,50 @@ public class V2_NumPadLock : MonoBehaviour
 	private V3_KeyCardReader_Sprites padlockSprites;
 #pragma warning restore CS0649
 
+
+
+	public int initialTries = 3;
+	public int triesRemaining;
+	private void ResetTriesRemaining()
+	{
+		staminaRequiredRemaining = 0;
+		triesRemaining = initialTries;
+	}
+
+	[SerializeField]
+	public float staminaUntilResetTries = 100;
+
+	private float staminaRequiredRemaining = 0;
+	private V2_GroundhogControl gc;
+
+
+
 	private void Awake()
 	{
 		var pad = this.pad;
 		pad.onSubmit.AddListener(OnSubmit);
+
+		gc = V2_GroundhogControl.instance;
+		gc.StaminaDecreasedDelta += OnStaminaDecreased;
+
+		ResetTriesRemaining();
 	}
 
 	private void OnDestroy()
 	{
 		pad.onSubmit.RemoveListener(OnSubmit);
+		if (gc)
+		{
+			gc.StaminaDecreasedDelta -= OnStaminaDecreased;
+		}
 	}
 
 	private void OnSubmit(string code)
 	{
+		if (staminaRequiredRemaining <= 0)
+		{
+		}
+
 		if (code == passcode)
 		{
 			var dep = GetComponent<Dependable>();
@@ -73,6 +104,28 @@ public class V2_NumPadLock : MonoBehaviour
 			incorrectSound.Play();
 
 			padlockSprites.ShowShakeImage();
+
+			--triesRemaining;
+			if (triesRemaining <= 0)
+			{
+				V2_GroundhogControl.instance.Die();
+			}
+			else
+			{
+				staminaRequiredRemaining = staminaUntilResetTries;
+			}
+		}
+	}
+
+	void OnStaminaDecreased(float delta)
+	{
+		if (staminaRequiredRemaining > 0)
+		{
+			staminaRequiredRemaining -= delta;
+			if (staminaRequiredRemaining <= 0)
+			{
+				ResetTriesRemaining();
+			}
 		}
 	}
 }
