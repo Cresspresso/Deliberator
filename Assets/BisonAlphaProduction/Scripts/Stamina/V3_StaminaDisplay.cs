@@ -5,8 +5,10 @@ using UnityEngine.UI;
 
 public class V3_StaminaDisplay : MonoBehaviour
 {
+#pragma warning disable CS0649
 	[SerializeField]
 	Text textElement;
+#pragma warning restore CS0649
 
 	V2_GroundhogControl gc;
 
