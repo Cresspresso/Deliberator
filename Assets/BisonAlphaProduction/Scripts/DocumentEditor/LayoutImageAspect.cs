@@ -26,6 +26,7 @@ public class LayoutImageAspect : MonoBehaviour
 {
 	[SerializeField] private bool updateMin = false;
 	[SerializeField] private bool updatePreferred = false;
+	[SerializeField] private float aspectIfSpriteIsNull = 1.6f;
 
 
 	private bool isDirty = false;
@@ -93,13 +94,17 @@ public class LayoutImageAspect : MonoBehaviour
 		if (!isDirty) return;
 		isDirty = false;
 
-		// MODIFIED CODE  Elijah Shadbolt
+		float aspectRatio;
 		if (image.sprite)
 		{
 			var rect = image.sprite.rect;
-			float aspectRatio = rect.width / rect.height;
-			SetSizes(parentSize.x, parentSize.x / aspectRatio);
+			aspectRatio = rect.width / rect.height;
 		}
+		else
+		{
+			aspectRatio = aspectIfSpriteIsNull;
+		}
+		SetSizes(parentSize.x, parentSize.x / aspectRatio);
 	}
 
 #if UNITY_EDITOR
