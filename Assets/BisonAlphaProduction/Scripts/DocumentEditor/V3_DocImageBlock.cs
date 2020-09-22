@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace Bison.Document
 {
-	public class V3_DocImageBlock : V3_DocBlock
+	public class V3_DocImageBlock : MonoBehaviour
 	{
 		[SerializeField]
 		private Image m_image;

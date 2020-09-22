@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace Bison.Document
 {
-	public class V3_DocTextBlock : V3_DocBlock
+	public class V3_DocTextBlock : MonoBehaviour
 	{
 		[SerializeField]
 		private InputField m_inputField;

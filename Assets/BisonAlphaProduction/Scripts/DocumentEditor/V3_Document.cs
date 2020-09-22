@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Security.Principal;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,6 +25,10 @@ namespace Bison.Document
 		public V3_DocColumn columnPrefab => m_columnPrefab;
 
 		[SerializeField]
+		private V3_DocBlock m_blockPrefab;
+		public V3_DocBlock blockPrefab => m_blockPrefab;
+
+		[SerializeField]
 		private V3_DocTextBlock m_textBlockPrefab;
 		public V3_DocTextBlock textBlockPrefab => m_textBlockPrefab;
 
@@ -33,31 +37,54 @@ namespace Bison.Document
 		public V3_DocImageBlock imageBlockPrefab => m_imageBlockPrefab;
 
 
+		[SerializeField]
+		private V3_DocNewSectionSeparator m_firstSeparator;
+		private V3_DocNewSectionSeparator firstSeparator => m_firstSeparator;
 
 		private List<V3_DocSection> m_sections = new List<V3_DocSection>();
 
+
+
 		private void Awake()
 		{
-			var section = CreateSectionAtBack();
-			var column = section.CreateColumnAtBack();
-			var textBlock = column.CreateBlockAtBack(textBlockPrefab);
+			firstSeparator.OnSpawned(this, null);
+
+			var section = CreateLast();
+			var column = section.CreateLast();
+
+			var block = column.CreateLast();
+			var textBlock = block.CreateContent(textBlockPrefab);
 
 			// DEBUG
-			var imageBlock = column.CreateBlockAtBack(imageBlockPrefab);
+			block = column.CreateLast();
+			var imageBlock = block.CreateContent(imageBlockPrefab);
+			var ib1 = imageBlock;
 
-			var sec2 = CreateSectionAtBack();
-			var col2a = sec2.CreateColumnAtBack();
-			var text2ai = col2a.CreateBlockAtBack(textBlockPrefab);
-			text2ai.inputField.text = "Alpha beta gamma delta epsilon theta. Alpha beta gamma delta epsilon theta. Alpha beta gamma delta epsilon theta.";
-			var text2aii = col2a.CreateBlockAtBack(textBlockPrefab);
-			text2aii.inputField.text = "Alpha beta gamma delta epsilon theta. Alpha beta gamma delta epsilon theta. Alpha beta gamma delta epsilon theta.";
+			section = CreateLast();
+			column = section.CreateLast();
 
-			var col2b = sec2.CreateColumnAtBack();
-			var text2bi = col2b.CreateBlockAtBack(textBlockPrefab);
-			text2bi.inputField.text = "Alpha beta gamma delta epsilon theta. Alpha beta gamma delta epsilon theta. Alpha beta gamma delta epsilon theta.";
-			var imageBlock2bi = column.CreateBlockAtBack(imageBlockPrefab);
-			var text2bii = col2b.CreateBlockAtBack(textBlockPrefab);
-			text2bii.inputField.text = "Alpha beta gamma delta epsilon theta. Alpha beta gamma delta epsilon theta. Alpha beta gamma delta epsilon theta.";
+			block = column.CreateLast();
+			textBlock = block.CreateContent(textBlockPrefab);
+			textBlock.inputField.text = "Alpha beta gamma delta epsilon theta. Alpha beta gamma delta epsilon theta. Alpha beta gamma delta epsilon theta.";
+
+			block = column.CreateLast();
+			textBlock = block.CreateContent(textBlockPrefab);
+			textBlock.inputField.text = "Alpha beta gamma delta epsilon theta. Alpha beta gamma delta epsilon theta. Alpha beta gamma delta epsilon theta.";
+
+			column = section.CreateLast();
+			block = column.CreateLast();
+			textBlock = block.CreateContent(textBlockPrefab);
+			textBlock.inputField.text = "Alpha beta gamma delta epsilon theta. Alpha beta gamma delta epsilon theta. Alpha beta gamma delta epsilon theta.";
+
+			block = column.CreateLast();
+			imageBlock = block.CreateContent(imageBlockPrefab);
+			var ib2 = imageBlock;
+
+			block = column.CreateLast();
+			textBlock = block.CreateContent(textBlockPrefab);
+			textBlock.inputField.text = "Alpha beta gamma delta epsilon theta. Alpha beta gamma delta epsilon theta. Alpha beta gamma delta epsilon theta.";
+
+
 
 			StartCoroutine(Co());
 
@@ -65,7 +92,7 @@ namespace Bison.Document
 			{
 				yield return new WaitForSeconds(0.5f);
 				var tex = ScreenCapture.CaptureScreenshotAsTexture();
-				imageBlock.image.sprite = Sprite.Create(
+				ib1.image.sprite = Sprite.Create(
 					tex,
 					new Rect(0, 0, tex.width, tex.height),
 					Vector2.one / 2,
@@ -74,7 +101,7 @@ namespace Bison.Document
 
 				yield return new WaitForSeconds(0.5f);
 				tex = ScreenCapture.CaptureScreenshotAsTexture();
-				imageBlock2bi.image.sprite = Sprite.Create(
+				ib2.image.sprite = Sprite.Create(
 					tex,
 					new Rect(0, 0, tex.width, tex.height),
 					Vector2.one / 2,
@@ -83,12 +110,30 @@ namespace Bison.Document
 			}
 		}
 
-		public V3_DocSection CreateSectionAtBack()
+		public V3_DocSection CreateLast()
 		{
 			var section = Instantiate(sectionPrefab, verticalLayoutGroup.transform, false);
 			m_sections.Add(section);
 			section.OnSpawned(this);
 			return section;
+		}
+
+		public V3_DocSection CreateInsert(int index)
+		{
+			var section = CreateLast();
+			index = Mathf.Max(0, index);
+			if (index < m_sections.Count - 1)
+			{
+				m_sections.RemoveAt(m_sections.Count - 1);
+				section.transform.SetSiblingIndex(1 + index);
+				m_sections.Insert(index, section);
+			}
+			return section;
+		}
+
+		public int IndexOf(V3_DocSection item)
+		{
+			return m_sections.IndexOf(item);
 		}
 	}
 }
