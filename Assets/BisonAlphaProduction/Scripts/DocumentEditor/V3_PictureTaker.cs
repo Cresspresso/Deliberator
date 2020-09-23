@@ -11,6 +11,7 @@ namespace Bison.Document
 			if (Input.GetKeyDown(KeyCode.E))
 			{
 				V3_PicturePanel.instance.CapturePicture();
+				V3_DocumentEditorUI.instance.PauseAndOpenThisMenuLayout();
 			}
 
 			if (Input.GetKeyDown(KeyCode.Q))
