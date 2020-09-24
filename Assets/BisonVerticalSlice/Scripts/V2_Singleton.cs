@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 public enum V2_SingletonDuplicateMode { Ignore, DestroyComponent, DestroyGameObject, }
 
@@ -51,6 +53,19 @@ public static class V2_Singleton<T> where T : Component
 		}
 	}
 
+	public static T GetOrCreate(Func<T> create)
+	{
+		if (!m_instance)
+		{
+			m_instance = Object.FindObjectOfType<T>();
+			if (!m_instance)
+			{
+				m_instance = create();
+			}
+		}
+		return m_instance;
+	}
+
 	/// <summary>
 	/// This must be called in the Awake method of a singleton script.
 	/// </summary>
@@ -60,24 +75,36 @@ public static class V2_Singleton<T> where T : Component
 	/// <see langword="false"/> if there was already a singleton instance and this new instance is a duplicate.
 	/// <see langword="true"/> if the new instance successfully registered as the current singleton instance.
 	/// </returns>
-	public static bool OnAwake(T instance, V2_SingletonDuplicateMode mode = V2_SingletonDuplicateMode.DestroyComponent)
+	public static bool OnAwake(
+		T instance,
+		V2_SingletonDuplicateMode mode,
+		bool log = true)
 	{
 		if (m_instance && m_instance != instance)
 		{
 			var typename = typeof(T).Name;
-			Debug.LogError($"Duplicate instance of {typename} singleton in the scene.", instance);
+			if (log)
+			{
+				Debug.LogError($"Duplicate instance of {typename} singleton in the scene.", instance);
+			}
 			switch (mode)
 			{
 				case V2_SingletonDuplicateMode.Ignore:
 					break;
 				case V2_SingletonDuplicateMode.DestroyComponent:
 					Object.Destroy(instance);
-					Debug.Log($"Destroying duplicate {typename} singleton Component.", instance);
+					if (log)
+					{
+						Debug.Log($"Destroying duplicate {typename} singleton Component.", instance);
+					}
 					break;
 				default:
 				case V2_SingletonDuplicateMode.DestroyGameObject:
 					Object.Destroy(instance.gameObject);
-					Debug.Log($"Destroying duplicate {typename} singleton GameObject.", instance);
+					if (log)
+					{
+						Debug.Log($"Destroying duplicate {typename} singleton GameObject.", instance);
+					}
 					break;
 			}
 			return false;

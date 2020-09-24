@@ -21,10 +21,5 @@ namespace Bison.Document
 		{
 			image.sprite = sprite;
 		}
-
-		private void OnDestroy()
-		{
-			Destroy(sprite);
-		}
 	}
 }

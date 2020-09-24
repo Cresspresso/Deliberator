@@ -76,17 +76,14 @@ public class V2_PauseMenu : MonoBehaviour
 	public void Pause() => Pause(this.pauseMenuPanel);
 	public void Pause(GameObject menuPanel)
 	{
-		//Debug.Log(readableMenu.reading);
-		//if (readableMenu.reading == false) 
-		//{
-			isPaused = true;
-			Time.timeScale = 0.0f;
-			cursorController.enabled = false;
-			pauseMenuBackground.SetActive(true);
-			menuNavigation.Clear();
-			menuNavigation.GoInto(menuPanel);
-			AudioListener.pause = true;
-		//}
+		isPaused = true;
+		Time.timeScale = 0.0f;
+		cursorController.enabled = false;
+		pauseMenuBackground.SetActive(true);
+		deactivateWhenPaused.SetActive(false);
+		menuNavigation.Clear();
+		menuNavigation.GoInto(menuPanel);
+		AudioListener.pause = true;
 	}
 
 	public void Unpause()
