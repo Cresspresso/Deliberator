@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,6 +18,8 @@ namespace Bison.Document
 
 		private List<V3_PictureBlock> m_blocks = new List<V3_PictureBlock>();
 
+		public static V3_PicturePanel instance => V3_DocumentEditorUI.instance.picturePanel;
+
 		public V3_PictureBlock CreatePictureAtBack(Texture2D texture)
 		{
 			var sprite = Sprite.Create(
@@ -31,12 +34,16 @@ namespace Bison.Document
 			return block;
 		}
 
-		private void Update()
+		public V3_PictureBlock CapturePicture()
 		{
-			// TODO move this functionality to a non- pause menu GameObject
-			if (Input.GetKeyDown(KeyCode.G))
+			return CreatePictureAtBack(ScreenCapture.CaptureScreenshotAsTexture());
+		}
+
+		public Sprite currentSelectedSprite {
+			get
 			{
-				CreatePictureAtBack(ScreenCapture.CaptureScreenshotAsTexture());
+				var item = m_blocks.LastOrDefault(null);
+				return item ? item.sprite : null;
 			}
 		}
 	}

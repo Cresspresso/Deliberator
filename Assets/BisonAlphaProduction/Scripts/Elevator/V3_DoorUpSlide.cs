@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Place on a parent of the door.
+/// <changelog>
+///		<log author="Elijah Shadbolt" date="24/08/2020">
+///			<para>Removed debug update method.</para>
+///		</log>
+/// </changelog>
+/// 
 public class V3_DoorUpSlide : MonoBehaviour
 {
 	[Tooltip("Rigidbody of a child object")]
@@ -35,19 +41,5 @@ public class V3_DoorUpSlide : MonoBehaviour
 	{
 		rb.MovePosition(Vector3.MoveTowards(rb.position, target.position, maxSpeed * Time.fixedDeltaTime));
 		isAnimationPlaying = Vector3.SqrMagnitude(rb.position - target.position) > 0.001f;
-	}
-
-	private void Update()
-	{
-#if DEBUG
-		if (Input.GetKeyDown(KeyCode.O))
-		{
-			Open();
-		}
-		if (Input.GetKeyDown(KeyCode.P))
-		{
-			Close();
-		}
-#endif
 	}
 }

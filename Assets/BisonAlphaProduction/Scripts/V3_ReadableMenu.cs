@@ -23,6 +23,9 @@ public class V3_ReadableMenu : MonoBehaviour
 #pragma warning restore CS0649
 	public TextMeshProUGUI readableText => m_readableTextMeshPro;
 
+	//bool for if the player is currently reading, public so pause menu can access it and check if the player is reading
+	public bool reading = false;
+
 	//get set and get cursor controller
 	private V2_CursorController m_cursorController;
 	private V2_CursorController cursorController
@@ -55,6 +58,7 @@ public class V3_ReadableMenu : MonoBehaviour
 		cursorController.enabled = true;
 		readableMenuPanel.SetActive(false);
 		readableText.text = "";
+		reading = false;
 	}
 
 	/// <summary>
@@ -65,5 +69,17 @@ public class V3_ReadableMenu : MonoBehaviour
 		Time.timeScale = 0.0f;
 		cursorController.enabled = false;
 		readableMenuPanel.SetActive(true);
+		reading = true;
 	}
+
+	///<summary>
+	///	Waits for esc button press to close readable menu
+	/// </summary>
+	/*private void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.Escape) && reading)
+		{
+			Unpause();
+		}
+	}*/
 }
