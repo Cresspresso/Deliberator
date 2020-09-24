@@ -2,8 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <author>Elijah Shadbolt</author>
-/// <stage>Alpha Production</stage>
+/// <changelog>
+///		<log author="Elijah Shadbolt" date="24/08/2020">
+///			<para>Added comments.</para>
+///			<para>Removed debug update method.</para>
+///		</log>
+/// </changelog>
+/// 
 public class V3_KeyCardReader_Sounds : MonoBehaviour
 {
 	public AudioSource badSound;
@@ -28,11 +33,4 @@ public class V3_KeyCardReader_Sounds : MonoBehaviour
 	public void PlayBadSound() => PlaySound(badSound, goodSound, endSound);
 	public void PlayGoodSound() => PlaySound(goodSound, badSound, endSound);
 	public void PlayEndSound() => PlaySound(endSound, badSound, goodSound);
-
-	private void Update()
-	{
-		if (Input.GetKeyDown(KeyCode.U)) PlayBadSound();
-		if (Input.GetKeyDown(KeyCode.I)) PlayGoodSound();
-		if (Input.GetKeyDown(KeyCode.O)) PlayEndSound();
-	}
 }

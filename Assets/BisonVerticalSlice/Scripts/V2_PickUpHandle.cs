@@ -100,7 +100,7 @@ public class V2_PickUpHandle : MonoBehaviour
 	{
 		if (isPickedUp)
 		{
-			if (Input.GetButtonDown("Fire2"))
+			if (Input.GetButtonDown("Fire2") && !V2_PauseMenu.instance.isPaused)
 			{
 				Drop();
 			}

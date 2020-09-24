@@ -18,10 +18,6 @@ namespace Bison.Document
 		public GameObject visuals => m_visuals;
 
 		[SerializeField]
-		private V3_Document m_document;
-		public V3_Document document => m_document;
-
-		[SerializeField]
 		private V3_PicturePanel m_picturePanel;
 		public V3_PicturePanel picturePanel => m_picturePanel;
 
