@@ -250,7 +250,7 @@ public class V2_FirstPersonCharacterController : MonoBehaviour
 	{
 		if (isRunInputEnabled)
 		{
-			isRunning = Input.GetButton("Run"); // not really toggle
+			isRunning = isInputEnabled && Input.GetButton("Run");
 		}
 
 		UpdateRotation();

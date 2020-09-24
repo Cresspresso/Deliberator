@@ -13,6 +13,10 @@ using UnityEngine.Serialization;
 ///		<log author="Elijah Shadbolt" date="17/09/2020">
 ///			<para>Replaced the old time limit system with a stamina system.</para>
 ///		</log>
+///		<log author="Elijah Shadbolt" date="24/09/2020">
+///			<para>Added comment for <see cref="isPaused"/>.</para>
+///			<para>Do not detect key press if game is paused.</para>
+///		</log>
 /// </changelog>
 public class V2_GroundhogControl : MonoBehaviour
 {
@@ -33,6 +37,10 @@ public class V2_GroundhogControl : MonoBehaviour
 	public Animator flashAnim;
 	public AudioMixer audioMixer;
 
+	/// <summary>
+	///		<para>If false, the amount will drain as the player walks.</para>
+	///		<para>If true, the amount will not drain.</para>
+	/// </summary>
 	public bool isPaused { get; set; } = false;
 
 	public static V2_GroundhogControl instance { get; private set; }
@@ -75,14 +83,17 @@ public class V2_GroundhogControl : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.R))
+		if (!V2_PauseMenu.instance.isPaused)
 		{
-			Die();
-		}
+			if (Input.GetKeyDown(KeyCode.R))
+			{
+				Die();
+			}
 
-		if (Input.GetKeyDown(KeyCode.K))
-		{
-			isPaused = !isPaused;
+			if (Input.GetKeyDown(KeyCode.K))
+			{
+				isPaused = !isPaused;
+			}
 		}
 
 		if (!isPaused)
