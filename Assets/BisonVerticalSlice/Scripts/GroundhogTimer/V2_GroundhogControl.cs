@@ -145,4 +145,14 @@ public class V2_GroundhogControl : MonoBehaviour
 
 		StartCoroutine(Co_PlayerDied());
 	}
+
+	public void Finish()
+	{
+		if (hasFinished)
+		{
+			return;
+		}
+
+		hasFinished = true;
+	}
 }
