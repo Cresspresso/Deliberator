@@ -17,12 +17,13 @@ using UnityEngine.Serialization;
 ///			<para>Added comment for <see cref="isPaused"/>.</para>
 ///			<para>Do not detect key press if game is paused.</para>
 ///		</log>
+///		<log author="Elijah Shadbolt" date="24/09/2020">
+///			<para>Added comment for <see cref="hasFinished"/>.</para>
+///			<para>Implemented updated dying animation.</para>
+///		</log>
 /// </changelog>
 public class V2_GroundhogControl : MonoBehaviour
 {
-	public V2_FirstPersonCharacterController fpcc => crouch.fpcc;
-	public V3_Crouch crouch { get; private set; }
-
 #pragma warning disable CS0649
 	[Tooltip("Stamina decreased per metre moved")]
 	[SerializeField]
@@ -43,7 +44,7 @@ public class V2_GroundhogControl : MonoBehaviour
 	/// </summary>
 	public bool isPaused { get; set; } = false;
 
-	public static V2_GroundhogControl instance { get; private set; }
+	public static V2_GroundhogControl instance => V2_Singleton<V2_GroundhogControl>.instance;
 
 #pragma warning disable CS0649
 	[FormerlySerializedAs("m_remainingDuration")]
@@ -54,12 +55,14 @@ public class V2_GroundhogControl : MonoBehaviour
 	public event Action<float> StaminaChanged;
 	public event Action<float> StaminaDecreasedDelta;
 
+	/// <summary>
+	///		<para>Is the player in the dying animation?</para>
+	/// </summary>
 	public bool hasFinished { get; private set; } = false;
 
 	private void Awake()
 	{
-		instance = this;
-		crouch = FindObjectOfType<V3_Crouch>();
+		V2_Singleton<V2_GroundhogControl>.OnAwake(this, V2_SingletonDuplicateMode.Ignore);
 	}
 
 	void Start()
@@ -70,7 +73,7 @@ public class V2_GroundhogControl : MonoBehaviour
 
 	private void DrainStamina()
 	{
-		var dis = fpcc.displacementThisFrame;
+		var dis = V2_FirstPersonCharacterController.instance.displacementThisFrame;
 		var v = new Vector2(dis.x, dis.z);
 		float distanceMoved = v.magnitude;
 		if (distanceMoved > 0.001f)
@@ -83,6 +86,8 @@ public class V2_GroundhogControl : MonoBehaviour
 
 	private void Update()
 	{
+		if (hasFinished) return;
+
 		if (!V2_PauseMenu.instance.isPaused)
 		{
 			if (Input.GetKeyDown(KeyCode.R))
@@ -111,7 +116,7 @@ public class V2_GroundhogControl : MonoBehaviour
 
 	private IEnumerator Co_PlayerDied()
 	{
-		flashAnim.SetTrigger("TriggerRed");
+		V3_PlayerDeath.instance.PlayAnimation();
 
 		gameObject.GetComponent<AudioSource>().Play();
 
@@ -119,7 +124,12 @@ public class V2_GroundhogControl : MonoBehaviour
 		audioMixer.SetFloat("MasterOctaveRange", 5.0f);
 		audioMixer.SetFloat("MasterFreqGain", 0.05f);
 
-		yield return new WaitForSeconds(1.5f);
+		//yield return new WaitForSeconds(1.5f);
+		yield return new WaitForSeconds(3f);
+
+		flashAnim.SetTrigger("TriggerRed");
+
+		yield return new WaitUntil(() => V3_PlayerDeath.instance.isDone);
 
 		V3_SparGameObject.RestartCurrentScene();
 	}
