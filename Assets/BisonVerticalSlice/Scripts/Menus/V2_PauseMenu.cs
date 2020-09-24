@@ -33,6 +33,19 @@ public class V2_PauseMenu : MonoBehaviour
 		}
 	}
 
+	private V3_ReadableMenu m_readableMenu;
+	public V3_ReadableMenu readableMenu
+	{
+		get
+		{
+			if(!m_readableMenu)
+			{
+				m_readableMenu = FindObjectOfType<V3_ReadableMenu>();
+			}
+			return m_readableMenu;
+		}
+	}
+
 #pragma warning disable CS0649
 	[SerializeField]
 	private GameObject m_pauseMenuBackground;
@@ -50,13 +63,17 @@ public class V2_PauseMenu : MonoBehaviour
 	public void Pause() => Pause(this.pauseMenuPanel);
 	public void Pause(GameObject menuPanel)
 	{
-		isPaused = true;
-		Time.timeScale = 0.0f;
-		cursorController.enabled = false;
-		pauseMenuBackground.SetActive(true);
-		menuNavigation.Clear();
-		menuNavigation.GoInto(menuPanel);
-		AudioListener.pause = true;
+		//Debug.Log(readableMenu.reading);
+		//if (readableMenu.reading == false) 
+		//{
+			isPaused = true;
+			Time.timeScale = 0.0f;
+			cursorController.enabled = false;
+			pauseMenuBackground.SetActive(true);
+			menuNavigation.Clear();
+			menuNavigation.GoInto(menuPanel);
+			AudioListener.pause = true;
+		//}
 	}
 
 	public void Unpause()

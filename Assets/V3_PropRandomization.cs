@@ -42,6 +42,7 @@ public class V3_PropRandomization : MonoBehaviour
         return (randomPos);
     }
 
+    //This draws a gizmo when object is selected in debug and also runs in debug
     void OnDrawGizmosSelected()
     {
         Gizmos.color = new Color(0.0f, 1.0f, 0.0f, 0.5f);
