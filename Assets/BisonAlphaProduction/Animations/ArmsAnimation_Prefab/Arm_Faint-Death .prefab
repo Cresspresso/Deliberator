@@ -1605,8 +1605,6 @@ GameObject:
   - component: {fileID: 7232021489896343655}
   - component: {fileID: 7232021489896343648}
   - component: {fileID: 7232021489896343649}
-  - component: {fileID: 7232021489896343654}
-  - component: {fileID: 7232021489896343651}
   - component: {fileID: 7232021489896343676}
   m_Layer: 0
   m_Name: Faint_Camera
@@ -1784,44 +1782,6 @@ MonoBehaviour:
       data1: 0
       data2: 0
   defaultFrameSettings: 0
---- !u!320 &7232021489896343654
-PlayableDirector:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7232021489896343678}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_PlayableAsset: {fileID: 0}
-  m_InitialState: 1
-  m_WrapMode: 2
-  m_DirectorUpdateMode: 1
-  m_InitialTime: 0
-  m_SceneBindings:
-  - key: {fileID: 0}
-    value: {fileID: 7232021489896343651}
-  m_ExposedReferences:
-    m_References: []
---- !u!95 &7232021489896343651
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7232021489896343678}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &7232021489896343676
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1941,7 +1901,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7232021490037217958}
   - component: {fileID: 7232021490037217959}
-  - component: {fileID: 7232021490037217957}
   m_Layer: 0
   m_Name: 'Arm_Faint-Death '
   m_TagString: Untagged
@@ -1985,23 +1944,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!320 &7232021490037217957
-PlayableDirector:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7232021490037217952}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_PlayableAsset: {fileID: 0}
-  m_InitialState: 1
-  m_WrapMode: 2
-  m_DirectorUpdateMode: 1
-  m_InitialTime: 0
-  m_SceneBindings: []
-  m_ExposedReferences:
-    m_References: []
 --- !u!1 &7232021490057226774
 GameObject:
   m_ObjectHideFlags: 0

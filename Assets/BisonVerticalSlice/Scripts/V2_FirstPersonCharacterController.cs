@@ -114,8 +114,12 @@ public class V2_FirstPersonCharacterController : MonoBehaviour
 		bodyAngle = angle;
 	}
 
+	public static V2_FirstPersonCharacterController instance => V2_Singleton<V2_FirstPersonCharacterController>.instance;
+
 	private void Awake()
 	{
+		V2_Singleton<V2_FirstPersonCharacterController>.OnAwake(this, V2_SingletonDuplicateMode.DestroyGameObject);
+
 		//bodyAngle = m_bodyAngle;
 		//headAngle = m_headAngle;
 		bodyAngle = transform.localEulerAngles.y;
@@ -167,7 +171,9 @@ public class V2_FirstPersonCharacterController : MonoBehaviour
 
 	private void UpdateRotation()
 	{
-		if (isLookInputEnabled && isInputEnabled)
+		if (isLookInputEnabled
+			&& isInputEnabled
+			&& !V2_GroundhogControl.instance.hasFinished)
 		{
 			bodyAngle += Input.GetAxis("Mouse X") * mouseSensitivity;
 			headAngle -= Input.GetAxis("Mouse Y") * mouseSensitivity;
@@ -248,9 +254,11 @@ public class V2_FirstPersonCharacterController : MonoBehaviour
 
 	private void Update()
 	{
-		if (isRunInputEnabled)
+		if (isRunInputEnabled
+			&& !V2_GroundhogControl.instance.hasFinished
+			&& isInputEnabled)
 		{
-			isRunning = isInputEnabled && Input.GetButton("Run");
+			isRunning = Input.GetButton("Run");
 		}
 
 		UpdateRotation();
