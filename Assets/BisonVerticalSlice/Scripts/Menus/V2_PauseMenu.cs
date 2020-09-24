@@ -4,7 +4,12 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
-/// <author>Elijah Shadbolt</author>
+/// <changelog>
+///		<log author="Elijah Shadbolt" date="22/09/2020">
+///			<para>Added singleton instance property.</para>
+///		</log>
+/// </changelog>
+/// 
 public class V2_PauseMenu : MonoBehaviour
 {
 	[SerializeField]
@@ -54,11 +59,19 @@ public class V2_PauseMenu : MonoBehaviour
 
 #pragma warning disable CS0649
 	[SerializeField]
+	private GameObject m_deactivateWhenPaused;
+#pragma warning restore CS0649
+	public GameObject deactivateWhenPaused => m_deactivateWhenPaused;
+
+#pragma warning disable CS0649
+	[SerializeField]
 	private GameObject m_pauseMenuPanel;
 #pragma warning restore CS0649
 	public GameObject pauseMenuPanel => m_pauseMenuPanel;
 
 	public bool isPaused { get; private set; }
+
+	public static V2_PauseMenu instance => V2_Singleton<V2_PauseMenu>.instance;
 
 	public void Pause() => Pause(this.pauseMenuPanel);
 	public void Pause(GameObject menuPanel)
@@ -82,19 +95,15 @@ public class V2_PauseMenu : MonoBehaviour
 		Time.timeScale = 1.0f;
 		cursorController.enabled = true;
 		pauseMenuBackground.SetActive(false);
+		deactivateWhenPaused.SetActive(true);
 		menuNavigation.Clear();
 		AudioListener.pause = false;
 	}
 
-	private bool initialised = false;
-
 	private void Awake()
 	{
-		if (!initialised)
-		{
-			initialised = true;
-			Unpause();
-		}
+		V2_Singleton<V2_PauseMenu>.OnAwake(this, V2_SingletonDuplicateMode.Ignore);
+		Unpause();
 	}
 
 	private void Update()
