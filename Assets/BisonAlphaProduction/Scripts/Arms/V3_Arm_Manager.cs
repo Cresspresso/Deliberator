@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <changelog>
+///		<log author="Elijah Shadbolt" date="24/08/2020">
+///			<para>Do not detect input if game is paused.</para>
+///		</log>
+/// </changelog>
+/// 
 public class V3_Arm_Manager : MonoBehaviour
 {
 	public V3_Arm_GrabTrial1 grabAnim;
@@ -35,7 +41,7 @@ public class V3_Arm_Manager : MonoBehaviour
 
 		if (!injectAnim.isPlaying)
 		{
-			if (Input.GetMouseButtonDown(0))
+			if (Input.GetMouseButtonDown(0) && !V2_PauseMenu.instance.isPaused)
 			{
 				walkSwayAnim.Stop();
 				grabAnim.Play();
