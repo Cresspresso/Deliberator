@@ -4,10 +4,20 @@ using System.Linq;
 using UnityEngine;
 using Bison.Utility;
 
+/// <changelog>
+///		<log author="Elijah Shadbolt" date="28/09/2020">
+///			<para>Added feature: FOV slightly smaller while crouching.</para>
+///		</log>
+/// </changelog>
+/// 
 [RequireComponent(typeof(V2_FirstPersonCharacterController))]
 public class V3_Crouch : MonoBehaviour
 {
 	public V2_FirstPersonCharacterController fpcc { get; private set; }
+
+	[SerializeField]
+	private Camera m_cam;
+	public Camera cam => m_cam;
 
 	public bool isCrouchInputHeld { get; private set; } = false;
 	public float crouchDuration = 1.0f;
@@ -18,11 +28,14 @@ public class V3_Crouch : MonoBehaviour
 	public float crouchRunSpeed = 10.0f;
 	public bool canJumpWhenCrouched = false;
 
+	public float crouchFov = 50;
+
 	private float initialHeight;
 	private float initialHeadY;
 	private float crouchHeadY;
 	private float initialWalkSpeed;
 	private float initialRunSpeed;
+	private float initialFov;
 	private bool initialCanJump;
 	private bool initialCanRun;
 
@@ -46,6 +59,7 @@ public class V3_Crouch : MonoBehaviour
 		initialRunSpeed = fpcc.runSpeed;
 		initialCanJump = fpcc.isJumpInputEnabled;
 		initialCanRun = fpcc.isRunInputEnabled;
+		initialFov = cam.fieldOfView;
 
 		int layer = fpcc.cc.gameObject.layer;
 		int mask = 0;
@@ -123,5 +137,6 @@ public class V3_Crouch : MonoBehaviour
 		fpcc.head.localPosition = new Vector3(0, newHeadY, 0);
 		fpcc.walkSpeed = Mathf.Lerp(initialWalkSpeed, crouchWalkSpeed, lerpValue);
 		fpcc.runSpeed = Mathf.Lerp(initialRunSpeed, crouchRunSpeed, lerpValue);
+		cam.fieldOfView = Mathf.Lerp(initialFov, crouchFov, lerpValue);
 	}
 }
