@@ -70,7 +70,6 @@ public class V3_Subtitle : MonoBehaviour
 					else
 					{
 						canvasGroup.alpha = fadeInAlpha.Evaluate(timer / fadeInDuration);
-						Debug.Log("Fade in " + canvasGroup.alpha);
 					}
 				}
 				break;

@@ -36,7 +36,6 @@ public class V3_ConveyorBeltPower : MonoBehaviour
 	{
 		if (isPowered)
 		{
-			Debug.Log("PowerUpBelts");
 			foreach (var belt in belts)
 			{
 				belt.PowerUp();
@@ -44,7 +43,6 @@ public class V3_ConveyorBeltPower : MonoBehaviour
 		}
 		else
 		{
-			Debug.Log("PowerDownBelts");
 			foreach (var belt in belts)
 			{
 				belt.PowerDown();
