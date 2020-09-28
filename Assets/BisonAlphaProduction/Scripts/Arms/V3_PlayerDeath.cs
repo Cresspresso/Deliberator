@@ -2,8 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+///		<para>Manages the animation of the player character fainting.</para>
+/// </summary>
+/// 
+/// <changelog>
+///		<log author="Elijah Shadbolt" date="28/09/2020">
+///			<para>Added comments.</para>
+///			<para>Suppressed warning CS0649</para>
+///		</log>
+/// </changelog>
+/// 
 public class V3_PlayerDeath : MonoBehaviour
 {
+#pragma warning disable CS0649
+
 	[SerializeField]
 	private GameObject m_visuals;
 	public GameObject visuals => m_visuals;
@@ -11,6 +24,8 @@ public class V3_PlayerDeath : MonoBehaviour
 	[SerializeField]
 	private GameObject m_mainCameraGameObject;
 	public GameObject mainCameraGameObject => m_mainCameraGameObject;
+
+#pragma warning restore CS0649
 
 	public bool isDone { get; private set; } = false;
 
@@ -29,6 +44,9 @@ public class V3_PlayerDeath : MonoBehaviour
 		isDone = true;
 	}
 
+	/// <summary>
+	///		<para>Called by <see cref="V2_GroundhogControl"/>.</para>
+	/// </summary>
 	public void PlayAnimation()
 	{
 		mainCameraGameObject.SetActive(false);

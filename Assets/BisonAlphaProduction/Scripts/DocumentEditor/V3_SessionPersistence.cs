@@ -2,6 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+///		<para>Singleton for remembering the notes the player has written.</para>
+///		<para>See also:</para>
+///		<para><see cref="Bison.Document.V3_DocumentEditorUI"/></para>
+/// </summary>
+/// 
+/// <changelog>
+///		<log author="Elijah Shadbolt" date="28/09/2020">
+///			<para>Added comments.</para>
+///		</log>
+/// </changelog>
+/// 
 public class V3_SessionPersistence : MonoBehaviour
 {
 	public static V3_SessionPersistence instance => V2_Singleton<V3_SessionPersistence>.instance;

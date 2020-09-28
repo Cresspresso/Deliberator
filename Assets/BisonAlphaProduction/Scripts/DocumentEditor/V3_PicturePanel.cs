@@ -7,8 +7,21 @@ using UnityEngine.UI;
 
 namespace Bison.Document
 {
+	/// <summary>
+	///		<para>Manages the UI for the screenshots that the player has captured.</para>
+	/// </summary>
+	/// 
+	/// <changelog>
+	///		<log author="Elijah Shadbolt" date="28/09/2020">
+	///			<para>Added comments.</para>
+	///			<para>Suppressed warning CS0649</para>
+	///		</log>
+	/// </changelog>
+	/// 
 	public class V3_PicturePanel : MonoBehaviour
 	{
+#pragma warning disable CS0649
+
 		[SerializeField]
 		private VerticalLayoutGroup m_verticalLayoutGroup;
 		private VerticalLayoutGroup verticalLayoutGroup => m_verticalLayoutGroup;
@@ -16,6 +29,8 @@ namespace Bison.Document
 		[SerializeField]
 		private V3_PictureBlock m_pictureBlockPrefab;
 		private V3_PictureBlock pictureBlockPrefab => m_pictureBlockPrefab;
+
+#pragma warning restore CS0649
 
 		private List<V3_PictureBlock> m_blocks = new List<V3_PictureBlock>();
 
@@ -44,14 +59,6 @@ namespace Bison.Document
 			);
 			sprite.name = DateTime.Now.ToString();
 			return CreatePictureAtBack(sprite, true);
-		}
-
-		public Sprite currentSelectedSprite {
-			get
-			{
-				var item = m_blocks.LastOrDefault(null);
-				return item ? item.sprite : null;
-			}
 		}
 	}
 }
