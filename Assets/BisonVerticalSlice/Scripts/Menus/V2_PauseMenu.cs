@@ -8,6 +8,9 @@ using UnityEngine;
 ///		<log author="Elijah Shadbolt" date="22/09/2020">
 ///			<para>Added singleton instance property.</para>
 ///		</log>
+///		<log author="Elijah Shadbolt" date="29/09/2020">
+///			<para>Removed setting `AudioListener.pause` because we need music in the menu.</para>
+///		</log>
 /// </changelog>
 /// 
 public class V2_PauseMenu : MonoBehaviour
@@ -83,7 +86,7 @@ public class V2_PauseMenu : MonoBehaviour
 		deactivateWhenPaused.SetActive(false);
 		menuNavigation.Clear();
 		menuNavigation.GoInto(menuPanel);
-		AudioListener.pause = true;
+		//AudioListener.pause = true;
 	}
 
 	public void Unpause()
@@ -94,7 +97,7 @@ public class V2_PauseMenu : MonoBehaviour
 		pauseMenuBackground.SetActive(false);
 		deactivateWhenPaused.SetActive(true);
 		menuNavigation.Clear();
-		AudioListener.pause = false;
+		//AudioListener.pause = false;
 	}
 
 	private void Awake()

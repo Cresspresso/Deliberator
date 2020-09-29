@@ -4,8 +4,26 @@ using UnityEngine;
 
 namespace Bison.Document
 {
+	/// <summary>
+	///		<para>Lets the player take a screenshot, or open the notes menu, via the keyboard.</para>
+	///		<para>
+	///			Must be on a GameObject that is active and enabled when the game is not paused,
+	///			but is deactivated when the game is paused.
+	///		</para>
+	/// </summary>
+	/// 
+	/// <changelog>
+	///		<log author="Elijah Shadbolt" date="28/09/2020">
+	///			<para>Added comments.</para>
+	///		</log>
+	/// </changelog>
+	/// 
 	public class V3_PictureTaker : MonoBehaviour
 	{
+		/// <summary>
+		///		<para>Unity Message Method: <a href="https://docs.unity3d.com/ScriptReference/MonoBehaviour.Update.html"/></para>
+		/// </summary>
+		/// 
 		private void Update()
 		{
 			if (Input.GetKeyDown(KeyCode.E))
