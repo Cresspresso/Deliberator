@@ -173,6 +173,9 @@ Shrink Duration is how long it takes to shrink out of visibility.")]
 	///		<log author="Elijah Shadbolt" date="11/08/2020">
 	///			Added comments.
 	///		</log>
+	///		<log author="Elijah Shadbolt" date="29/09/2020">
+	///			Stop visual effect emitting after animation ends.
+	///		</log>
 	/// </changelog>
 	/// 
 	private void OnClick(V2_ButtonHandle buttonHandle, V2_HandleController handleController)
@@ -221,6 +224,19 @@ Shrink Duration is how long it takes to shrink out of visibility.")]
 		if (vfx)
 		{
 			vfx.Play();
+			StartCoroutine(Co());
+		}
+
+		IEnumerator Co()
+		{
+			yield return new WaitForSeconds(shrinkDuration);
+			if (vfx)
+			{
+				vfx.Stop();
+			}
+
+			const float maxLifetimeOfParticle = 3;
+			Destroy(gameObject, maxLifetimeOfParticle);
 		}
 	}
 
