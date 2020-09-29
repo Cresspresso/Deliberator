@@ -19,7 +19,11 @@ using UnityEngine;
 ///		<log author="Elijah Shadbolt" date="17/09/2020">
 ///			<para>Made it so player stops being able to walk when they run out of stamina/time.</para>
 ///		</log>
+///		<log author="Elijah Shadbolt" date="30/09/2020">
+///			<para>Stopped the effect of auto-jumping when in descending elevator</para>
+///		</log>
 /// </changelog>
+/// 
 public class V2_FirstPersonCharacterController : MonoBehaviour
 {
 	private CharacterController m_cc;
@@ -87,6 +91,21 @@ public class V2_FirstPersonCharacterController : MonoBehaviour
 	public float verticalVelocity { get; set; } = 0;
 
 	public int hitMask { get; private set; }
+
+	public class MovingPlatformInfo
+	{
+		public Collider collider { get; private set; }
+		public Rigidbody rigidbody { get; private set; }
+		public Vector3 lastPosition { get; set; }
+
+		public MovingPlatformInfo(Collider collider, Rigidbody rigidbody)
+		{
+			this.collider = collider;
+			this.rigidbody = rigidbody;
+			this.lastPosition = rigidbody.position;
+		}
+	}
+	private MovingPlatformInfo currentMovingPlatform = null;
 
 	public Vector3 position {
 		get => transform.position;
@@ -184,6 +203,8 @@ public class V2_FirstPersonCharacterController : MonoBehaviour
 
 	private void UpdatePosition()
 	{
+		var dt = Time.deltaTime;
+
 		var dir = (isMoveInputEnabled
 			&& isInputEnabled
 			&& !V2_GroundhogControl.instance.hasFinished)
@@ -197,7 +218,9 @@ public class V2_FirstPersonCharacterController : MonoBehaviour
 
 		var g = Physics.gravity;
 		var up = -g.normalized;
-		verticalVelocity -= g.magnitude * Time.deltaTime;
+		var velocityChangeByGravityThisFrame = -g.magnitude * dt;
+
+		verticalVelocity += velocityChangeByGravityThisFrame;
 
 		if (isJumpInputEnabled
 			&& isInputEnabled
@@ -233,7 +256,18 @@ public class V2_FirstPersonCharacterController : MonoBehaviour
 
 		velocity += up * verticalVelocity;
 
-		var displacement = velocity * Time.deltaTime;
+		var displacement = velocity * dt;
+
+		if (null != currentMovingPlatform && isTouchingGround)
+		{
+			var newPos = currentMovingPlatform.rigidbody.position;
+			var lastPos = currentMovingPlatform.lastPosition;
+			currentMovingPlatform.lastPosition = newPos;
+			var disp = newPos - lastPos;
+
+			displacement += disp;
+		}
+
 		var oldPosition = this.position;
 		var collisionFlags = cc.Move(displacement);
 		var newPosition = this.position;
@@ -243,7 +277,18 @@ public class V2_FirstPersonCharacterController : MonoBehaviour
 		{
 			isTouchingGround = true;
 			didJump = false;
-			verticalVelocity = 0;
+
+			if (null == currentMovingPlatform)
+			{
+				verticalVelocity = 0.0f;
+			}
+			else
+			{
+				// platform speed along gravity axis, where positive is up and negative is down.
+				// up is already normalised, so no need to divide by up.magnitude .
+				verticalVelocity = Vector3.Dot(currentMovingPlatform.rigidbody.velocity, up);
+			}
+
 			CheckGround();
 		}
 		else
@@ -263,5 +308,26 @@ public class V2_FirstPersonCharacterController : MonoBehaviour
 
 		UpdateRotation();
 		UpdatePosition();
+	}
+
+	private void OnTriggerEnter(Collider other)
+	{
+		if (other.CompareTag("MovingPlatform"))
+		{
+			var rb = other.GetComponentInParent<Rigidbody>();
+			if (rb)
+			{
+				currentMovingPlatform = new MovingPlatformInfo(other, rb);
+			}
+		}
+	}
+
+	private void OnTriggerExit(Collider other)
+	{
+		// if the current moving platform collider is the same as the trigger collider we just exited...
+		if (null != currentMovingPlatform && currentMovingPlatform.collider == other)
+		{
+			currentMovingPlatform = null;
+		}
 	}
 }

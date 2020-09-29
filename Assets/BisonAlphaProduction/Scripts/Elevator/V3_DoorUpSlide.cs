@@ -37,9 +37,14 @@ public class V3_DoorUpSlide : MonoBehaviour
 		target = point0;
 	}
 
-	private void LateUpdate()
+	private void FixedUpdate()
 	{
 		rb.MovePosition(Vector3.MoveTowards(rb.position, target.position, maxSpeed * Time.fixedDeltaTime));
 		isAnimationPlaying = Vector3.SqrMagnitude(rb.position - target.position) > 0.001f;
+	}
+
+	public void OnElevatorMoved(Vector3 displacement)
+	{
+		rb.MovePosition(rb.position + displacement);
 	}
 }
