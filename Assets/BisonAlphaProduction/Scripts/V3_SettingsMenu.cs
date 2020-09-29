@@ -14,29 +14,49 @@ public class V3_SettingsMenu : MonoBehaviour
 
     private GameObject player;
 
+#pragma warning disable CS0649
     [SerializeField] private Dropdown resolutionDropdown;
+#pragma warning restore CS0649
 
     private Resolution[] availableResolutions;
 
+#pragma warning disable CS0649
+    [SerializeField] private Slider sensitivitySlider;
+#pragma warning restore CS0649
+
     private float mouseSensitivity;
+
+#pragma warning disable CS0649
+    [SerializeField] private Slider volumeSlider;
+#pragma warning restore CS0649
 
     //called before start
     void Awake()
     {
         availableResolutions = Screen.resolutions;
         SetUpResolutionSettings();
-
-        if (PlayerPrefs.HasKey("MouseSensitivity"))
-        {
-            Debug.Log("MouseSensitivity Exists");
-            mouseSensitivity = PlayerPrefs.GetFloat("MouseSensitivity");
-        }
     }
 
     //called on start
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+
+        if (PlayerPrefs.HasKey("MouseSensitivity"))
+        {
+            //mouseSensitivity = PlayerPrefs.GetFloat("MouseSensitivity");
+            float foundSens = PlayerPrefs.GetFloat("MouseSensitivity");
+            Debug.Log("MouseSensitivity Exists " + foundSens);
+            SetSensitivity(foundSens);
+            sensitivitySlider.value = foundSens;
+        }
+
+        if (PlayerPrefs.HasKey("Volume"))
+        {
+            float foundVol = PlayerPrefs.GetFloat("Volume");
+            SetVolume(foundVol);
+            volumeSlider.value = foundVol;
+        }
     }
 
     /// <summary>
@@ -102,6 +122,7 @@ public class V3_SettingsMenu : MonoBehaviour
     public void SetVolume (float _volume)
     {
         audioMixer.SetFloat("MasterVolume", _volume);
+        PlayerPrefs.SetFloat("Volume", _volume);
     }
 
     /// <summary>
@@ -110,7 +131,7 @@ public class V3_SettingsMenu : MonoBehaviour
     /// <param name="_sensitivity"></param>
     public void SetSensitivity (float _sensitivity)
     {
-        Debug.Log("Sensitivity Changed");
+        Debug.Log("Sensitivity Changed " + _sensitivity);
 
         PlayerPrefs.SetFloat("MouseSensitivity", _sensitivity);
         mouseSensitivity = _sensitivity;
