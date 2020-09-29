@@ -105,7 +105,7 @@ public class V2_PauseMenu : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.Escape))
+		if (Input.GetKeyDown(KeyCode.Escape) && readableMenu.reading == false)
 		{
 			if (isPaused)
 			{
