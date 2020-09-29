@@ -58,7 +58,7 @@ public class V3_ReadableMenu : MonoBehaviour
 		cursorController.enabled = true;
 		readableMenuPanel.SetActive(false);
 		readableText.text = "";
-		reading = false;
+		StartCoroutine(waitToUnlock());
 	}
 
 	/// <summary>
@@ -75,11 +75,20 @@ public class V3_ReadableMenu : MonoBehaviour
 	///<summary>
 	///	Waits for esc button press to close readable menu
 	/// </summary>
-	/*private void Update()
+	private void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.Escape) && reading)
+		if (Input.GetKeyDown(KeyCode.Escape))
 		{
 			Unpause();
 		}
-	}*/
+	}
+
+	/// <summary>
+	/// Waits an amount of time before allowing pause menu to be pulled up
+	/// </summary>
+	IEnumerator waitToUnlock()
+	{
+		yield return new WaitForSeconds(0.25f);
+		reading = false;
+	}
 }
