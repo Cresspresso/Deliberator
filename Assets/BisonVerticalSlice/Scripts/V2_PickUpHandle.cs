@@ -4,18 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-/// <summary>
-///		<para>A Handle that can be picked up by the player, carried around, and dropped.</para>
-/// </summary>
-/// 
-/// <changelog>
-///		<log author="Elijah Shadbolt" date="29/09/2020">
-///			<para>Added comments.</para>
-///			<para>Added inspector field for `radius`.</para>
-///			<para>Added <see cref="OnDrawGizmosSelected"/> to show `radius`.</para>
-///		</log>
-/// </changelog>
-/// 
+/// <author>Elijah Shadbolt</author>
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(V2_ButtonHandle))]
 public class V2_PickUpHandle : MonoBehaviour
@@ -28,13 +17,6 @@ public class V2_PickUpHandle : MonoBehaviour
 	public event Action<V2_PickUpHandle, V2_PickUpController> onPickedUp;
 	public event Action<V2_PickUpHandle, V2_PickUpController> onDropped;
 	public string description = "Undescribable Object";
-
-#pragma warning disable CS0649
-	[Tooltip("When the player drops this item, how big is it (for placing on tables, etc)?")]
-	[SerializeField]
-	private float m_radius = 0.1f;
-	public float radius => m_radius;
-#pragma warning restore CS0649
 
 	private void Awake()
 	{
@@ -76,6 +58,7 @@ public class V2_PickUpHandle : MonoBehaviour
 		transform.SetParent(null);
 
 		const float hw = 0.7f;
+		const float radius = 0.1f;
 		var hc = controller.handleController;
 		var ray = new Ray(hc.transform.position, hc.transform.forward);
 		var maxDistance = Mathf.Max(radius, hc.maxDistance * hw);
@@ -90,16 +73,9 @@ public class V2_PickUpHandle : MonoBehaviour
 		if (hits.Any())
 		{
 			var hit = hits.First();
-			if (hit.point == Vector3.zero)
-			{
-				transform.position = ray.origin;
-			}
-			else
-			{
-				var a = ray.GetPoint(Mathf.Max(radius, hit.distance));
-				var b = hit.point + hit.normal * radius;
-				transform.position = (a + b) / 2.0f;
-			}
+			var a = ray.GetPoint(Mathf.Max(radius, hit.distance));
+			var b = hit.point + hit.normal * radius;
+			transform.position = (a + b) / 2.0f;
 		}
 		else
 		{
@@ -148,10 +124,4 @@ public class V2_PickUpHandle : MonoBehaviour
 	//		transform.rotation = controller.handPoint.rotation;
 	//	}
 	//}
-
-	private void OnDrawGizmosSelected()
-	{
-		Gizmos.color = Color.green;
-		Gizmos.DrawWireSphere(transform.position, radius);
-	}
 }

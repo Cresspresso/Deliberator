@@ -2,16 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-///		<para>Scene-specific singleton for background music track.</para>
-/// </summary>
-/// 
-/// <changelog>
-///		<log author="Elijah Shadbolt" date="29/09/2020">
-///			<para>Created this script.</para>
-///		</log>
-/// </changelog>
-/// 
 public class V4_Music : MonoBehaviour
 {
 #pragma warning disable CS0649

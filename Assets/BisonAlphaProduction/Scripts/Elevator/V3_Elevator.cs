@@ -92,13 +92,7 @@ public class V3_Elevator : MonoBehaviour
 		if (state == State.Travelling)
 		{
 			var targetPosition = desiredFloor.location.position;
-			var nextPos = Vector3.MoveTowards(rb.position, targetPosition, maxSpeed * Time.fixedDeltaTime);
-			var displacement = nextPos - rb.position;
-
-			rb.MovePosition(nextPos);
-			frontDoor.OnElevatorMoved(displacement);
-			backDoor.OnElevatorMoved(displacement);
-
+			rb.MovePosition(Vector3.MoveTowards(rb.position, targetPosition, maxSpeed * Time.fixedDeltaTime));
 			if (Vector3.SqrMagnitude(rb.position - targetPosition) < 0.001f)
 			{
 				state = State.OpeningDoors;
