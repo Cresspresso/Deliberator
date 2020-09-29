@@ -136,7 +136,7 @@ MonoBehaviour:
   m_doors:
   - {fileID: 588117854807792253}
   m_initialSoundDelay: 0.05
---- !u!1 &4650692319980144487
+--- !u!1 &3624288133947446122
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -144,53 +144,45 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4108077744828799966}
-  - component: {fileID: 5877604482913965011}
-  - component: {fileID: 6638566186732648924}
-  - component: {fileID: 3543976635556821804}
-  - component: {fileID: 566698290176960485}
-  - component: {fileID: 7810420936679737934}
-  - component: {fileID: 588117854807792253}
-  - component: {fileID: 6973947357463348673}
-  - component: {fileID: 5213487582265400785}
-  - component: {fileID: 6250022490651608012}
+  - component: {fileID: 4829802914989736749}
+  - component: {fileID: 4176211533820032148}
+  - component: {fileID: 38453881768174541}
   m_Layer: 0
-  m_Name: Single_LabDoor
+  m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4108077744828799966
+--- !u!4 &4829802914989736749
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4650692319980144487}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.6247859, y: -1.563194e-14, z: -0.014469165}
+  m_GameObject: {fileID: 3624288133947446122}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.056}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 5322081158475186198}
-  m_Father: {fileID: 3636872100902667098}
-  m_RootOrder: 0
+  m_Children: []
+  m_Father: {fileID: 4108077744828799966}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &5877604482913965011
+--- !u!33 &4176211533820032148
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4650692319980144487}
+  m_GameObject: {fileID: 3624288133947446122}
   m_Mesh: {fileID: -65979954847172144, guid: 3dd0a941c995a824c917d5b0b6e5ff14, type: 3}
---- !u!23 &6638566186732648924
+--- !u!23 &38453881768174541
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4650692319980144487}
+  m_GameObject: {fileID: 3624288133947446122}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -225,6 +217,45 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!1 &4650692319980144487
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4108077744828799966}
+  - component: {fileID: 3543976635556821804}
+  - component: {fileID: 566698290176960485}
+  - component: {fileID: 7810420936679737934}
+  - component: {fileID: 588117854807792253}
+  - component: {fileID: 6973947357463348673}
+  - component: {fileID: 5213487582265400785}
+  - component: {fileID: 6250022490651608012}
+  m_Layer: 0
+  m_Name: Single_LabDoor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4108077744828799966
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4650692319980144487}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.6247859, y: -1.563194e-14, z: 0.041}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 5322081158475186198}
+  - {fileID: 4829802914989736749}
+  m_Father: {fileID: 3636872100902667098}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &3543976635556821804
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -237,7 +268,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1.217057, y: 2.3655117, z: 0.11142571}
-  m_Center: {x: 0.6085278, y: 1.1827558, z: 0.055429675}
+  m_Center: {x: 0.6085278, y: 1.1827558, z: 0}
 --- !u!65 &566698290176960485
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -250,7 +281,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.06290269, y: 0.36808157, z: 0.24222499}
-  m_Center: {x: 1.0344058, y: 1.2659154, z: 0.055429667}
+  m_Center: {x: 1.0344058, y: 1.2659154, z: 0}
 --- !u!54 &7810420936679737934
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -416,7 +447,7 @@ PrefabInstance:
     - target: {fileID: 3200239896996072811, guid: 3d133bba2ccbccd4e968e218cd90e895,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.054
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3200239896996072811, guid: 3d133bba2ccbccd4e968e218cd90e895,
         type: 3}
