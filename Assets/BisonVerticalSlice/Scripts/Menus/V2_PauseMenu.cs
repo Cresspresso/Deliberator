@@ -80,11 +80,11 @@ public class V2_PauseMenu : MonoBehaviour
 
 	private static bool GetPauseButtonDown()
 	{
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
 		return Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.BackQuote) || Input.GetKeyDown(KeyCode.Tilde);
-#else
-		return Input.GetKeyDown(KeyCode.Escape);
-#endif
+//#else
+		//return Input.GetKeyDown(KeyCode.Escape);
+//#endif
 	}
 
 
