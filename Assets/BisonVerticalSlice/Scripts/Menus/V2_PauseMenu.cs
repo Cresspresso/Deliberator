@@ -76,6 +76,19 @@ public class V2_PauseMenu : MonoBehaviour
 
 	public static V2_PauseMenu instance => V2_Singleton<V2_PauseMenu>.instance;
 
+
+
+	private static bool GetPauseButtonDown()
+	{
+#if UNITY_EDITOR
+		return Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.BackQuote) || Input.GetKeyDown(KeyCode.Tilde);
+#else
+		return Input.GetKeyDown(KeyCode.Escape);
+#endif
+	}
+
+
+
 	public void Pause() => Pause(this.pauseMenuPanel);
 	public void Pause(GameObject menuPanel)
 	{
@@ -108,7 +121,7 @@ public class V2_PauseMenu : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.Escape) && readableMenu.reading == false)
+		if (GetPauseButtonDown() && readableMenu.reading == false)
 		{
 			if (isPaused)
 			{
