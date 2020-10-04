@@ -75,9 +75,16 @@ public class V3_ReadableMenu : MonoBehaviour
 	///<summary>
 	///	Waits for esc button press to close readable menu
 	/// </summary>
+	/// 
+	/// <changelog>
+	///		<log author="Elijah Shadbolt" date="01/10/2020">
+	///			<para>Edited {...Escape) && reading)} so that it would show the pause menu cursor in release build.</para>
+	///		</log>
+	/// </changelog>
+	/// 
 	private void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.Escape))
+		if (Input.GetKeyDown(KeyCode.Escape) && reading)
 		{
 			Unpause();
 		}
