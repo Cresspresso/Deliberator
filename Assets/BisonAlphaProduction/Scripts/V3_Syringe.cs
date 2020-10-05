@@ -181,10 +181,7 @@ Shrink Duration is how long it takes to shrink out of visibility.")]
 	private void OnClick(V2_ButtonHandle buttonHandle, V2_HandleController handleController)
 	{
 		/// Load the next scene after a delay.
-		if (sceneTransitionRoom)
-		{
-			Invoke(nameof(EnableTransitionRoom), delay);
-		}
+		Invoke(nameof(EnableTransitionRoom), delay);
 
 		/// Prevent the button from being clicked twice.
 		buttonHandle.handle.enabled = false;
@@ -254,6 +251,8 @@ Shrink Duration is how long it takes to shrink out of visibility.")]
 	/// 
 	private void OnDestroy()
 	{
+		EnableTransitionRoom();
+
 		/// If the button component was not destroyed before this component...
 		if (buttonHandle)
 		{
@@ -266,6 +265,9 @@ Shrink Duration is how long it takes to shrink out of visibility.")]
 
 	private void EnableTransitionRoom()
 	{
-		sceneTransitionRoom.canLoadLevel = true;
+		if (sceneTransitionRoom)
+		{
+			sceneTransitionRoom.canLoadLevel = true;
+		}
 	}
 }

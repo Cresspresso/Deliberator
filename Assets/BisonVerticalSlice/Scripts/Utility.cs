@@ -79,6 +79,43 @@ public static class V2_Utility
 		}
 		return list;
 	}
+
+	/// <summary>
+	///		<para>Repeatedly calls the callback <paramref name="attempt"/> until it returns true.</para>
+	///		<para>Useful for generating random distinct values.</para>
+	/// </summary>
+	/// <typeparam name="T">Type of value that we are attempting to create.</typeparam>
+	/// <param name="maxTries">If the operation fails more than this many times, stop trying.</param>
+	/// <returns>
+	///		The created value,
+	///		or null if it failed more than <paramref name="maxTries"/> times.
+	///	</returns>
+	/// 
+	/// <changelog>
+	///		<log author="Elijah Shadbolt" date="05/10/2020">
+	///			<para>Created this method.</para>
+	///		</log>
+	/// </changelog>
+	/// 
+	public static (bool success, T value) AttemptCreate<T>(int maxTries, Func<(bool, T)> attempt)
+	{
+		(bool success, T value) r = attempt();
+		while (!r.success && maxTries > 0)
+		{
+			r = attempt();
+			--maxTries;
+		}
+		return r;
+	}
+	public static bool Attempt(int maxTries, Func<bool> attempt)
+	{
+		bool r = false;
+		for (; maxTries > 0 && !r; --maxTries)
+		{
+			r = attempt();
+		}
+		return r;
+	}
 }
 
 namespace Bison.Utility
