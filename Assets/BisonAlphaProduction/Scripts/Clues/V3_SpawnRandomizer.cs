@@ -22,6 +22,10 @@ public class V3_SparData_SpawnRandomizer
 ///		<log author="Elijah Shadbolt" date="20/08/2020">
 ///			<para>Added this script.</para>
 ///		</log>
+///		<log author="Elijah Shadbolt" date="20/08/2020">
+///			<para>Added property <see cref="useSetParent"/>.</para>
+///			<para>Moved spawning logic to <see cref="Start"/> to show checkbox in inspector.</para>
+///		</log>
 /// </changelog>
 /// 
 public class V3_SpawnRandomizer : V3_Randomizer<V3_SparData_SpawnRandomizer, V3_SparDb_SpawnRandomizer>
@@ -33,6 +37,10 @@ public class V3_SpawnRandomizer : V3_Randomizer<V3_SparData_SpawnRandomizer, V3_
 	[SerializeField]
 	private Transform[] m_spawnPoints = new Transform[2];
 	public IReadOnlyList<Transform> spawnPoints => m_spawnPoints;
+
+	[SerializeField]
+	private bool m_useSetParent = true;
+	public bool useSetParent => m_useSetParent;
 
 
 
@@ -61,17 +69,28 @@ public class V3_SpawnRandomizer : V3_Randomizer<V3_SparData_SpawnRandomizer, V3_
 	protected override void Awake()
 	{
 		base.Awake();
+	}
 
+	private void Start()
+	{
 		for (int i = 0; i < targets.Count; i++)
 		{
 			var target = targets[i];
 			var spawnPoint = spawnPoints[generatedValue.data[i]];
 
 			var localScale = target.localScale;
-			target.SetParent(spawnPoint);
-			target.localPosition = Vector3.zero;
-			target.localRotation = Quaternion.identity;
-			target.localScale = localScale;
+			if (useSetParent)
+			{
+				target.SetParent(spawnPoint);
+				target.localPosition = Vector3.zero;
+				target.localRotation = Quaternion.identity;
+				target.localScale = localScale;
+			}
+			else
+			{
+				target.position = spawnPoint.position;
+				target.rotation = spawnPoint.rotation;
+			}
 		}
 	}
 }
