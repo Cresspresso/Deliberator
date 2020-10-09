@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// This script assigns the object it is attached to a selectable material choice, which in turn will
+/// change the sound that is played when the player walks over it.
+/// </summary>
+/// <author>Lorenzo Sae-Phoo Zemp</author>
 [ExecuteInEditMode]
 public class V3_FloorMatSound : MonoBehaviour
 {
@@ -13,14 +18,15 @@ public class V3_FloorMatSound : MonoBehaviour
         Glass
     }
 
+    [SerializeField] private bool concrete = false;
+    [SerializeField] private bool metal = false;
     [SerializeField] private bool wood = false;
     [SerializeField] private bool glass = false;
-    [SerializeField] private bool metal = false;
-    [SerializeField] private bool concrete = false;
 
     private Material materialSelected;
 
-    [SerializeField] private AudioClip[] sounds;
+    //[Tooltip("Only 4 sounds! In following order, Concrete, Metal, Wood, Glass")]
+    //[SerializeField] private AudioClip[] sounds;
 
     // Update is called once per frame
     void Update()
