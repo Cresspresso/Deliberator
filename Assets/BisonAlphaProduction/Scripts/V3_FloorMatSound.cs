@@ -14,64 +14,27 @@ public class V3_FloorMatSound : MonoBehaviour
     {
         Concrete,
         Metal, 
-        Wood, 
-        Glass
+        Wood,
+        Carpet
     }
 
-    [SerializeField] private bool concrete = false;
-    [SerializeField] private bool metal = false;
-    [SerializeField] private bool wood = false;
-    [SerializeField] private bool glass = false;
-
-    private Material materialSelected;
+    [SerializeField] private Material chosenMat;
 
     //[Tooltip("Only 4 sounds! In following order, Concrete, Metal, Wood, Glass")]
     //[SerializeField] private AudioClip[] sounds;
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Application.isEditor)
-        {
-            if (wood) { 
-                glass = false; 
-                metal = false;
-                concrete = false;
-                materialSelected = Material.Wood;
-            }
-            if (glass) { 
-                wood = false; 
-                metal = false;
-                concrete = false;
-                materialSelected = Material.Glass;
-            }
-            if (metal) { 
-                wood = false; 
-                glass = false;
-                concrete = false;
-                materialSelected = Material.Metal;
-            }
-            if (concrete) {
-                wood = false;
-                glass = false;
-                metal = false;
-                materialSelected = Material.Concrete;
-            }
-        }
-    }
-
     public string GetMat()
     {
-        switch (materialSelected)
+        switch (chosenMat)
         {
             case Material.Concrete:
                 return ("concrete");
-            case Material.Glass:
-                return ("glass");
-            case Material.Metal:
-                return ("metal");
             case Material.Wood:
                 return ("wood");
+            case Material.Metal:
+                return ("metal");
+            case Material.Carpet:
+                return ("carpet");
             default:
                 return ("null");
         }
