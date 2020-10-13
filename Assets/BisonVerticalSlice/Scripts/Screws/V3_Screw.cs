@@ -10,6 +10,9 @@ using UnityEngine;
 ///		<log author="Elijah Shadbolt" date="21/09/2020">
 ///			<para>Created this script.</para>
 ///		</log>
+///		<log author="Elijah Shadbolt" date="13/10/2020">
+///			<para>Edited so that player's screwdriver must not be broken for this to be unscrewed by it.</para>
+///		</log>
 /// </changelog>
 /// 
 [RequireComponent(typeof(Dependable))]
@@ -44,14 +47,24 @@ public class V3_Screw : MonoBehaviour
 		Debug.Assert(puc, this);
 		if (puc)
 		{
-			if (puc.currentPickedUpHandle)
+			var puHandle = puc.currentPickedUpHandle;
+			if (puHandle)
 			{
-				if (puc.currentPickedUpHandle.CompareTag("Screwdriver"))
+				var screwdriver = puHandle.GetComponent<V4_Screwdriver>();
+				if (screwdriver)
 				{
-					hasUnscrewed = true;
-					dependable.firstLiteral = true;
-					dependable.ReEvaluate();
-					gameObject.SetActive(false);
+					if (screwdriver.hasExpired)
+					{
+						Debug.LogWarning("TODO play invalid sound (e.g. metal clang)", this);
+					}
+					else
+					{
+						Debug.LogWarning("TODO play screw sound", this);
+						hasUnscrewed = true;
+						dependable.firstLiteral = true;
+						dependable.ReEvaluate();
+						gameObject.SetActive(false);
+					}
 				}
 			}
 		}

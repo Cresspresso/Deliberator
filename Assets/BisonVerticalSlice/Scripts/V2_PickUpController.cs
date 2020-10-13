@@ -2,8 +2,18 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using TSingleton = V2_Singleton<V2_PickUpController>;
 
-/// <author>Elijah Shadbolt</author>
+/// <summary>
+///		Manages what the player is currently holding in their hand.
+/// </summary>
+/// 
+/// <changelog>
+///		<log author="Elijah Shadbolt" date="13/10/2020">
+///			<para>Added Singleton instance property.</para>
+///		</log>
+/// </changelog>
+/// 
 [RequireComponent(typeof(V2_HandleController))]
 public class V2_PickUpController : MonoBehaviour
 {
@@ -17,8 +27,12 @@ public class V2_PickUpController : MonoBehaviour
 
 	public Transform handPoint;
 
+	public static V2_PickUpController instance => TSingleton.instance;
+
 	private void Awake()
 	{
+		TSingleton.OnAwake(this, V2_SingletonDuplicateMode.Ignore);
+
 		handleController = GetComponent<V2_HandleController>();
 		cc = GetComponentInParent<CharacterController>();
 	}
