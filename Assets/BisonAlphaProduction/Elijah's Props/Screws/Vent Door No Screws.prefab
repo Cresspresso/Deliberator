@@ -14,8 +14,6 @@ GameObject:
   - component: {fileID: 645192232330586821}
   - component: {fileID: 645192232330586822}
   - component: {fileID: 645192232330586823}
-  - component: {fileID: 645192232330586830}
-  - component: {fileID: 645192232330586831}
   m_Layer: 0
   m_Name: Vent Door No Screws
   m_TagString: Untagged
@@ -112,40 +110,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   description: Vent Door
   m_radius: 0.7
---- !u!114 &645192232330586830
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 645192232330586840}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30e802f72146e764a899d2aca2c2e555, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  condition:
-    arrays:
-      literalArray:
-      - value: 1
-      dependencyArray: []
-      notArray: []
-      groupArray: []
-    root:
-      type: 0
-      index: 0
---- !u!114 &645192232330586831
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 645192232330586840}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90cf7f3c11bfa6146ac9e50fcedfb6c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1103618866539816658
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Linq;
 
-[CustomEditor(typeof(Dependable))]
+[CustomEditor(typeof(Dependable)), CanEditMultipleObjects]
 public class DependableEditor : Editor
 {
 	public override void OnInspectorGUI()
