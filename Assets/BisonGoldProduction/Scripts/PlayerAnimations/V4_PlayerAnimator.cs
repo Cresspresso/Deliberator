@@ -67,6 +67,7 @@ public class V4_PlayerAnimator : MonoBehaviour
 		Screwdriver = 2,
 		Fuse = 3,
 		Syringe = 4,
+		Faint = 5,
 	}
 
 	private ItemType itemType {
@@ -74,13 +75,16 @@ public class V4_PlayerAnimator : MonoBehaviour
 		set
 		{
 			anim.SetInteger(property_itemType, (int)value);
-			isHoldingItem = value != ItemType.None;
+			if (value != ItemType.None)
+			{
+				showItemLayer = true;
+			}
 			PollIsIdle();
 		}
 	}
 	private static int property_itemType;
 
-	private bool isHoldingItem { get; set; }
+	private bool showItemLayer { get; set; }
 
 
 
@@ -94,7 +98,7 @@ public class V4_PlayerAnimator : MonoBehaviour
 	private static int property_isIdle;
 	private void PollIsIdle()
 	{
-		isIdle = !(isWalking || isHoldingTorch || isHoldingItem || isPushingDoor || isInspecting);
+		isIdle = !(isWalking || isHoldingTorch || showItemLayer || isPushingDoor || isInspecting);
 	}
 
 
@@ -184,7 +188,7 @@ public class V4_PlayerAnimator : MonoBehaviour
 	// ======== Inspector Properties ========
 
 
-
+	[Header("Items")]
 	[SerializeField]
 	private GameObject m_torchVisuals;
 	public GameObject torchVisuals => m_torchVisuals;
@@ -201,16 +205,21 @@ public class V4_PlayerAnimator : MonoBehaviour
 	private GameObject m_fuseVisuals;
 	public GameObject fuseVisuals => m_fuseVisuals;
 
+	[Header("Item-Cinematics")]
 	[SerializeField]
 	private GameObject m_syringeVisuals;
 	public GameObject syringeVisuals => m_syringeVisuals;
 
 	[SerializeField]
+	private GameObject m_faintVolume;
+	public GameObject faintVolume => m_faintVolume;
+
+	[Header("Inspecting Views")]
+	[SerializeField]
 	private GameObject m_vaultVisuals;
 	public GameObject vaultVisuals => m_vaultVisuals;
 
-
-
+	[Header("Layer Weight Transitions")]
 	[SerializeField]
 	private LayerWeightBlender m_torchLayerWeight = new LayerWeightBlender();
 
@@ -303,7 +312,10 @@ public class V4_PlayerAnimator : MonoBehaviour
 
 		DeactivateAllItemVisuals();
 
+
 		inspectingViewType = InspectingViewType.None;
+
+		DeactivateAllInspectingViewVisuals();
 	}
 
 	private void Update()
@@ -348,6 +360,10 @@ public class V4_PlayerAnimator : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.Alpha4))
 		{
 			itemType = ItemType.Syringe;
+		}
+		if (Input.GetKeyDown(KeyCode.Alpha5))
+		{
+			itemType = ItemType.Faint;
 		}
 
 
@@ -401,7 +417,7 @@ public class V4_PlayerAnimator : MonoBehaviour
 		var layers = new List<(int layerIndex, LayerWeightBlender blender, bool active)>
 		{
 			(torchLayerIndex, m_torchLayerWeight, isHoldingTorch),
-			(itemLayerIndex, m_itemLayerWeight, isHoldingItem),
+			(itemLayerIndex, m_itemLayerWeight, showItemLayer),
 			(doorPushLayerIndex, m_doorPushLayerWeight, isPushingDoor),
 			(inspectingViewLayerIndex, m_inspectingLayerWeight, isInspecting),
 		};
@@ -440,6 +456,12 @@ public class V4_PlayerAnimator : MonoBehaviour
 		OnEndItemPutAway();
 	}
 
+	void OnEndFaint()
+	{
+		itemType = ItemType.None;
+		OnEndItemPutAway();
+	}
+
 	void OnBeginTakeItemOut()
 	{
 		switch (itemType)
@@ -471,11 +493,18 @@ public class V4_PlayerAnimator : MonoBehaviour
 					syringeVisuals.SetActive(true);
 				}
 				break;
+
+			case ItemType.Faint:
+				{
+					faintVolume.SetActive(true);
+				}
+				break;
 		}
 	}
 
 	void OnEndItemPutAway()
 	{
+		showItemLayer = itemType != ItemType.None;
 		DeactivateAllItemVisuals();
 	}
 
@@ -486,6 +515,7 @@ public class V4_PlayerAnimator : MonoBehaviour
 			screwdriverVisuals,
 			fuseVisuals,
 			syringeVisuals,
+			faintVolume,
 		});
 	}
 
