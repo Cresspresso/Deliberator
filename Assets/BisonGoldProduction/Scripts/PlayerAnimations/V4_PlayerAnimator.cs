@@ -12,36 +12,166 @@ public class V4_PlayerAnimator : MonoBehaviour
 
 	private static bool s_ready = false;
 
-	private static int property_IsWalking;
-	private bool IsWalking {
-		get => anim.GetBool(property_IsWalking);
-		set => anim.SetBool(property_IsWalking, value);
+
+
+	private bool isWalking {
+		get => anim.GetBool(property_isWalking);
+		set
+		{
+			anim.SetBool(property_isWalking, value);
+			PollIsIdle();
+		}
+	}
+	private static int property_isWalking;
+
+
+	private bool isHoldingTorch {
+		get => anim.GetBool(property_isHoldingTorch);
+		set
+		{
+			anim.SetBool(property_isHoldingTorch, value);
+			torchVisuals.SetActive(value);
+			PollIsIdle();
+		}
+	}
+	private static int property_isHoldingTorch;
+
+
+	private bool isPushingDoor {
+		get => anim.GetBool(property_isPushingDoor);
+		set
+		{
+			anim.SetBool(property_isPushingDoor, value);
+			PollIsIdle();
+		}
+	}
+	private static int property_isPushingDoor;
+
+
+
+	private enum ItemType
+	{
+		None = 0,
+		KeyCard = 1,
+		Screwdriver = 2,
 	}
 
-	private static int property_IsHoldingTorch;
-	private bool IsHoldingTorch {
-		get => anim.GetBool(property_IsHoldingTorch);
-		set => anim.SetBool(property_IsHoldingTorch, value);
+	private ItemType itemType {
+		get => (ItemType)anim.GetInteger(property_itemType);
+		set
+		{
+			anim.SetInteger(property_itemType, (int)value);
+			isHoldingItem = value != ItemType.None;
+			PollIsIdle();
+		}
+	}
+	private static int property_itemType;
+
+	private bool isHoldingItem { get; set; }
+
+
+
+	private bool isIdle {
+		get => anim.GetBool(property_isIdle);
+		set
+		{
+			anim.SetBool(property_isIdle, value);
+		}
+	}
+	private static int property_isIdle;
+	private void PollIsIdle()
+	{
+		isIdle = !(isWalking || isHoldingTorch || isHoldingItem);
 	}
 
-	private int TorchLayerIndex;
+
+
+	private bool isScrewdriving {
+		get => anim.GetBool(property_isScrewdriving);
+		set
+		{
+			anim.SetBool(property_isScrewdriving, value);
+		}
+	}
+	private static int property_isScrewdriving;
+
+
+
+	private int torchLayerIndex;
+	private int itemLayerIndex;
+
+
 
 	#endregion
 
 
 
 #pragma warning disable C0649
+	// ======== Inspector Properties ========
+
+
 
 	[SerializeField]
-	private AnimationCurve layerBlend = new AnimationCurve(
-		new Keyframe(0, 0),
-		new Keyframe(1, 1));
+	private GameObject m_torchVisuals;
+	public GameObject torchVisuals => m_torchVisuals;
+
+	[SerializeField]
+	private GameObject m_keyCardVisuals;
+	public GameObject keyCardVisuals => m_keyCardVisuals;
+
+	[SerializeField]
+	private GameObject m_screwdriverVisuals;
+	public GameObject screwdriverVisuals => m_screwdriverVisuals;
+
+
+
+	[SerializeField]
+	private LayerWeightBlender m_torchLayerWeight = new LayerWeightBlender();
+
+	[SerializeField]
+	private LayerWeightBlender m_itemLayerWeight = new LayerWeightBlender();
+
+
 
 #pragma warning restore C0649
 
 
 
-	private float torchLayerWeightLinear = 0;
+	[System.Serializable]
+	private class LayerWeightBlender
+	{
+		[SerializeField]
+		private float m_speed = 4.0f; // 4.0f -> 0.25s
+
+		[SerializeField]
+		private AnimationCurve m_curve = new AnimationCurve(
+			new Keyframe(0, 0),
+			new Keyframe(1, 1)
+		);
+
+		private float linearAmount { get; set; } = 0.0f;
+
+		public void Update(Animator anim, int layerIndex, bool active)
+		{
+			linearAmount = Mathf.MoveTowards(
+				linearAmount,
+				active ? 1 : 0,
+				Time.deltaTime * m_speed
+				);
+
+			float layerWeight = m_curve.Evaluate(linearAmount);
+
+			anim.SetLayerWeight(layerIndex, layerWeight);
+		}
+	}
+
+	private static void SetActiveGroup(bool active, params GameObject[] gameObjects)
+	{
+		foreach (var go in gameObjects)
+		{
+			go.SetActive(active);
+		}
+	}
 
 
 
@@ -49,38 +179,130 @@ public class V4_PlayerAnimator : MonoBehaviour
 	{
 		anim = GetComponent<Animator>();
 
-		TorchLayerIndex = anim.GetLayerIndex("Torch");
+		torchLayerIndex = anim.GetLayerIndex("Torch");
+		itemLayerIndex = anim.GetLayerIndex("Item");
 
 		if (!s_ready)
 		{
 			s_ready = true;
 
-			property_IsWalking = Animator.StringToHash("IsWalking");
-			property_IsHoldingTorch = Animator.StringToHash("IsHoldingTorch");
+			property_isWalking = Animator.StringToHash("IsWalking");
+			property_isHoldingTorch = Animator.StringToHash("IsHoldingTorch");
+			property_isPushingDoor = Animator.StringToHash("IsPushingDoor");
+			property_itemType = Animator.StringToHash("ItemType");
+			property_isIdle = Animator.StringToHash("IsIdle");
+			property_isScrewdriving = Animator.StringToHash("IsScrewdriving");
 		}
+	}
+
+	private void Start()
+	{
+		isWalking = false;
+		isHoldingTorch = false;
+		itemType = ItemType.None;
+		isScrewdriving = false;
+		DeactivateAllItemVisuals();
 	}
 
 	private void Update()
 	{
 		if (Input.GetKeyUp(KeyCode.I))
 		{
-			IsWalking = false;
+			isWalking = false;
 		}
 
 		if (Input.GetKeyDown(KeyCode.I))
 		{
-			IsWalking = true;
+			isWalking = true;
 		}
 
 		if (Input.GetKeyDown(KeyCode.O))
 		{
-			IsHoldingTorch = !IsHoldingTorch;
+			isHoldingTorch = !isHoldingTorch;
 		}
 
-		Debug.Log(nameof(IsHoldingTorch) + ": " + IsHoldingTorch);
-		torchLayerWeightLinear = Mathf.MoveTowards(torchLayerWeightLinear, IsHoldingTorch ? 1 : 0, Time.deltaTime * 4.0f);
-		float torchLayerWeight = layerBlend.Evaluate(torchLayerWeightLinear);
-		Debug.Log(nameof(torchLayerWeight) + ": " + torchLayerWeight, this);
-		anim.SetLayerWeight(TorchLayerIndex, torchLayerWeight);
+		if (Input.GetKeyDown(KeyCode.P))
+		{
+			isPushingDoor = true;
+		}
+
+		if (Input.GetKeyDown(KeyCode.Alpha0))
+		{
+			itemType = ItemType.None;
+		}
+		if (Input.GetKeyDown(KeyCode.Alpha1))
+		{
+			itemType = ItemType.KeyCard;
+		}
+		if (Input.GetKeyDown(KeyCode.Alpha2))
+		{
+			itemType = ItemType.Screwdriver;
+		}
+
+		if (Input.GetKeyDown(KeyCode.U))
+		{
+			isScrewdriving = true;
+		}
+
+		UpdateLayerWeightBlending();
+	}
+
+	void UpdateLayerWeightBlending()
+	{
+		var layers = new List<(int layerIndex, LayerWeightBlender blender, bool active)>
+		{
+			(torchLayerIndex, m_torchLayerWeight, isHoldingTorch),
+			(itemLayerIndex, m_itemLayerWeight, isHoldingItem),
+		};
+
+		foreach (var (layerIndex, blender, active) in layers)
+		{
+			blender.Update(anim, layerIndex, active);
+		}
+	}
+
+	void OnEndPushingDoor()
+	{
+		isPushingDoor = false;
+	}
+
+	void OnEndScrewdriving()
+	{
+		isScrewdriving = false;
+	}
+
+	void OnBeginTakeItemOut()
+	{
+		switch (itemType)
+		{
+			default:
+			case ItemType.None:
+				break;
+
+			case ItemType.KeyCard:
+				{
+					keyCardVisuals.SetActive(true);
+				}
+				break;
+
+			case ItemType.Screwdriver:
+				{
+					screwdriverVisuals.SetActive(true);
+				}
+				break;
+		}
+	}
+
+	void OnEndItemPutAway()
+	{
+		DeactivateAllItemVisuals();
+	}
+
+	private void DeactivateAllItemVisuals()
+	{
+		SetActiveGroup(false, new[] {
+			keyCardVisuals,
+			screwdriverVisuals,
+		});
 	}
 }
