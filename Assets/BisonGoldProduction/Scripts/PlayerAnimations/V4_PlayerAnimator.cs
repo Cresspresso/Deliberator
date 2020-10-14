@@ -3,6 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+/// <changelog>
+///		<log author="Elijah Shadbolt" date="14/10/2020">
+///			<para>Created this script.</para>
+///		</log>
+///		<log author="Elijah Shadbolt" date="15/10/2020">
+///			<para>
+///				Added fuse and inject.
+///			</para>
+///		</log>
+/// </changelog>
+/// 
 [RequireComponent(typeof(Animator))]
 public class V4_PlayerAnimator : MonoBehaviour
 {
@@ -54,6 +65,8 @@ public class V4_PlayerAnimator : MonoBehaviour
 		None = 0,
 		KeyCard = 1,
 		Screwdriver = 2,
+		Fuse = 3,
+		Syringe = 4,
 	}
 
 	private ItemType itemType {
@@ -81,7 +94,7 @@ public class V4_PlayerAnimator : MonoBehaviour
 	private static int property_isIdle;
 	private void PollIsIdle()
 	{
-		isIdle = !(isWalking || isHoldingTorch || isHoldingItem);
+		isIdle = !(isWalking || isHoldingTorch || isHoldingItem || isPushingDoor || isInspecting);
 	}
 
 
@@ -97,8 +110,69 @@ public class V4_PlayerAnimator : MonoBehaviour
 
 
 
+	private enum InspectingViewType
+	{
+		None = 0,
+		VaultStanding = 1,
+		VaultCrouching = 2,
+	}
+
+	private InspectingViewType inspectingViewType {
+		get => (InspectingViewType)anim.GetInteger(property_inspectingViewType);
+		set
+		{
+			anim.SetInteger(property_inspectingViewType, (int)value);
+			isInspecting = value != InspectingViewType.None;
+			PollIsIdle();
+			if (!isInspecting)
+			{
+				vaultVisuals.SetActive(false);
+			}
+		}
+	}
+	private static int property_inspectingViewType;
+
+	private bool isInspecting { get; set; }
+
+
+
+	private bool vaultTryButLocked {
+		get => anim.GetBool(property_vaultTryButLocked);
+		set
+		{
+			anim.SetBool(property_vaultTryButLocked, value);
+		}
+	}
+	private static int property_vaultTryButLocked;
+
+
+
+	private bool vaultOpenIt {
+		get => anim.GetBool(property_vaultOpenIt);
+		set
+		{
+			anim.SetBool(property_vaultOpenIt, value);
+		}
+	}
+	private static int property_vaultOpenIt;
+
+
+
+	private int vaultTurningDelta {
+		get => anim.GetInteger(property_vaultTurningDelta);
+		set
+		{
+			anim.SetInteger(property_vaultTurningDelta, value);
+		}
+	}
+	private static int property_vaultTurningDelta;
+
+
+
 	private int torchLayerIndex;
 	private int itemLayerIndex;
+	private int doorPushLayerIndex;
+	private int inspectingViewLayerIndex;
 
 
 
@@ -123,6 +197,18 @@ public class V4_PlayerAnimator : MonoBehaviour
 	private GameObject m_screwdriverVisuals;
 	public GameObject screwdriverVisuals => m_screwdriverVisuals;
 
+	[SerializeField]
+	private GameObject m_fuseVisuals;
+	public GameObject fuseVisuals => m_fuseVisuals;
+
+	[SerializeField]
+	private GameObject m_syringeVisuals;
+	public GameObject syringeVisuals => m_syringeVisuals;
+
+	[SerializeField]
+	private GameObject m_vaultVisuals;
+	public GameObject vaultVisuals => m_vaultVisuals;
+
 
 
 	[SerializeField]
@@ -130,6 +216,12 @@ public class V4_PlayerAnimator : MonoBehaviour
 
 	[SerializeField]
 	private LayerWeightBlender m_itemLayerWeight = new LayerWeightBlender();
+
+	[SerializeField]
+	private LayerWeightBlender m_doorPushLayerWeight = new LayerWeightBlender();
+
+	[SerializeField]
+	private LayerWeightBlender m_inspectingLayerWeight = new LayerWeightBlender();
 
 
 
@@ -181,6 +273,8 @@ public class V4_PlayerAnimator : MonoBehaviour
 
 		torchLayerIndex = anim.GetLayerIndex("Torch");
 		itemLayerIndex = anim.GetLayerIndex("Item");
+		doorPushLayerIndex = anim.GetLayerIndex("DoorPush");
+		inspectingViewLayerIndex = anim.GetLayerIndex("InspectingView");
 
 		if (!s_ready)
 		{
@@ -192,16 +286,24 @@ public class V4_PlayerAnimator : MonoBehaviour
 			property_itemType = Animator.StringToHash("ItemType");
 			property_isIdle = Animator.StringToHash("IsIdle");
 			property_isScrewdriving = Animator.StringToHash("IsScrewdriving");
+			property_inspectingViewType = Animator.StringToHash("InspectingViewType");
+			property_vaultTryButLocked = Animator.StringToHash("VaultTryButLocked");
+			property_vaultOpenIt = Animator.StringToHash("VaultOpenIt");
+			property_vaultTurningDelta = Animator.StringToHash("VaultTurningDelta");
 		}
 	}
 
 	private void Start()
 	{
 		isWalking = false;
+
 		isHoldingTorch = false;
 		itemType = ItemType.None;
 		isScrewdriving = false;
+
 		DeactivateAllItemVisuals();
+
+		inspectingViewType = InspectingViewType.None;
 	}
 
 	private void Update()
@@ -226,6 +328,7 @@ public class V4_PlayerAnimator : MonoBehaviour
 			isPushingDoor = true;
 		}
 
+
 		if (Input.GetKeyDown(KeyCode.Alpha0))
 		{
 			itemType = ItemType.None;
@@ -238,11 +341,57 @@ public class V4_PlayerAnimator : MonoBehaviour
 		{
 			itemType = ItemType.Screwdriver;
 		}
+		if (Input.GetKeyDown(KeyCode.Alpha3))
+		{
+			itemType = ItemType.Fuse;
+		}
+		if (Input.GetKeyDown(KeyCode.Alpha4))
+		{
+			itemType = ItemType.Syringe;
+		}
+
 
 		if (Input.GetKeyDown(KeyCode.U))
 		{
 			isScrewdriving = true;
 		}
+
+
+
+		if (Input.GetKeyDown(KeyCode.C))
+		{
+			inspectingViewType = InspectingViewType.None;
+		}
+		if (Input.GetKeyDown(KeyCode.V))
+		{
+			inspectingViewType = InspectingViewType.VaultStanding;
+		}
+		if (Input.GetKeyDown(KeyCode.X))
+		{
+			inspectingViewType = InspectingViewType.VaultCrouching;
+		}
+
+		if (Input.GetKeyDown(KeyCode.B))
+		{
+			vaultTryButLocked = true;
+		}
+		if (Input.GetKeyDown(KeyCode.N))
+		{
+			vaultOpenIt = true;
+		}
+		if (Input.GetKeyDown(KeyCode.M))
+		{
+			vaultTurningDelta = 0;
+		}
+		if (Input.GetKeyDown(KeyCode.Comma))
+		{
+			vaultTurningDelta = -1;
+		}
+		if (Input.GetKeyDown(KeyCode.Period))
+		{
+			vaultTurningDelta = +1;
+		}
+
 
 		UpdateLayerWeightBlending();
 	}
@@ -253,6 +402,8 @@ public class V4_PlayerAnimator : MonoBehaviour
 		{
 			(torchLayerIndex, m_torchLayerWeight, isHoldingTorch),
 			(itemLayerIndex, m_itemLayerWeight, isHoldingItem),
+			(doorPushLayerIndex, m_doorPushLayerWeight, isPushingDoor),
+			(inspectingViewLayerIndex, m_inspectingLayerWeight, isInspecting),
 		};
 
 		foreach (var (layerIndex, blender, active) in layers)
@@ -269,6 +420,24 @@ public class V4_PlayerAnimator : MonoBehaviour
 	void OnEndScrewdriving()
 	{
 		isScrewdriving = false;
+	}
+
+	void OnFuseActionPlugIn()
+	{
+		fuseVisuals.SetActive(false);
+	}
+
+	void OnEndFuseAction()
+	{
+		itemType = ItemType.None;
+		isScrewdriving = false;
+		OnEndItemPutAway();
+	}
+
+	void OnEndInjection()
+	{
+		itemType = ItemType.None;
+		OnEndItemPutAway();
 	}
 
 	void OnBeginTakeItemOut()
@@ -290,6 +459,18 @@ public class V4_PlayerAnimator : MonoBehaviour
 					screwdriverVisuals.SetActive(true);
 				}
 				break;
+
+			case ItemType.Fuse:
+				{
+					fuseVisuals.SetActive(true);
+				}
+				break;
+
+			case ItemType.Syringe:
+				{
+					syringeVisuals.SetActive(true);
+				}
+				break;
 		}
 	}
 
@@ -303,6 +484,44 @@ public class V4_PlayerAnimator : MonoBehaviour
 		SetActiveGroup(false, new[] {
 			keyCardVisuals,
 			screwdriverVisuals,
+			fuseVisuals,
+			syringeVisuals,
+		});
+	}
+
+
+	void OnBeginInspectingView()
+	{
+		switch (inspectingViewType)
+		{
+			default:
+			case InspectingViewType.None:
+				break;
+
+			case InspectingViewType.VaultStanding:
+			case InspectingViewType.VaultCrouching:
+				{
+					vaultVisuals.SetActive(true);
+				}
+				break;
+		}
+	}
+
+	void OnEndVaultTryButLocked()
+	{
+		vaultTryButLocked = false;
+	}
+
+	void OnEndVaultOpenIt()
+	{
+		vaultOpenIt = false;
+		inspectingViewType = InspectingViewType.None;
+	}
+
+	private void DeactivateAllInspectingViewVisuals()
+	{
+		SetActiveGroup(false, new[] {
+			vaultVisuals,
 		});
 	}
 }
