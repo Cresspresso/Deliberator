@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 12.034478, g: 12.034478, b: 12.034478, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5841,6 +5841,27 @@ Transform:
   m_Father: {fileID: 89881384}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1412787301 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4495675121377966885, guid: da2e313101695e7449b7e3b48c583dd9,
+    type: 3}
+  m_PrefabInstance: {fileID: 1640570096}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1412787311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1412787301}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f80ba40993b2d34d8ccc547cd3cb805, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particleSystemPrefab: {fileID: 5718587621518846362, guid: 6b688001fcaf3564386de0384b11c30f,
+    type: 3}
+  minMagnitude: 1
 --- !u!1001 &1429363509
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6576,7 +6597,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb4d38e7108041844a86dcbee520101b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sounds: []
+  sounds:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   source: {fileID: 1556826660}
   foundMat: 
 --- !u!82 &1556826660
@@ -7116,6 +7141,11 @@ PrefabInstance:
     - target: {fileID: 6140671891260444270, guid: da2e313101695e7449b7e3b48c583dd9,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6979573399707038527, guid: da2e313101695e7449b7e3b48c583dd9,
+        type: 3}
+      propertyPath: enableDebugMsg
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -8339,6 +8369,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: VFX_Sparks
       objectReference: {fileID: 0}
+    - target: {fileID: 1801290662356258555, guid: bba1ceb650fcff64983c3342750fbe61,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bba1ceb650fcff64983c3342750fbe61, type: 3}
 --- !u!1001 &3011700348664276537
@@ -9158,6 +9193,80 @@ PrefabInstance:
         type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f5cec27c15c3cfa4bb2c2e9addcfc83b, type: 3}
+--- !u!1001 &5718587621621725469
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5718587621518846356, guid: 6b688001fcaf3564386de0384b11c30f,
+        type: 3}
+      propertyPath: looping
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5718587621518846359, guid: 6b688001fcaf3564386de0384b11c30f,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.322
+      objectReference: {fileID: 0}
+    - target: {fileID: 5718587621518846359, guid: 6b688001fcaf3564386de0384b11c30f,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.501
+      objectReference: {fileID: 0}
+    - target: {fileID: 5718587621518846359, guid: 6b688001fcaf3564386de0384b11c30f,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -8.982
+      objectReference: {fileID: 0}
+    - target: {fileID: 5718587621518846359, guid: 6b688001fcaf3564386de0384b11c30f,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.70710576
+      objectReference: {fileID: 0}
+    - target: {fileID: 5718587621518846359, guid: 6b688001fcaf3564386de0384b11c30f,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5718587621518846359, guid: 6b688001fcaf3564386de0384b11c30f,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5718587621518846359, guid: 6b688001fcaf3564386de0384b11c30f,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.70710784
+      objectReference: {fileID: 0}
+    - target: {fileID: 5718587621518846359, guid: 6b688001fcaf3564386de0384b11c30f,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 37
+      objectReference: {fileID: 0}
+    - target: {fileID: 5718587621518846359, guid: 6b688001fcaf3564386de0384b11c30f,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90.00001
+      objectReference: {fileID: 0}
+    - target: {fileID: 5718587621518846359, guid: 6b688001fcaf3564386de0384b11c30f,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5718587621518846359, guid: 6b688001fcaf3564386de0384b11c30f,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5718587621518846362, guid: 6b688001fcaf3564386de0384b11c30f,
+        type: 3}
+      propertyPath: m_Name
+      value: VFX_DustRing_Large
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6b688001fcaf3564386de0384b11c30f, type: 3}
 --- !u!1001 &5958040742500233542
 PrefabInstance:
   m_ObjectHideFlags: 0

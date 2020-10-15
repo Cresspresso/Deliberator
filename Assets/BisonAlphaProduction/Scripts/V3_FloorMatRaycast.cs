@@ -37,7 +37,7 @@ public class V3_FloorMatRaycast : MonoBehaviour
 
     public void PlaySound(string _material)
     {
-        if (!source.isPlaying)
+        if (!source.isPlaying && sounds.Length != 0)
         {
             switch (_material)
             {
