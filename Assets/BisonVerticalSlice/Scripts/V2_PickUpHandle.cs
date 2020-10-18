@@ -14,6 +14,9 @@ using UnityEngine;
 ///			<para>Added inspector field for `radius`.</para>
 ///			<para>Added <see cref="OnDrawGizmosSelected"/> to show `radius`.</para>
 ///		</log>
+///		<log author="Elijah Shadbolt" date="29/09/2020">
+///			<para>Drop the item in front of the player instead of on their head.</para>
+///		</log>
 /// </changelog>
 /// 
 [RequireComponent(typeof(Rigidbody))]
@@ -90,15 +93,30 @@ public class V2_PickUpHandle : MonoBehaviour
 		if (hits.Any())
 		{
 			var hit = hits.First();
-			if (hit.point == Vector3.zero)
+			float minDistance = V2_FirstPersonCharacterController.instance.cc.radius - 0.01f;
+			if (hit.distance <= minDistance)
 			{
-				transform.position = ray.origin;
+				transform.position = ray.GetPoint(minDistance);
+				Debug.DrawRay(transform.position, Vector3.up, Color.blue, 3.0f);
+			}
+			else if (hit.distance - radius < minDistance)
+			{
+				var end = hit.distance + radius;
+				var avg = 0.5f * (end + minDistance);
+				transform.position = ray.GetPoint(avg);
+				Debug.DrawRay(transform.position, Vector3.up, Color.green, 3.0f);
+
+				//
+				// origin    min      hit.distance    hit.point
+				// |---------|--------|-------------/-|
+				//        |-----------|-----------|
+				//        d-radius    d           d+radius
+				//
 			}
 			else
 			{
-				var a = ray.GetPoint(Mathf.Max(radius, hit.distance));
-				var b = hit.point + hit.normal * radius;
-				transform.position = (a + b) / 2.0f;
+				transform.position = ray.GetPoint(hit.distance);
+				Debug.DrawRay(transform.position, Vector3.up, Color.red, 3.0f);
 			}
 		}
 		else
