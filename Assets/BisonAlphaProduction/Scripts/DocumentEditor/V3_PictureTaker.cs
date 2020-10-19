@@ -24,17 +24,30 @@ namespace Bison.Document
 		///		<para>Unity Message Method: <a href="https://docs.unity3d.com/ScriptReference/MonoBehaviour.Update.html"/></para>
 		/// </summary>
 		/// 
+		/// <changelog>
+		///		<log author="Lorenzo Zemp" date="19/10/2020">
+		///			<para> added V3_ReadableMenu unpause, fixes bug where you cant close the document editor/picture taker
+		///			with 1 tap of ESC
+		///			</para>
+		///		</log>
+		/// </changelog>
 		private void Update()
 		{
 			if (Input.GetKeyDown(KeyCode.E))
 			{
 				V3_PicturePanel.instance.CapturePicture();
 				V3_DocumentEditorUI.instance.PauseAndOpenThisMenuLayout();
+
+				var rm = FindObjectOfType<V3_ReadableMenu>();
+				rm.Unpause();
 			}
 
 			if (Input.GetKeyDown(KeyCode.Q))
 			{
 				V3_DocumentEditorUI.instance.PauseAndOpenThisMenuLayout();
+
+				var rm = FindObjectOfType<V3_ReadableMenu>();
+				rm.Unpause();
 			}
 		}
 	}

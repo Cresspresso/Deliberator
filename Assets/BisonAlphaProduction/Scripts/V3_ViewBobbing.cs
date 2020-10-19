@@ -16,9 +16,16 @@ public class V3_ViewBobbing : MonoBehaviour
 
     private Vector3 initialLocalPosition;
 
+    private V3_FloorMatRaycast fmRay;
+
     private void Awake()
     {
         initialLocalPosition = transform.localPosition;
+    }
+
+    void Start()
+    {
+        fmRay = FindObjectOfType<V3_FloorMatRaycast>(); //Find the FloorMatRaycast script, should be attached to FPC
     }
 
     void Update()
@@ -49,6 +56,8 @@ public class V3_ViewBobbing : MonoBehaviour
 
             float walkTranslateChange = waveslice * walkBobAmount;
             gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, initialLocalPosition.y + Mathf.Abs(walkTranslateChange), gameObject.transform.localPosition.z);
+
+            fmRay.PlaySound(fmRay.foundMat);
 
             //Debug.Log(Mathf.Abs(walkTranslateChange));
             //Debug.Log("Walking");
