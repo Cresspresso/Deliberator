@@ -26,6 +26,9 @@ public class V3_SparData_SpawnRandomizer
 ///			<para>Added property <see cref="useSetParent"/>.</para>
 ///			<para>Moved spawning logic to <see cref="Start"/> to show checkbox in inspector.</para>
 ///		</log>
+///		<log author="Elijah Shadbolt" date="20/10/2020">
+///			<para>Added an option to include children as spawn points.</para>
+///		</log>
 /// </changelog>
 /// 
 public class V3_SpawnRandomizer : V3_Randomizer<V3_SparData_SpawnRandomizer, V3_SparDb_SpawnRandomizer>

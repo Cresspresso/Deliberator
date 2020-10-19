@@ -58,10 +58,26 @@ public class V3_ValveWheel : MonoBehaviour
     /// <summary>
     /// Delegate Function
     /// </summary>
+    /// 
+    /// <changelog>
+    ///		<log author="Elijah Shadbolt" date="20/10/2020">
+    ///			<para>Added Dependable and set its firstLiteral to true.</para>
+    ///			<para>Made the targetObj optional (ignored if null).</para>
+    ///		</log>
+    /// </changelog>
+    /// 
     #region Delegates
     void activateCondensation()
     {
-        targetObj.Activate();
+        if (targetObj)
+        {
+            targetObj.Activate();
+        }
+
+        var dependable = GetComponent<Dependable>();
+        if (dependable) {
+            dependable.firstLiteral = true;
+        }
     }
     #endregion
 

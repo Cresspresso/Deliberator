@@ -13,7 +13,7 @@ using UnityEngine;
 /// </summary>
 /// 
 /// <changelog>
-///		<log author="Elijah Shadbolt" date="21/10/2020">
+///		<log author="Elijah Shadbolt" date="20/10/2020">
 ///			<para>Created this script.</para>
 ///		</log>
 /// </changelog>
