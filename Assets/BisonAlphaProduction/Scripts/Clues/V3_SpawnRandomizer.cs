@@ -30,18 +30,25 @@ public class V3_SparData_SpawnRandomizer
 /// 
 public class V3_SpawnRandomizer : V3_Randomizer<V3_SparData_SpawnRandomizer, V3_SparDb_SpawnRandomizer>
 {
+#pragma warning disable CS0649
+
 	[SerializeField]
 	private Transform[] m_targets = new Transform[1];
 	public IReadOnlyList<Transform> targets => m_targets;
 
 	[SerializeField]
-	private Transform[] m_spawnPoints = new Transform[2];
+	private List<Transform> m_spawnPoints = new List<Transform>(0);
 	public IReadOnlyList<Transform> spawnPoints => m_spawnPoints;
 
 	[SerializeField]
 	private bool m_useSetParent = true;
 	public bool useSetParent => m_useSetParent;
 
+	[SerializeField]
+	private bool m_includeChildrenAsSpawnPoints = true;
+	public bool includeChildrenAsSpawnPoints => m_includeChildrenAsSpawnPoints;
+
+#pragma warning restore CS0649
 
 
 	protected override V3_SparData_SpawnRandomizer Generate()
@@ -68,6 +75,15 @@ public class V3_SpawnRandomizer : V3_Randomizer<V3_SparData_SpawnRandomizer, V3_
 
 	protected override void Awake()
 	{
+		if (includeChildrenAsSpawnPoints)
+		{
+			var tc = transform.childCount;
+			for (var i = 0; i < tc; ++i)
+			{
+				m_spawnPoints.Add(transform.GetChild(i));
+			}
+		}
+
 		base.Awake();
 	}
 

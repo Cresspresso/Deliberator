@@ -6,10 +6,22 @@ using UnityEngine;
 //Further functionality to randomize may be added to this script in the future
 
 /// <author>Lorenzo Sae-Phoo Zemp</author>
+/// 
+/// <changelog>
+///		<log author="Elijah Shadbolt" date="21/10/2020">
+///			<para>Edited it to be initialised from NumPad passcode.</para>
+///		</log>
+/// </changelog>
+/// 
 public class V3_ScreenNumber : MonoBehaviour
 {
-    [SerializeField] private int number;
     [SerializeField] private Material[] numMaterials;
+
+    [SerializeField] private int m_digitIndex = 0;
+    public int digitIndex => m_digitIndex;
+
+    [SerializeField] private V3_INumPadLockRandomizer m_nplr;
+    public V3_INumPadLockRandomizer nplr => m_nplr;
 
     private new Renderer renderer;
 
@@ -18,7 +30,22 @@ public class V3_ScreenNumber : MonoBehaviour
     {
         renderer = gameObject.GetComponent<Renderer>();
 
-        SetMaterial(number);
+        StartCoroutine(Co());
+        // Local Function.
+        IEnumerator Co()
+        {
+            // Wait until the passcode has been generated.
+            yield return new WaitUntil(() => nplr.isAlive);
+            // Get the passcode.
+            var code = nplr.numpadLock.passcode;
+            // If the digit index is out of range, log an error.
+            Debug.Assert(digitIndex >= 0 && digitIndex < code.Length, "invalid " + nameof(digitIndex), this);
+            // Get the character from the passcode.
+            char c = code[digitIndex];
+            // Convert it to an integer index.
+            // Set the material accordingly.
+            SetMaterial(c - '0');
+        }
     }
 
     /// <summary>
