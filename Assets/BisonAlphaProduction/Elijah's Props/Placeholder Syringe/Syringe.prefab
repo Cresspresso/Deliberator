@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 342652739154372967}
   - component: {fileID: 2476952364261650875}
   - component: {fileID: 5433784670893515013}
+  - component: {fileID: 673899401602824058}
   m_Layer: 0
   m_Name: Syringe
   m_TagString: Untagged
@@ -125,11 +126,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   delay: 4.5
+  staminaReward: 60
   effectsRoot: {fileID: 9078447985998427707}
   shrinkDuration: 0.5
   celebrationAudio: {fileID: 9006539365594022551}
   vfx: {fileID: 2905088708915028914}
   sceneTransitionRoom: {fileID: 0}
+--- !u!114 &673899401602824058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2511026781432806150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b6c56f2ff5fc91449ffc5cabf55dafb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8220058104345206362
 GameObject:
   m_ObjectHideFlags: 0

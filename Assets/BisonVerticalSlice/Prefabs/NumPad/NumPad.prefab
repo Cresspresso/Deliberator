@@ -2101,6 +2101,9 @@ MonoBehaviour:
   correctSound: {fileID: 3981046049402593100}
   incorrectSound: {fileID: 2598669538684184473}
   padlockSprites: {fileID: 6666845853647423934}
+  initialTries: 3
+  triesRemaining: 0
+  staminaUntilResetTries: 100
 --- !u!114 &8459765907888551762
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2124,6 +2127,18 @@ MonoBehaviour:
     root:
       type: 0
       index: 0
+--- !u!114 &4099582709541793548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2480724880213998594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1004b77fc46db404c9707ba1adde8ad5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!65 &7152249345034211080
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3721,6 +3736,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 13101ae3c8e4df64a97481e702564013, type: 3}
+--- !u!4 &1456377894043782673 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 13101ae3c8e4df64a97481e702564013,
+    type: 3}
+  m_PrefabInstance: {fileID: 5858236663208060171}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &5098777805639397320 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -7525835679634847037, guid: 13101ae3c8e4df64a97481e702564013,
@@ -3730,12 +3751,6 @@ GameObject:
 --- !u!4 &4773249146566353729 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1401006494575068746, guid: 13101ae3c8e4df64a97481e702564013,
-    type: 3}
-  m_PrefabInstance: {fileID: 5858236663208060171}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1456377894043782673 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 13101ae3c8e4df64a97481e702564013,
     type: 3}
   m_PrefabInstance: {fileID: 5858236663208060171}
   m_PrefabAsset: {fileID: 0}
