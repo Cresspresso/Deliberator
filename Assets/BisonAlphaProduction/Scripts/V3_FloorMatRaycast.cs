@@ -9,8 +9,11 @@ using UnityEngine;
 /// <author>Lorenzo Sae-Phoo Zemp</author>
 public class V3_FloorMatRaycast : MonoBehaviour
 {
-    [Tooltip("Only 4 sounds! In following order, Concrete, Metal, Wood, Carpet")]
-    [SerializeField] private AudioClip[] sounds;
+    [SerializeField] private AudioClip[] concreteClips;
+    [SerializeField] private AudioClip[] metalClips;
+    [SerializeField] private AudioClip[] woodClips;
+    [SerializeField] private AudioClip[] carpetClips;
+
 
     [SerializeField] private AudioSource source;
 
@@ -37,27 +40,43 @@ public class V3_FloorMatRaycast : MonoBehaviour
 
     public void PlaySound(string _material)
     {
-        if (!source.isPlaying && sounds.Length != 0)
+        if (!source.isPlaying && checkArrayLengths())
         {
             switch (_material)
             {
                 case "concrete":
-                    source.PlayOneShot(sounds[0]);
+                    source.PlayOneShot(concreteClips[Random.Range(0, 4)]);
                     break;
+
                 case "metal":
-                    source.PlayOneShot(sounds[1]);
+                    source.PlayOneShot(metalClips[Random.Range(0, 4)]);
                     break;
+
                 case "wood":
-                    source.PlayOneShot(sounds[2]);
+                    //source.PlayOneShot(woodClips[Random.Range(0, 4)]);
                     break;
+
                 case "carpet":
-                    source.PlayOneShot(sounds[3]);
+                    //source.PlayOneShot(carpetClips[Random.Range(0, 4)]);
                     break;
 
                 default:
                     Debug.LogError("Cannot find sound to play");
                     break;
             }
+        }
+    }
+
+    private bool checkArrayLengths()
+    {
+        if (concreteClips.Length != 0 && metalClips.Length != 0 &&
+            woodClips.Length != 0 && carpetClips.Length != 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 }
