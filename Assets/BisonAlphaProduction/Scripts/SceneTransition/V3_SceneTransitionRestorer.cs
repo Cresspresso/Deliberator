@@ -34,6 +34,8 @@ public class V3_SceneTransitionRestorer : MonoBehaviour
 
 				fpcc.LookInDirection( room.transform.TransformDirection(sparData.fpccLocalHeadForward) );
 				fpcc.Teleport( room.transform.TransformPoint(sparData.fpccLocalPosition) );
+
+				Destroy(sparData);
 			}
 			else
 			{

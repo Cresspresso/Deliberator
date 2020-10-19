@@ -28,7 +28,7 @@ public class V3_Crouch : MonoBehaviour
 	public float crouchRunSpeed = 10.0f;
 	public bool canJumpWhenCrouched = false;
 
-	public float crouchFov = 50;
+	public float crouchFov = 70;
 
 	private float initialHeight;
 	private float initialHeadY;
@@ -59,7 +59,7 @@ public class V3_Crouch : MonoBehaviour
 		initialRunSpeed = fpcc.runSpeed;
 		initialCanJump = fpcc.isJumpInputEnabled;
 		initialCanRun = fpcc.isRunInputEnabled;
-		initialFov = cam.fieldOfView;
+		initialFov = cam.focalLength;
 
 		int layer = fpcc.cc.gameObject.layer;
 		int mask = 0;
@@ -137,6 +137,6 @@ public class V3_Crouch : MonoBehaviour
 		fpcc.head.localPosition = new Vector3(0, newHeadY, 0);
 		fpcc.walkSpeed = Mathf.Lerp(initialWalkSpeed, crouchWalkSpeed, lerpValue);
 		fpcc.runSpeed = Mathf.Lerp(initialRunSpeed, crouchRunSpeed, lerpValue);
-		cam.fieldOfView = Mathf.Lerp(initialFov, crouchFov, lerpValue);
+		cam.focalLength = Mathf.Lerp(initialFov, crouchFov, lerpValue);
 	}
 }

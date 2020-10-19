@@ -10,6 +10,9 @@ using UnityEngine;
 ///		<log author="Elijah Shadbolt" date="25/08/2020">
 ///			<para>Added this script.</para>
 ///		</log>
+///		<log author="Elijah Shadbolt" date="19/10/2020">
+///			<para>Added visual effect.</para>
+///		</log>
 /// </changelog>
 /// 
 [RequireComponent(typeof(Dependable))]
@@ -20,18 +23,24 @@ public class V3_GlassChamber : MonoBehaviour
 
 
 #pragma warning disable CS0649
+
 	[SerializeField]
 	private Animator m_anim;
-#pragma warning restore CS0649
 	public Animator anim => m_anim;
 
 
 
-#pragma warning disable CS0649
 	[SerializeField]
 	private GameObject m_doorColliderGO;
-#pragma warning restore CS0649
 	public GameObject doorColliderGO => m_doorColliderGO;
+
+
+
+	[SerializeField]
+	private GameObject m_vfx;
+	public GameObject vfx => m_vfx;
+
+#pragma warning restore CS0649
 
 
 
@@ -39,6 +48,11 @@ public class V3_GlassChamber : MonoBehaviour
 	{
 		dependable = GetComponent<Dependable>();
 		dependable.onChanged.AddListener(OnPoweredChanged);
+
+		if (vfx)
+		{
+			vfx.SetActive(false);
+		}
 	}
 
 
@@ -50,6 +64,11 @@ public class V3_GlassChamber : MonoBehaviour
 
 		anim.SetTrigger("Open");
 		doorColliderGO.SetActive(false);
+
+		if (vfx)
+		{
+			vfx.SetActive(true);
+		}
 
 		enabled = false;
 	}
