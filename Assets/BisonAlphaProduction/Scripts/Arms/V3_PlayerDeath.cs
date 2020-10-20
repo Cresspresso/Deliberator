@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+#if false
 /// <summary>
 ///		<para>Manages the animation of the player character fainting.</para>
 /// </summary>
@@ -11,8 +12,12 @@ using UnityEngine;
 ///			<para>Added comments.</para>
 ///			<para>Suppressed warning CS0649</para>
 ///		</log>
+///		<log author="Elijah Shadbolt" date="21/10/2020">
+///			<para>Deprecated this script.</para>
+///		</log>
 /// </changelog>
 /// 
+[System.Obsolete("Replaced by V4_PlayerAnimator.")]
 public class V3_PlayerDeath : MonoBehaviour
 {
 #pragma warning disable CS0649
@@ -53,3 +58,4 @@ public class V3_PlayerDeath : MonoBehaviour
 		visuals.SetActive(true);
 	}
 }
+#endif

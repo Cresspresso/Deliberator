@@ -200,6 +200,7 @@ public class V2_FirstPersonCharacterController : MonoBehaviour
 	}
 
 	public Vector3 displacementThisFrame { get; private set; }
+	public float deltaTimeThisFrame { get; private set; }
 
 	private void UpdatePosition()
 	{
@@ -272,6 +273,7 @@ public class V2_FirstPersonCharacterController : MonoBehaviour
 		var collisionFlags = cc.Move(displacement);
 		var newPosition = this.position;
 		this.displacementThisFrame = newPosition - oldPosition;
+		this.deltaTimeThisFrame = dt;
 
 		if ((collisionFlags & CollisionFlags.Below) != 0)
 		{

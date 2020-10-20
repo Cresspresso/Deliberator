@@ -27,6 +27,7 @@ public class V4_EngineCombinationLogger : MonoBehaviour
 			yield return new WaitForSeconds(1.0f);
 
 			var gen = GetComponent<V3_Generator>();
+			yield return new WaitUntil(() => gen.isAlive);
 
 			var combination = System.Convert.ToString(gen.generatedValue.combination, 2).PadLeft(7, '0');
 

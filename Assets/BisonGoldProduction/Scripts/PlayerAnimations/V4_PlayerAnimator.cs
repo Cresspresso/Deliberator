@@ -2,7 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using TSingleton = V2_Singleton<V4_PlayerAnimator>;
 
+/// <summary>
+///		<para>
+///			Monolith gargantuan singleton that handles the animation state machine for the player character.
+///		</para>
+///		<para>
+///			This system has octopus-ed its way into many other crucial game systems,
+///			making it incredibly fragile. The large amount of coupling is horrible.
+///		</para>
+/// </summary>
+/// 
 /// <changelog>
 ///		<log author="Elijah Shadbolt" date="14/10/2020">
 ///			<para>Created this script.</para>
@@ -20,11 +31,18 @@ using UnityEngine;
 ///				Changed torch from right hand to left hand.
 ///			</para>
 ///		</log>
+///		<log author="Elijah Shadbolt" date="20/10/2020">
+///			<para>
+///				Hooked up the animations with the gameplay.
+///			</para>
+///		</log>
 /// </changelog>
 /// 
 [RequireComponent(typeof(Animator))]
 public class V4_PlayerAnimator : MonoBehaviour
 {
+	public static V4_PlayerAnimator instance => TSingleton.instance;
+
 	public Animator anim { get; private set; }
 
 	#region Animator Properties
@@ -79,17 +97,18 @@ public class V4_PlayerAnimator : MonoBehaviour
 
 
 
-	private enum ItemType
+	public enum ItemType
 	{
 		None = 0,
 		KeyCard = 1,
 		Screwdriver = 2,
 		Fuse = 3,
+		NonAnimated = 10000,
 	}
 
-	private ItemType itemType {
+	public ItemType itemType {
 		get => (ItemType)anim.GetInteger(property_itemType);
-		set
+		private set
 		{
 			anim.SetInteger(property_itemType, (int)value);
 			if (value != ItemType.None)
@@ -130,6 +149,11 @@ public class V4_PlayerAnimator : MonoBehaviour
 
 
 
+	/// <summary>
+	///		<para>
+	///			WARNING: also for FUSE insertion.
+	///		</para>
+	/// </summary>
 	private bool isScrewdriving {
 		get => anim.GetBool(property_isScrewdriving);
 		set
@@ -138,6 +162,22 @@ public class V4_PlayerAnimator : MonoBehaviour
 		}
 	}
 	private static int property_isScrewdriving;
+
+	private System.Action afterRightHandActionCallback;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="callback">Executed after the animation finishes.</param>
+	/// <returns>True if it starts playing. False if an action is already being performed.</returns>
+	public bool PerformRightHandAction(System.Action callback)
+	{
+		if (isScrewdriving) return false;
+
+		isScrewdriving = true;
+		afterRightHandActionCallback = callback;
+		return true;
+	}
 
 
 
@@ -200,16 +240,16 @@ public class V4_PlayerAnimator : MonoBehaviour
 
 
 
-	private enum CinematicMotionType
+	public enum CinematicMotionType
 	{
 		None = 0,
 		Inject = 1,
 		Faint = 2,
 	}
 
-	private CinematicMotionType cinematicMotionType {
+	public CinematicMotionType cinematicMotionType {
 		get => (CinematicMotionType)anim.GetInteger(property_cinematicMotionType);
-		set
+		private set
 		{
 			anim.SetInteger(property_cinematicMotionType, (int)value);
 			showCinematicMotionLayer = value != CinematicMotionType.None;
@@ -264,6 +304,10 @@ public class V4_PlayerAnimator : MonoBehaviour
 	public GameObject keyCardVisuals => m_keyCardVisuals;
 
 	[SerializeField]
+	private Renderer m_keyCardRenderer;
+	public Renderer keyCardRenderer => m_keyCardRenderer;
+
+	[SerializeField]
 	private GameObject m_screwdriverVisuals;
 	public GameObject screwdriverVisuals => m_screwdriverVisuals;
 
@@ -271,7 +315,7 @@ public class V4_PlayerAnimator : MonoBehaviour
 	private GameObject m_fuseVisuals;
 	public GameObject fuseVisuals => m_fuseVisuals;
 
-	[Header("Item-Cinematics")]
+	[Header("Cinematic Motions")]
 	[SerializeField]
 	private GameObject m_syringeVisuals;
 	public GameObject syringeVisuals => m_syringeVisuals;
@@ -279,6 +323,15 @@ public class V4_PlayerAnimator : MonoBehaviour
 	[SerializeField]
 	private GameObject m_faintVolume;
 	public GameObject faintVolume => m_faintVolume;
+
+	[SerializeField]
+	private GameObject m_faintCamera;
+	public GameObject faintCamera => m_faintCamera;
+
+	[SerializeField]
+	private GameObject m_mainCameraGameObject;
+	public GameObject mainCameraGameObject => m_mainCameraGameObject;
+
 
 	[Header("Inspecting Views")]
 	[SerializeField]
@@ -347,13 +400,7 @@ public class V4_PlayerAnimator : MonoBehaviour
 
 	private void Awake()
 	{
-		anim = GetComponent<Animator>();
-
-		torchLayerIndex = anim.GetLayerIndex("Torch");
-		itemLayerIndex = anim.GetLayerIndex("Item");
-		doorPushLayerIndex = anim.GetLayerIndex("DoorPush");
-		inspectingViewLayerIndex = anim.GetLayerIndex("InspectingView");
-		cinematicMotionLayerIndex = anim.GetLayerIndex("CinematicMotion");
+		TSingleton.OnAwake(this, V2_SingletonDuplicateMode.Ignore);
 
 		if (!s_ready)
 		{
@@ -371,6 +418,67 @@ public class V4_PlayerAnimator : MonoBehaviour
 			property_vaultOpenIt = Animator.StringToHash("VaultOpenIt");
 			property_vaultTurningDelta = Animator.StringToHash("VaultTurningDelta");
 			property_cinematicMotionType = Animator.StringToHash("CinematicMotionType");
+		}
+
+		anim = GetComponent<Animator>();
+
+		torchLayerIndex = anim.GetLayerIndex("Torch");
+		itemLayerIndex = anim.GetLayerIndex("Item");
+		doorPushLayerIndex = anim.GetLayerIndex("DoorPush");
+		inspectingViewLayerIndex = anim.GetLayerIndex("InspectingView");
+		cinematicMotionLayerIndex = anim.GetLayerIndex("CinematicMotion");
+
+		pickupController = V2_PickUpController.instance;
+		pickupController.onPickedUp += Game_OnItemPickedUp;
+		pickupController.onDropped += Game_OnItemDropped;
+	}
+
+	private void OnDestroy()
+	{
+		var pickupController = V2_PickUpController.instance;
+		if (pickupController)
+		{
+			pickupController.onPickedUp -= Game_OnItemPickedUp;
+			pickupController.onDropped -= Game_OnItemDropped;
+		}
+	}
+
+	private void Game_OnItemPickedUp(V2_PickUpController pickupController, V2_PickUpHandle pickupHandle)
+	{
+		var item = pickupHandle.GetComponent<V4_RightHandItem>();
+		if (item)
+		{
+			itemType = item.itemType;
+			pickupHandle.gameObject.SetActive(false);
+		}
+		else
+		{
+			itemType = ItemType.NonAnimated;
+		}
+	}
+
+	private void Game_OnItemDropped(V2_PickUpController pickupController, V2_PickUpHandle pickupHandle)
+	{
+		itemType = ItemType.None;
+		pickupHandle.gameObject.SetActive(true);
+	}
+
+
+	private V2_PickUpController pickupController;
+
+	private void CheckDrop()
+	{
+		if (Input.GetButtonDown("Fire2") && !V2_PauseMenu.instance.isPaused)
+		{
+			if (itemType == ItemType.NonAnimated)
+			{
+				pickupController.currentPickedUpHandle.Drop();
+				itemType = ItemType.None;
+			}
+			else
+			{
+				itemType = ItemType.None;
+			}
 		}
 	}
 
@@ -396,22 +504,56 @@ public class V4_PlayerAnimator : MonoBehaviour
 	private void Update()
 	{
 		DebugInput();
+		CheckDrop();
+		UpdateCheckIsWalking();
 		CheckDesiredCinematicMotion();
 		UpdateLayerWeightBlending();
 	}
 
-	private void DebugInput()
+	private Queue<(Vector3 ds, float dt)> recentMovement = new Queue<(Vector3 ds, float dt)>();
+	private void UpdateCheckIsWalking()
 	{
-		if (Input.GetKeyUp(KeyCode.I))
+		var fpcc = V2_FirstPersonCharacterController.instance;
+
+		recentMovement.Enqueue( (
+			ds: fpcc.displacementThisFrame,
+			dt: fpcc.deltaTimeThisFrame
+			) );
+
+		while (recentMovement.Count > 5)
+		{
+			recentMovement.Dequeue();
+		}
+
+		var total = (ds: new Vector3(), dt: 0.0f);
+		foreach (var (ds, dt) in recentMovement)
+		{
+			total.ds += ds;
+			total.dt += dt;
+		}
+		// avoid divide by zero error (when no samples).
+		if (total.dt <= 0.0f)
 		{
 			isWalking = false;
 		}
-
-		if (Input.GetKeyDown(KeyCode.I))
+		else
 		{
-			isWalking = true;
-		}
+			var averageDisplacementPerFrame = total.ds / total.dt;
 
+			var averageVelocityPerFrame = averageDisplacementPerFrame / total.dt;
+
+			// tell the Animator about whether we are walking or not.
+			isWalking = averageDisplacementPerFrame.magnitude > 0.1f;
+		}
+	}
+
+	public void PlayCinematic(CinematicMotionType type)
+	{
+		desiredCinematicMotionType = type;
+	}
+
+	private void DebugInput()
+	{
 		if (Input.GetKeyDown(KeyCode.O))
 		{
 			isWantingToHoldTorch = !isWantingToHoldTorch;
@@ -423,21 +565,9 @@ public class V4_PlayerAnimator : MonoBehaviour
 		}
 
 
-		if (Input.GetKeyDown(KeyCode.Alpha0))
-		{
-			itemType = ItemType.None;
-		}
-		if (Input.GetKeyDown(KeyCode.Alpha1))
-		{
-			itemType = ItemType.KeyCard;
-		}
 		if (Input.GetKeyDown(KeyCode.Alpha2))
 		{
 			itemType = ItemType.Screwdriver;
-		}
-		if (Input.GetKeyDown(KeyCode.Alpha3))
-		{
-			itemType = ItemType.Fuse;
 		}
 		if (Input.GetKeyDown(KeyCode.Alpha4))
 		{
@@ -446,12 +576,6 @@ public class V4_PlayerAnimator : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.Alpha5))
 		{
 			desiredCinematicMotionType = CinematicMotionType.Faint;
-		}
-
-
-		if (Input.GetKeyDown(KeyCode.U))
-		{
-			isScrewdriving = true;
 		}
 
 
@@ -518,11 +642,15 @@ public class V4_PlayerAnimator : MonoBehaviour
 	void OnEndScrewdriving()
 	{
 		isScrewdriving = false;
+		afterRightHandActionCallback?.Invoke();
+		afterRightHandActionCallback = null;
 	}
 
 	void OnFuseActionPlugIn()
 	{
 		fuseVisuals.SetActive(false);
+		afterRightHandActionCallback?.Invoke();
+		afterRightHandActionCallback = null;
 	}
 
 	void OnEndFuseAction()
@@ -560,6 +688,8 @@ public class V4_PlayerAnimator : MonoBehaviour
 				case CinematicMotionType.Faint:
 					{
 						faintVolume.SetActive(true);
+						faintCamera.SetActive(true);
+						mainCameraGameObject.SetActive(false);
 					}
 					break;
 			}
@@ -568,6 +698,10 @@ public class V4_PlayerAnimator : MonoBehaviour
 
 	void OnEndCinematicMotion()
 	{
+		if (cinematicMotionType == CinematicMotionType.Faint)
+		{
+			V3_SparGameObject.RestartCurrentScene();
+		}
 		cinematicMotionType = CinematicMotionType.None;
 		desiredCinematicMotionType = CinematicMotionType.None;
 		DeactivateAllCinematicMotionVisuals();
@@ -584,6 +718,8 @@ public class V4_PlayerAnimator : MonoBehaviour
 			case ItemType.KeyCard:
 				{
 					keyCardVisuals.SetActive(true);
+					var item = pickupController.currentPickedUpHandle.GetComponent<V4_RightHandItem>();
+					keyCardRenderer.material = item.keyCardMaterial;
 				}
 				break;
 
@@ -603,8 +739,15 @@ public class V4_PlayerAnimator : MonoBehaviour
 
 	void OnEndItemPutAway()
 	{
-		showItemLayer = itemType != ItemType.None;
 		DeactivateAllItemVisuals();
+
+		if (pickupController.currentPickedUpHandle)
+		{
+			pickupController.currentPickedUpHandle.Drop();
+			itemType = ItemType.None;
+		}
+
+		showItemLayer = itemType != ItemType.None;
 	}
 
 	private void DeactivateAllItemVisuals()
@@ -621,7 +764,9 @@ public class V4_PlayerAnimator : MonoBehaviour
 		SetActiveGroup(false, new[] {
 			syringeVisuals,
 			faintVolume,
+			faintCamera,
 		});
+		mainCameraGameObject.SetActive(true);
 	}
 
 

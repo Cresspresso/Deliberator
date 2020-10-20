@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+#if false
 /// <summary>
 ///		<para>Receives animation events from an attached <see cref="Animator"/>.</para>
 /// </summary>
@@ -11,8 +12,12 @@ using UnityEngine;
 ///			<para>Added comments.</para>
 ///			<para>Suppressed warning CS0649</para>
 ///		</log>
+///		<log author="Elijah Shadbolt" date="21/10/2020">
+///			<para>Deprecated this script.</para>
+///		</log>
 /// </changelog>
 /// 
+[System.Obsolete("Replaced by V4_PlayerAnimator")]
 public class V3_PlayerDeathAnimEventHandler : MonoBehaviour
 {
 #pragma warning disable CS0649
@@ -30,3 +35,4 @@ public class V3_PlayerDeathAnimEventHandler : MonoBehaviour
 		m_manager.OnDone();
 	}
 }
+#endif

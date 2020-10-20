@@ -6,8 +6,12 @@ using UnityEngine;
 ///		<log author="Elijah Shadbolt" date="24/08/2020">
 ///			<para>Do not detect input if game is paused.</para>
 ///		</log>
+///		<log author="Elijah Shadbolt" date="21/10/2020">
+///			<para>Deprecated this script.</para>
+///		</log>
 /// </changelog>
 /// 
+[System.Obsolete("Replaced by V4_PlayerAnimator")]
 public class V3_Arm_Manager : MonoBehaviour
 {
 	public V3_Arm_GrabTrial1 grabAnim;

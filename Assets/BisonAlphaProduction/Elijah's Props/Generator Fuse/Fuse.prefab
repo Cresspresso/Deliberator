@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 3454835535895518268}
   - component: {fileID: 3454835535895518269}
   - component: {fileID: 3454835535895518270}
+  - component: {fileID: 212944836603372888}
   m_Layer: 12
   m_Name: Fuse
   m_TagString: GeneratorFuse
@@ -161,6 +162,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   description: Fuse
   m_radius: 0.3
+--- !u!114 &212944836603372888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3454835535895518260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cb690d214d880248958d4ca18caaf3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemType: 3
+  keyCardMaterial: {fileID: 0}
 --- !u!1 &3454835536341770398
 GameObject:
   m_ObjectHideFlags: 0

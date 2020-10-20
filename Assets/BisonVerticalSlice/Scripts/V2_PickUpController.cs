@@ -12,6 +12,9 @@ using TSingleton = V2_Singleton<V2_PickUpController>;
 ///		<log author="Elijah Shadbolt" date="13/10/2020">
 ///			<para>Added Singleton instance property.</para>
 ///		</log>
+///		<log author="Elijah Shadbolt" date="21/10/2020">
+///			<para>Made this script manage dropping the PickupHandle, instead of the handle.</para>
+///		</log>
 /// </changelog>
 /// 
 [RequireComponent(typeof(V2_HandleController))]
