@@ -12,6 +12,14 @@ using UnityEngine;
 ///				Added fuse and inject.
 ///			</para>
 ///		</log>
+///		<log author="Elijah Shadbolt" date="20/10/2020">
+///			<para>
+///				Separated inject and faint to their own CinematicMotion layer instead of the Item layer.
+///			</para>
+///			<para>
+///				Changed torch from right hand to left hand.
+///			</para>
+///		</log>
 /// </changelog>
 /// 
 [RequireComponent(typeof(Animator))]
@@ -41,11 +49,22 @@ public class V4_PlayerAnimator : MonoBehaviour
 		set
 		{
 			anim.SetBool(property_isHoldingTorch, value);
-			torchVisuals.SetActive(value);
 			PollIsIdle();
 		}
 	}
 	private static int property_isHoldingTorch;
+
+
+
+	private bool isWantingToHoldTorch {
+		get => anim.GetBool(property_isWantingToHoldTorch);
+		set
+		{
+			anim.SetBool(property_isWantingToHoldTorch, value);
+			PollIsIdle();
+		}
+	}
+	private static int property_isWantingToHoldTorch;
 
 
 	private bool isPushingDoor {
@@ -66,8 +85,6 @@ public class V4_PlayerAnimator : MonoBehaviour
 		KeyCard = 1,
 		Screwdriver = 2,
 		Fuse = 3,
-		Syringe = 4,
-		Faint = 5,
 	}
 
 	private ItemType itemType {
@@ -98,8 +115,18 @@ public class V4_PlayerAnimator : MonoBehaviour
 	private static int property_isIdle;
 	private void PollIsIdle()
 	{
-		isIdle = !(isWalking || isHoldingTorch || showItemLayer || isPushingDoor || isInspecting);
+		isIdleForCinematic = !(isHoldingTorch
+		|| showItemLayer
+		|| isPushingDoor
+		|| isInspecting
+		);
+
+		isIdle = isIdleForCinematic && !(isWalking
+		|| desiredCinematicMotionType != CinematicMotionType.None
+		|| cinematicMotionType != CinematicMotionType.None
+		);
 	}
+	private bool isIdleForCinematic { get; set; }
 
 
 
@@ -173,10 +200,49 @@ public class V4_PlayerAnimator : MonoBehaviour
 
 
 
+	private enum CinematicMotionType
+	{
+		None = 0,
+		Inject = 1,
+		Faint = 2,
+	}
+
+	private CinematicMotionType cinematicMotionType {
+		get => (CinematicMotionType)anim.GetInteger(property_cinematicMotionType);
+		set
+		{
+			anim.SetInteger(property_cinematicMotionType, (int)value);
+			showCinematicMotionLayer = value != CinematicMotionType.None;
+			PollIsIdle();
+		}
+	}
+	private static int property_cinematicMotionType;
+
+	private bool showCinematicMotionLayer { get; set; }
+
+	private CinematicMotionType m_desiredCinematicMotionType;
+	private CinematicMotionType desiredCinematicMotionType {
+		get => m_desiredCinematicMotionType;
+		set
+		{
+			m_desiredCinematicMotionType = value;
+			if (value != CinematicMotionType.None)
+			{
+				isWantingToHoldTorch = false;
+				itemType = ItemType.None;
+				inspectingViewType = InspectingViewType.None;
+			}
+			PollIsIdle();
+		}
+	}
+
+
+
 	private int torchLayerIndex;
 	private int itemLayerIndex;
 	private int doorPushLayerIndex;
 	private int inspectingViewLayerIndex;
+	private int cinematicMotionLayerIndex;
 
 
 
@@ -232,6 +298,9 @@ public class V4_PlayerAnimator : MonoBehaviour
 	[SerializeField]
 	private LayerWeightBlender m_inspectingLayerWeight = new LayerWeightBlender();
 
+	[SerializeField]
+	private LayerWeightBlender m_cinematicMotionLayerWeight = new LayerWeightBlender();
+
 
 
 #pragma warning restore C0649
@@ -284,6 +353,7 @@ public class V4_PlayerAnimator : MonoBehaviour
 		itemLayerIndex = anim.GetLayerIndex("Item");
 		doorPushLayerIndex = anim.GetLayerIndex("DoorPush");
 		inspectingViewLayerIndex = anim.GetLayerIndex("InspectingView");
+		cinematicMotionLayerIndex = anim.GetLayerIndex("CinematicMotion");
 
 		if (!s_ready)
 		{
@@ -292,6 +362,7 @@ public class V4_PlayerAnimator : MonoBehaviour
 			property_isWalking = Animator.StringToHash("IsWalking");
 			property_isHoldingTorch = Animator.StringToHash("IsHoldingTorch");
 			property_isPushingDoor = Animator.StringToHash("IsPushingDoor");
+			property_isWantingToHoldTorch = Animator.StringToHash("IsWantingToHoldTorch");
 			property_itemType = Animator.StringToHash("ItemType");
 			property_isIdle = Animator.StringToHash("IsIdle");
 			property_isScrewdriving = Animator.StringToHash("IsScrewdriving");
@@ -299,6 +370,7 @@ public class V4_PlayerAnimator : MonoBehaviour
 			property_vaultTryButLocked = Animator.StringToHash("VaultTryButLocked");
 			property_vaultOpenIt = Animator.StringToHash("VaultOpenIt");
 			property_vaultTurningDelta = Animator.StringToHash("VaultTurningDelta");
+			property_cinematicMotionType = Animator.StringToHash("CinematicMotionType");
 		}
 	}
 
@@ -311,6 +383,9 @@ public class V4_PlayerAnimator : MonoBehaviour
 		isScrewdriving = false;
 
 		DeactivateAllItemVisuals();
+		DeactivateAllCinematicMotionVisuals();
+
+		torchVisuals.SetActive(false);
 
 
 		inspectingViewType = InspectingViewType.None;
@@ -319,6 +394,13 @@ public class V4_PlayerAnimator : MonoBehaviour
 	}
 
 	private void Update()
+	{
+		DebugInput();
+		CheckDesiredCinematicMotion();
+		UpdateLayerWeightBlending();
+	}
+
+	private void DebugInput()
 	{
 		if (Input.GetKeyUp(KeyCode.I))
 		{
@@ -332,7 +414,7 @@ public class V4_PlayerAnimator : MonoBehaviour
 
 		if (Input.GetKeyDown(KeyCode.O))
 		{
-			isHoldingTorch = !isHoldingTorch;
+			isWantingToHoldTorch = !isWantingToHoldTorch;
 		}
 
 		if (Input.GetKeyDown(KeyCode.P))
@@ -359,11 +441,11 @@ public class V4_PlayerAnimator : MonoBehaviour
 		}
 		if (Input.GetKeyDown(KeyCode.Alpha4))
 		{
-			itemType = ItemType.Syringe;
+			desiredCinematicMotionType = CinematicMotionType.Inject;
 		}
 		if (Input.GetKeyDown(KeyCode.Alpha5))
 		{
-			itemType = ItemType.Faint;
+			desiredCinematicMotionType = CinematicMotionType.Faint;
 		}
 
 
@@ -409,17 +491,17 @@ public class V4_PlayerAnimator : MonoBehaviour
 		}
 
 
-		UpdateLayerWeightBlending();
 	}
 
-	void UpdateLayerWeightBlending()
+	private void UpdateLayerWeightBlending()
 	{
 		var layers = new List<(int layerIndex, LayerWeightBlender blender, bool active)>
 		{
-			(torchLayerIndex, m_torchLayerWeight, isHoldingTorch),
+			(torchLayerIndex, m_torchLayerWeight, isWantingToHoldTorch || isHoldingTorch),
 			(itemLayerIndex, m_itemLayerWeight, showItemLayer),
 			(doorPushLayerIndex, m_doorPushLayerWeight, isPushingDoor),
 			(inspectingViewLayerIndex, m_inspectingLayerWeight, isInspecting),
+			(cinematicMotionLayerIndex, m_cinematicMotionLayerWeight, showCinematicMotionLayer),
 		};
 
 		foreach (var (layerIndex, blender, active) in layers)
@@ -450,16 +532,45 @@ public class V4_PlayerAnimator : MonoBehaviour
 		OnEndItemPutAway();
 	}
 
-	void OnEndInjection()
+	private void CheckDesiredCinematicMotion()
 	{
-		itemType = ItemType.None;
-		OnEndItemPutAway();
+		// If we want to do something,
+		// and we are not already doing something, then...
+		if (desiredCinematicMotionType != CinematicMotionType.None
+			&& cinematicMotionType == CinematicMotionType.None
+			&& isIdleForCinematic)
+		{
+			// Start doing the motion.
+			cinematicMotionType = desiredCinematicMotionType;
+			desiredCinematicMotionType = CinematicMotionType.None;
+			switch (cinematicMotionType)
+			{
+				default:
+					{
+						Debug.LogError("invalid state");
+					}
+					break;
+
+				case CinematicMotionType.Inject:
+					{
+						syringeVisuals.SetActive(true);
+					}
+					break;
+
+				case CinematicMotionType.Faint:
+					{
+						faintVolume.SetActive(true);
+					}
+					break;
+			}
+		}
 	}
 
-	void OnEndFaint()
+	void OnEndCinematicMotion()
 	{
-		itemType = ItemType.None;
-		OnEndItemPutAway();
+		cinematicMotionType = CinematicMotionType.None;
+		desiredCinematicMotionType = CinematicMotionType.None;
+		DeactivateAllCinematicMotionVisuals();
 	}
 
 	void OnBeginTakeItemOut()
@@ -487,18 +598,6 @@ public class V4_PlayerAnimator : MonoBehaviour
 					fuseVisuals.SetActive(true);
 				}
 				break;
-
-			case ItemType.Syringe:
-				{
-					syringeVisuals.SetActive(true);
-				}
-				break;
-
-			case ItemType.Faint:
-				{
-					faintVolume.SetActive(true);
-				}
-				break;
 		}
 	}
 
@@ -514,6 +613,12 @@ public class V4_PlayerAnimator : MonoBehaviour
 			keyCardVisuals,
 			screwdriverVisuals,
 			fuseVisuals,
+		});
+	}
+
+	private void DeactivateAllCinematicMotionVisuals()
+	{
+		SetActiveGroup(false, new[] {
 			syringeVisuals,
 			faintVolume,
 		});
@@ -553,5 +658,17 @@ public class V4_PlayerAnimator : MonoBehaviour
 		SetActiveGroup(false, new[] {
 			vaultVisuals,
 		});
+	}
+
+	private void OnBeginTorch()
+	{
+		isHoldingTorch = true;
+		torchVisuals.SetActive(true);
+	}
+
+	private void OnEndTorch()
+	{
+		isHoldingTorch = false;
+		torchVisuals.SetActive(false);
 	}
 }
