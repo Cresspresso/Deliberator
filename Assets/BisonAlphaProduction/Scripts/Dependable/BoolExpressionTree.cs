@@ -436,7 +436,7 @@ namespace Bison.BoolExpressions.Serializable
 		///		Which AST node should be evaulated to give the output of the tree.
 		///		<para>A value that represents a reference to an AST node in the <see cref="arrays"/> property.</para>
 		/// </summary>
-		public ExpressionKey root = new ExpressionKey(ExpressionType.Dependency, 0);
+		public ExpressionKey root = new ExpressionKey(ExpressionType.Literal, 0);
 
 		/// <summary>
 		///		Computes the boolean value of this boolean expression at this point in time.

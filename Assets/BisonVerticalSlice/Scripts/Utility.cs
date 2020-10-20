@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public static class V2_Utility
@@ -115,6 +116,33 @@ public static class V2_Utility
 			r = attempt();
 		}
 		return r;
+	}
+
+	/// <changelog>
+	///		<log author="Elijah Shadbolt" date="19/10/2020">
+	///			<para>Created this method.</para>
+	///		</log>
+	/// </changelog>
+	/// 
+	public static R Aggregate1<R, T>(this IEnumerable<T> items,
+		Func<T, R> selectFirst,
+		Func<R, T, R> selectNext,
+		Func<R> selectDefault)
+	{
+		var it = items.GetEnumerator();
+		if (it.MoveNext())
+		{
+			R r = selectFirst(it.Current);
+			while (it.MoveNext())
+			{
+				r = selectNext(r, it.Current);
+			}
+			return r;
+		}
+		else
+		{
+			return selectDefault();
+		}
 	}
 }
 
