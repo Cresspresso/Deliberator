@@ -95,18 +95,9 @@ public class V2_GroundhogControl : MonoBehaviour
 	{
 		if (!V2_PauseMenu.instance.isPaused)
 		{
-			if (Input.GetKeyDown(KeyCode.R))
+			if (Input.GetKeyDown(KeyCode.R) && V4_PlayerAnimator.instance.cinematicMotionType == V4_PlayerAnimator.CinematicMotionType.None)
 			{
-				--remainingUntilSkip;
-				if (remainingUntilSkip <= 0)
-				{
-					V3_SparGameObject.RestartCurrentScene();
-				}
-
-				if (!hasFinished && V4_PlayerAnimator.instance.cinematicMotionType == V4_PlayerAnimator.CinematicMotionType.None)
-				{
-					Die();
-				}
+				Die();
 			}
 
 			// PLAYTEST TOOL DEBUG
@@ -116,7 +107,7 @@ public class V2_GroundhogControl : MonoBehaviour
 			}
 		}
 
-		if (!hasFinished) return;
+		if (hasFinished) return;
 
 		if (!isPaused)
 		{
@@ -153,14 +144,18 @@ public class V2_GroundhogControl : MonoBehaviour
 
 	public void Die()
 	{
-		if (hasFinished)
+		--remainingUntilSkip;
+		if (remainingUntilSkip <= 0)
 		{
-			return;
+			V3_SparGameObject.RestartCurrentScene();
 		}
 
-		hasFinished = true;
+		if (!hasFinished)
+		{
+			hasFinished = true;
 
-		StartCoroutine(Co_PlayerDied());
+			StartCoroutine(Co_PlayerDied());
+		}
 	}
 
 	public void Finish()
