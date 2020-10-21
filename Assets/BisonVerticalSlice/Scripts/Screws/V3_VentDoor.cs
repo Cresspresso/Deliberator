@@ -21,45 +21,71 @@ using UnityEngine;
 ///				Made it change to a player-no-clip layer when unlocked.
 ///			</para>
 ///		</log>
+///		<log author="Elijah Shadbolt" date="22/10/2020">
+///			<para>
+///				Made it also work without screws.
+///			</para>
+///		</log>
 /// </changelog>
 /// 
 [RequireComponent(typeof(Dependable))]
 [RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(V2_Handle))]
+[RequireComponent(typeof(V2_PickUpHandle))]
 public class V3_VentDoor : MonoBehaviour
 {
 	public Rigidbody rb { get; private set; }
-	public V2_Handle handle { get; private set; }
+	public V2_PickUpHandle pickupHandle { get; private set; }
 	public Dependable dependable { get; private set; }
+
+#pragma warning disable CS0649
+	[SerializeField]
+	private bool m_isEasyOpen = true;
+	public bool isEasyOpen => m_isEasyOpen;
+
+	[SerializeField]
+	private float m_openImpulse = 5.0f;
+	public float openImpulse => m_openImpulse;
+#pragma warning restore CS0649
 
 	public bool hasOpened { get; private set; } = false;
 
 	private void Awake()
 	{
 		rb = GetComponent<Rigidbody>();
-
-		handle = GetComponent<V2_Handle>();
-		handle.enabled = false;
+		
+		pickupHandle = GetComponent<V2_PickUpHandle>();
+		pickupHandle.enabled = false;
+		pickupHandle.buttonHandle.onClick += OnClick;
 
 		dependable = GetComponent<Dependable>();
 		dependable.onChanged.AddListener(OnPoweredChanged);
 	}
 
+	private void OnClick(V2_ButtonHandle buttonHandle, V2_HandleController handleController)
+	{
+		if (dependable.hasFirstLiteral)
+		{
+			dependable.firstLiteral = true;
+		}
+	}
+
 	void OnPoweredChanged(bool isPowered)
 	{
+		Debug.Log(name, this);
 		if (hasOpened) return;
 
 		if (isPowered)
 		{
 			hasOpened = true;
 			rb.isKinematic = false;
-			handle.enabled = true;
+			rb.AddForce(transform.forward * -openImpulse, ForceMode.Impulse);
+			pickupHandle.enabled = true;
 			gameObject.layer = LayerMask.NameToLayer("NoClipHandle");
 
-			var pickupHandle = V2_PickUpController.instance.currentPickedUpHandle;
-			if (pickupHandle)
+			var item = V2_PickUpController.instance.currentPickedUpHandle;
+			if (item)
 			{
-				var screwdriver = pickupHandle.GetComponent<V4_Screwdriver>();
+				var screwdriver = item.GetComponent<V4_Screwdriver>();
 				if (screwdriver)
 				{
 					screwdriver.Expire();

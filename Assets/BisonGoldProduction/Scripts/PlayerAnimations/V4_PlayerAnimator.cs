@@ -32,9 +32,14 @@ using TSingleton = V2_Singleton<V4_PlayerAnimator>;
 ///				Changed torch from right hand to left hand.
 ///			</para>
 ///		</log>
-///		<log author="Elijah Shadbolt" date="20/10/2020">
+///		<log author="Elijah Shadbolt" date="21/10/2020">
 ///			<para>
 ///				Hooked up the animations with the gameplay.
+///			</para>
+///		</log>
+///		<log author="Elijah Shadbolt" date="22/10/2020">
+///			<para>
+///				Added broken screwdriver visuals.
 ///			</para>
 ///		</log>
 /// </changelog>
@@ -116,12 +121,17 @@ public class V4_PlayerAnimator : MonoBehaviour
 		get => (ItemType)anim.GetInteger(property_itemType);
 		private set
 		{
+			var old = itemType;
 			anim.SetInteger(property_itemType, (int)value);
 			if (value != ItemType.None)
 			{
 				showItemLayer = true;
 			}
 			PollIsIdle();
+			if (old == ItemType.NonAnimated)
+			{
+				OnEndItemPutAway();
+			}
 		}
 	}
 	private static int property_itemType;
@@ -361,6 +371,7 @@ public class V4_PlayerAnimator : MonoBehaviour
 			{
 				isWantingToHoldTorch = false;
 				itemType = ItemType.None;
+
 				GoOutOfInspectingView();
 			}
 			PollIsIdle();
@@ -401,6 +412,10 @@ public class V4_PlayerAnimator : MonoBehaviour
 	[SerializeField]
 	private GameObject m_screwdriverVisuals;
 	public GameObject screwdriverVisuals => m_screwdriverVisuals;
+
+	[SerializeField]
+	private GameObject m_screwdriverBrokenVisuals;
+	public GameObject screwdriverBrokenVisuals => m_screwdriverBrokenVisuals;
 
 	[SerializeField]
 	private GameObject m_fuseVisuals;
@@ -587,7 +602,6 @@ public class V4_PlayerAnimator : MonoBehaviour
 				if (itemType == ItemType.NonAnimated)
 				{
 					pickupController.currentPickedUpHandle.Drop();
-					itemType = ItemType.None;
 				}
 				else
 				{
@@ -708,7 +722,6 @@ public class V4_PlayerAnimator : MonoBehaviour
 
 	void OnEndFuseAction()
 	{
-		itemType = ItemType.None;
 		isScrewdriving = false;
 		OnEndItemPutAway();
 	}
@@ -777,7 +790,29 @@ public class V4_PlayerAnimator : MonoBehaviour
 
 			case ItemType.Screwdriver:
 				{
-					screwdriverVisuals.SetActive(true);
+					if (!pickupController.currentPickedUpHandle)
+					{
+						Debug.LogError("invalid state", this);
+					}
+					else
+					{
+						var screwdriver = pickupController.currentPickedUpHandle.GetComponent<V4_Screwdriver>();
+						if (!screwdriver)
+						{
+							Debug.LogError("invalid item pickup handle");
+						}
+						else
+						{
+							if (screwdriver.hasExpired)
+							{
+								screwdriverBrokenVisuals.SetActive(true);
+							}
+							else
+							{
+								screwdriverVisuals.SetActive(true);
+							}
+						}
+					}
 				}
 				break;
 
@@ -796,7 +831,6 @@ public class V4_PlayerAnimator : MonoBehaviour
 		if (pickupController.currentPickedUpHandle)
 		{
 			pickupController.currentPickedUpHandle.Drop();
-			itemType = ItemType.None;
 		}
 
 		showItemLayer = itemType != ItemType.None;
@@ -807,6 +841,7 @@ public class V4_PlayerAnimator : MonoBehaviour
 		SetActiveGroup(false, new[] {
 			keyCardVisuals,
 			screwdriverVisuals,
+			screwdriverBrokenVisuals,
 			fuseVisuals,
 		});
 	}
@@ -879,5 +914,29 @@ public class V4_PlayerAnimator : MonoBehaviour
 		var torchHandle = pickupController.currentPickedUpHandleLeft;
 		torchHandle.Drop();
 		torchHandle.gameObject.SetActive(true);
+	}
+
+	/// <summary>
+	/// Called by <see cref="V4_Screwdriver"/>.
+	/// </summary>
+	/// <param name="screwdriver">The screwdriver that was just broken.</param>
+	public void OnScrewdriverExpired(V4_Screwdriver screwdriver)
+	{
+		var h = pickupController.currentPickedUpHandle;
+		if (!h)
+		{
+			Debug.LogError("expected to be holding the screwdriver", this);
+			return;
+		}
+
+		var other = h.GetComponent<V4_Screwdriver>();
+		if (!other || other != screwdriver)
+		{
+			Debug.LogError("expected to be holding the screwdriver", this);
+			return;
+		}
+
+		screwdriverVisuals.SetActive(false);
+		screwdriverBrokenVisuals.SetActive(true);
 	}
 }

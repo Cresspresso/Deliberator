@@ -95,9 +95,16 @@ public class V2_GroundhogControl : MonoBehaviour
 	{
 		if (!V2_PauseMenu.instance.isPaused)
 		{
-			if (Input.GetKeyDown(KeyCode.R) && V4_PlayerAnimator.instance.cinematicMotionType == V4_PlayerAnimator.CinematicMotionType.None)
+			if (Input.GetKeyDown(KeyCode.R))
 			{
-				Die();
+				if (V4_PlayerAnimator.instance.cinematicMotionType == V4_PlayerAnimator.CinematicMotionType.None)
+				{
+					Die();
+				}
+				else if (hasFinished)
+				{
+					DecrementSkip();
+				}
 			}
 
 			// PLAYTEST TOOL DEBUG
@@ -142,13 +149,18 @@ public class V2_GroundhogControl : MonoBehaviour
 		blackAnim.SetTrigger("Fade");
 	}
 
-	public void Die()
+	private void DecrementSkip()
 	{
 		--remainingUntilSkip;
 		if (remainingUntilSkip <= 0)
 		{
 			V3_SparGameObject.RestartCurrentScene();
 		}
+	}
+
+	public void Die()
+	{
+		DecrementSkip();
 
 		if (!hasFinished)
 		{
