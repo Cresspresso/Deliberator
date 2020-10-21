@@ -153,7 +153,6 @@ public class V3_VaultSafeHud : MonoBehaviour
 		if (currentSafe)
 		{
 			V4_PlayerAnimator.instance.vaultTurningDelta = currentSafe.lastDeltaFiddled;
-			Debug.Log(currentSafe.lastDeltaFiddled);
 
 			// now reset it.
 			currentSafe.lastDeltaFiddled = 0;
