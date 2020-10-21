@@ -21,6 +21,10 @@ using UnityEngine.Serialization;
 ///			<para>Added comment for <see cref="hasFinished"/>.</para>
 ///			<para>Implemented updated dying animation.</para>
 ///		</log>
+///		<log author="Elijah Shadbolt" date="21/10/2020">
+///			<para>Hooked up <see cref="V4_PlayerAnimator"/> faint animation.</para>
+///			<para>Allow player to skip the Faint cutscene by double-tapping R.</para>
+///		</log>
 /// </changelog>
 public class V2_GroundhogControl : MonoBehaviour
 {
@@ -60,6 +64,9 @@ public class V2_GroundhogControl : MonoBehaviour
 	/// </summary>
 	public bool hasFinished { get; private set; } = false;
 
+	// how many presses of Restart key, until skip the animation.
+	private int remainingUntilSkip = 2;
+
 	private void Awake()
 	{
 		V2_Singleton<V2_GroundhogControl>.OnAwake(this, V2_SingletonDuplicateMode.Ignore);
@@ -86,14 +93,20 @@ public class V2_GroundhogControl : MonoBehaviour
 
 	private void Update()
 	{
-		if (hasFinished) return;
-
 		if (!V2_PauseMenu.instance.isPaused)
 		{
-			if (Input.GetKeyDown(KeyCode.R)
-				&& V4_PlayerAnimator.instance.cinematicMotionType == V4_PlayerAnimator.CinematicMotionType.None)
+			if (Input.GetKeyDown(KeyCode.R))
 			{
-				Die();
+				--remainingUntilSkip;
+				if (remainingUntilSkip <= 0)
+				{
+					V3_SparGameObject.RestartCurrentScene();
+				}
+
+				if (!hasFinished && V4_PlayerAnimator.instance.cinematicMotionType == V4_PlayerAnimator.CinematicMotionType.None)
+				{
+					Die();
+				}
 			}
 
 			// PLAYTEST TOOL DEBUG
@@ -102,6 +115,8 @@ public class V2_GroundhogControl : MonoBehaviour
 				isPaused = !isPaused;
 			}
 		}
+
+		if (!hasFinished) return;
 
 		if (!isPaused)
 		{

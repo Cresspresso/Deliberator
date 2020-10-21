@@ -173,6 +173,15 @@ public class V3_VaultSafeField : MonoBehaviour, IPointerEnterHandler, IPointerEx
 		downButton.onClick.AddListener(OnDownButtonClicked);
 	}
 
+	public void OnHudShow(bool showField)
+	{
+		gameObject.SetActive(showField);
+		if (showField)
+		{
+			value = value; // init value from safe
+		}
+	}
+
 	private void AddToValue(int amount)
 	{
 		if (amount == 0) return;

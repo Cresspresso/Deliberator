@@ -307,9 +307,11 @@ public class V4_PlayerAnimator : MonoBehaviour
 	}
 	private static int property_vaultOpenIt;
 
-	public void OpenVault()
+	private System.Action playSafeOpenAnimation;
+	public void OpenVault(System.Action playSafeOpenAnimation)
 	{
 		vaultOpenIt = true;
+		this.playSafeOpenAnimation = playSafeOpenAnimation;
 	}
 
 
@@ -847,9 +849,16 @@ public class V4_PlayerAnimator : MonoBehaviour
 		vaultTryButLocked = false;
 	}
 
+	void OnBeginVaultOpenIt()
+	{
+		vaultVisuals.SetActive(false);
+		playSafeOpenAnimation?.Invoke();
+	}
+
 	void OnEndVaultOpenIt()
 	{
 		vaultOpenIt = false;
+		playSafeOpenAnimation = null;
 		GoOutOfInspectingView();
 	}
 
