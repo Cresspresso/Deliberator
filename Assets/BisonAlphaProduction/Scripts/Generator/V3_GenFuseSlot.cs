@@ -80,14 +80,26 @@ public class V3_GenFuseSlot : MonoBehaviour
 		}
 		else
 		{
-			TryInsert(puc.currentPickedUpHandle);
+			var h = puc.currentPickedUpHandle;
+			if (h)
+			{
+				var item = h.GetComponent<V4_RightHandItem>();
+				if (item && item.itemType == V4_PlayerAnimator.ItemType.Fuse)
+				{
+					V4_PlayerAnimator.instance.PerformRightHandAction(() =>
+					{
+						TryInsert(puc.currentPickedUpHandle);
+					});
+				}
+			}
 		}
 	}
 
 	private bool TryInsert(V2_PickUpHandle puHandle)
 	{
-		if (puHandle && puHandle.isActiveAndEnabled && puHandle.CompareTag(fuseTag))
+		if (puHandle)
 		{
+			Debug.Assert(puHandle.CompareTag(fuseTag), "unexpected pickupHandle type", this);
 			theFuse = puHandle;
 			puHandle.Drop();
 			theFuse.rb.isKinematic = true;

@@ -16,6 +16,9 @@ using UnityEngine;
 ///		<log author="Elijah Shadbolt" date="05/10/2020">
 ///			<para>Added randomly generated combination.</para>
 ///		</log>
+///		<log author="Elijah Shadbolt" date="21/10/2020">
+///			<para>Made it only disable meddling after combination is generated.</para>
+///		</log>
 /// </changelog>
 /// 
 [RequireComponent(typeof(Dependable))]
@@ -97,6 +100,8 @@ public class V3_Generator : MonoBehaviour
 
 
 		this.isAlive = true;
+
+		OnPoweredChanged(dependable.isPowered);
 	}
 
 
@@ -108,6 +113,8 @@ public class V3_Generator : MonoBehaviour
 
 	private void OnPoweredChanged(bool isPowered)
 	{
+		if (!isAlive) return;
+
 		if (isPowered)
 		{
 			lockSprites.ShowUnlockedImage();

@@ -36,6 +36,9 @@ using UnityEngine.EventSystems;
 ///		<log author="Elijah Shadbolt" date="13/08/2020">
 ///			<para>Added comments.</para>
 ///		</log>
+///		<log author="Elijah Shadbolt" date="21/10/2020">
+///			<para>Made it update <see cref="V4_PlayerAnimator"/> fiddling with the wheel animation.</para>
+///		</log>
 /// </changelog>
 /// 
 public class V3_VaultSafeField : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
@@ -174,7 +177,8 @@ public class V3_VaultSafeField : MonoBehaviour, IPointerEnterHandler, IPointerEx
 	{
 		if (amount == 0) return;
 		value = V2_Utility.Cycle(value + amount, V3_VaultSafe.maxValue + 1);
-		// TODO click sound
+		safeHud.currentSafe.lastDeltaFiddled += amount;
+		Debug.LogWarning("TODO clicking sound as the safe wheel is being turned", this);
 	}
 
 	private void OnUpButtonClicked()

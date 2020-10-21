@@ -59,11 +59,16 @@ public class V3_Screw : MonoBehaviour
 					}
 					else
 					{
-						Debug.LogWarning("TODO play screw sound", this);
-						hasUnscrewed = true;
-						dependable.firstLiteral = true;
-						dependable.ReEvaluate();
-						gameObject.SetActive(false);
+						if (V4_PlayerAnimator.instance.PerformRightHandAction(() =>
+						{
+							dependable.firstLiteral = true;
+							dependable.ReEvaluate();
+							gameObject.SetActive(false);
+						}))
+						{
+							hasUnscrewed = true;
+							Debug.LogWarning("TODO play screw sound", this);
+						}
 					}
 				}
 			}

@@ -2,7 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using DG.Tweening;
+using TSingleton = V2_Singleton<V4_PlayerAnimator>;
 
+/// <summary>
+///		<para>
+///			Monolith gargantuan singleton that handles the animation state machine for the player character.
+///		</para>
+///		<para>
+///			This system has octopus-ed its way into many other crucial game systems,
+///			making it incredibly fragile. The large amount of coupling is horrible.
+///		</para>
+/// </summary>
+/// 
 /// <changelog>
 ///		<log author="Elijah Shadbolt" date="14/10/2020">
 ///			<para>Created this script.</para>
@@ -12,11 +24,26 @@ using UnityEngine;
 ///				Added fuse and inject.
 ///			</para>
 ///		</log>
+///		<log author="Elijah Shadbolt" date="20/10/2020">
+///			<para>
+///				Separated inject and faint to their own CinematicMotion layer instead of the Item layer.
+///			</para>
+///			<para>
+///				Changed torch from right hand to left hand.
+///			</para>
+///		</log>
+///		<log author="Elijah Shadbolt" date="20/10/2020">
+///			<para>
+///				Hooked up the animations with the gameplay.
+///			</para>
+///		</log>
 /// </changelog>
 /// 
 [RequireComponent(typeof(Animator))]
 public class V4_PlayerAnimator : MonoBehaviour
 {
+	public static V4_PlayerAnimator instance => TSingleton.instance;
+
 	public Animator anim { get; private set; }
 
 	#region Animator Properties
@@ -41,11 +68,22 @@ public class V4_PlayerAnimator : MonoBehaviour
 		set
 		{
 			anim.SetBool(property_isHoldingTorch, value);
-			torchVisuals.SetActive(value);
 			PollIsIdle();
 		}
 	}
 	private static int property_isHoldingTorch;
+
+
+
+	private bool isWantingToHoldTorch {
+		get => anim.GetBool(property_isWantingToHoldTorch);
+		set
+		{
+			anim.SetBool(property_isWantingToHoldTorch, value);
+			PollIsIdle();
+		}
+	}
+	private static int property_isWantingToHoldTorch;
 
 
 	private bool isPushingDoor {
@@ -60,19 +98,18 @@ public class V4_PlayerAnimator : MonoBehaviour
 
 
 
-	private enum ItemType
+	public enum ItemType
 	{
 		None = 0,
 		KeyCard = 1,
 		Screwdriver = 2,
 		Fuse = 3,
-		Syringe = 4,
-		Faint = 5,
+		NonAnimated = 10000,
 	}
 
-	private ItemType itemType {
+	public ItemType itemType {
 		get => (ItemType)anim.GetInteger(property_itemType);
-		set
+		private set
 		{
 			anim.SetInteger(property_itemType, (int)value);
 			if (value != ItemType.None)
@@ -98,11 +135,26 @@ public class V4_PlayerAnimator : MonoBehaviour
 	private static int property_isIdle;
 	private void PollIsIdle()
 	{
-		isIdle = !(isWalking || isHoldingTorch || showItemLayer || isPushingDoor || isInspecting);
+		isIdleForCinematic = !(isHoldingTorch
+		|| showItemLayer
+		|| isPushingDoor
+		|| isInspecting
+		);
+
+		isIdle = isIdleForCinematic && !(isWalking
+		|| desiredCinematicMotionType != CinematicMotionType.None
+		|| cinematicMotionType != CinematicMotionType.None
+		);
 	}
+	private bool isIdleForCinematic { get; set; }
 
 
 
+	/// <summary>
+	///		<para>
+	///			WARNING: also for FUSE insertion.
+	///		</para>
+	/// </summary>
 	private bool isScrewdriving {
 		get => anim.GetBool(property_isScrewdriving);
 		set
@@ -112,9 +164,25 @@ public class V4_PlayerAnimator : MonoBehaviour
 	}
 	private static int property_isScrewdriving;
 
+	private System.Action afterRightHandActionCallback;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="callback">Executed after the animation finishes.</param>
+	/// <returns>True if it starts playing. False if an action is already being performed.</returns>
+	public bool PerformRightHandAction(System.Action callback)
+	{
+		if (isScrewdriving) return false;
+
+		isScrewdriving = true;
+		afterRightHandActionCallback = callback;
+		return true;
+	}
 
 
-	private enum InspectingViewType
+
+	public enum InspectingViewType
 	{
 		None = 0,
 		VaultStanding = 1,
@@ -136,7 +204,82 @@ public class V4_PlayerAnimator : MonoBehaviour
 	}
 	private static int property_inspectingViewType;
 
+	private InspectingViewType desiredInspectingViewType;
+
 	private bool isInspecting { get; set; }
+
+	public bool canGoIntoInspectingView => inspectingViewType == InspectingViewType.None;
+
+	private GameObject inspectingViewWorldVisuals;
+	public void GoIntoInspectingView(InspectingViewType viewType, Transform location, GameObject worldVisuals)
+	{
+		if (!canGoIntoInspectingView) return;
+
+		desiredInspectingViewType = viewType;
+		inspectingViewWorldVisuals = worldVisuals;
+
+		// Tween player position and rotation to the right spot.
+		var fpcc = V2_FirstPersonCharacterController.instance;
+		fpcc.cc.enabled = false;
+		fpcc.enabled = false;
+
+		Transform parent;
+		switch (viewType)
+		{
+			case InspectingViewType.VaultCrouching:
+				parent = vaultCrouchingCameraParent;
+				break;
+			case InspectingViewType.VaultStanding:
+				parent = vaultStandingCameraParent;
+				break;
+			default:
+				parent = fpcc.head;
+				break;
+		}
+		mainCameraGameObject.transform.SetParent(parent);
+		mainCameraGameObject.transform.localPosition = Vector3.zero;
+		mainCameraGameObject.transform.localRotation = Quaternion.identity;
+
+		var startPos = fpcc.position;
+		var startBodyAngle = fpcc.bodyAngle;
+		var startHeadAngle = fpcc.headAngle;
+		float t = 0.0f;
+		DOTween.To(() => t,
+			newt => {
+				t = newt;
+				fpcc.position = Vector3.Lerp(startPos, location.position, t);
+				fpcc.bodyAngle = Mathf.Lerp(startBodyAngle, location.eulerAngles.y, t);
+				fpcc.headAngle = Mathf.Lerp(startHeadAngle, location.eulerAngles.x, t);
+			},
+			1.0f,
+			duration: 0.5f)
+		.OnComplete(() =>
+		{
+			inspectingViewType = desiredInspectingViewType;
+		});
+	}
+
+	public void GoOutOfInspectingView()
+	{
+		if (inspectingViewType == InspectingViewType.None)
+			return;
+
+		inspectingViewType = InspectingViewType.None;
+
+		if (inspectingViewWorldVisuals)
+		{
+			inspectingViewWorldVisuals.SetActive(true);
+			inspectingViewWorldVisuals = null;
+		}
+
+		var fpcc = V2_FirstPersonCharacterController.instance;
+		fpcc.cc.enabled = true;
+		fpcc.enabled = true;
+
+		mainCameraGameObject.transform.SetParent(fpcc.head);
+		mainCameraGameObject.transform.localPosition = Vector3.zero;
+		mainCameraGameObject.transform.localRotation = Quaternion.identity;
+	}
 
 
 
@@ -149,6 +292,10 @@ public class V4_PlayerAnimator : MonoBehaviour
 	}
 	private static int property_vaultTryButLocked;
 
+	public void TryVaultButLocked()
+	{
+		vaultTryButLocked = true;
+	}
 
 
 	private bool vaultOpenIt {
@@ -160,9 +307,13 @@ public class V4_PlayerAnimator : MonoBehaviour
 	}
 	private static int property_vaultOpenIt;
 
+	public void OpenVault()
+	{
+		vaultOpenIt = true;
+	}
 
 
-	private int vaultTurningDelta {
+	public int vaultTurningDelta {
 		get => anim.GetInteger(property_vaultTurningDelta);
 		set
 		{
@@ -173,10 +324,49 @@ public class V4_PlayerAnimator : MonoBehaviour
 
 
 
+	public enum CinematicMotionType
+	{
+		None = 0,
+		Inject = 1,
+		Faint = 2,
+	}
+
+	public CinematicMotionType cinematicMotionType {
+		get => (CinematicMotionType)anim.GetInteger(property_cinematicMotionType);
+		private set
+		{
+			anim.SetInteger(property_cinematicMotionType, (int)value);
+			showCinematicMotionLayer = value != CinematicMotionType.None;
+			PollIsIdle();
+		}
+	}
+	private static int property_cinematicMotionType;
+
+	private bool showCinematicMotionLayer { get; set; }
+
+	private CinematicMotionType m_desiredCinematicMotionType;
+	private CinematicMotionType desiredCinematicMotionType {
+		get => m_desiredCinematicMotionType;
+		set
+		{
+			m_desiredCinematicMotionType = value;
+			if (value != CinematicMotionType.None)
+			{
+				isWantingToHoldTorch = false;
+				itemType = ItemType.None;
+				GoOutOfInspectingView();
+			}
+			PollIsIdle();
+		}
+	}
+
+
+
 	private int torchLayerIndex;
 	private int itemLayerIndex;
 	private int doorPushLayerIndex;
 	private int inspectingViewLayerIndex;
+	private int cinematicMotionLayerIndex;
 
 
 
@@ -198,6 +388,10 @@ public class V4_PlayerAnimator : MonoBehaviour
 	public GameObject keyCardVisuals => m_keyCardVisuals;
 
 	[SerializeField]
+	private Renderer m_keyCardRenderer;
+	public Renderer keyCardRenderer => m_keyCardRenderer;
+
+	[SerializeField]
 	private GameObject m_screwdriverVisuals;
 	public GameObject screwdriverVisuals => m_screwdriverVisuals;
 
@@ -205,7 +399,7 @@ public class V4_PlayerAnimator : MonoBehaviour
 	private GameObject m_fuseVisuals;
 	public GameObject fuseVisuals => m_fuseVisuals;
 
-	[Header("Item-Cinematics")]
+	[Header("Cinematic Motions")]
 	[SerializeField]
 	private GameObject m_syringeVisuals;
 	public GameObject syringeVisuals => m_syringeVisuals;
@@ -214,10 +408,27 @@ public class V4_PlayerAnimator : MonoBehaviour
 	private GameObject m_faintVolume;
 	public GameObject faintVolume => m_faintVolume;
 
+	[SerializeField]
+	private GameObject m_faintCamera;
+	public GameObject faintCamera => m_faintCamera;
+
+	[SerializeField]
+	private GameObject m_mainCameraGameObject;
+	public GameObject mainCameraGameObject => m_mainCameraGameObject;
+
+
 	[Header("Inspecting Views")]
 	[SerializeField]
 	private GameObject m_vaultVisuals;
 	public GameObject vaultVisuals => m_vaultVisuals;
+
+	[SerializeField]
+	private Transform m_vaultStandingCameraParent;
+	public Transform vaultStandingCameraParent => m_vaultStandingCameraParent;
+
+	[SerializeField]
+	private Transform m_vaultCrouchingCameraParent;
+	public Transform vaultCrouchingCameraParent => m_vaultCrouchingCameraParent;
 
 	[Header("Layer Weight Transitions")]
 	[SerializeField]
@@ -231,6 +442,9 @@ public class V4_PlayerAnimator : MonoBehaviour
 
 	[SerializeField]
 	private LayerWeightBlender m_inspectingLayerWeight = new LayerWeightBlender();
+
+	[SerializeField]
+	private LayerWeightBlender m_cinematicMotionLayerWeight = new LayerWeightBlender();
 
 
 
@@ -278,12 +492,7 @@ public class V4_PlayerAnimator : MonoBehaviour
 
 	private void Awake()
 	{
-		anim = GetComponent<Animator>();
-
-		torchLayerIndex = anim.GetLayerIndex("Torch");
-		itemLayerIndex = anim.GetLayerIndex("Item");
-		doorPushLayerIndex = anim.GetLayerIndex("DoorPush");
-		inspectingViewLayerIndex = anim.GetLayerIndex("InspectingView");
+		TSingleton.OnAwake(this, V2_SingletonDuplicateMode.Ignore);
 
 		if (!s_ready)
 		{
@@ -292,6 +501,7 @@ public class V4_PlayerAnimator : MonoBehaviour
 			property_isWalking = Animator.StringToHash("IsWalking");
 			property_isHoldingTorch = Animator.StringToHash("IsHoldingTorch");
 			property_isPushingDoor = Animator.StringToHash("IsPushingDoor");
+			property_isWantingToHoldTorch = Animator.StringToHash("IsWantingToHoldTorch");
 			property_itemType = Animator.StringToHash("ItemType");
 			property_isIdle = Animator.StringToHash("IsIdle");
 			property_isScrewdriving = Animator.StringToHash("IsScrewdriving");
@@ -299,6 +509,68 @@ public class V4_PlayerAnimator : MonoBehaviour
 			property_vaultTryButLocked = Animator.StringToHash("VaultTryButLocked");
 			property_vaultOpenIt = Animator.StringToHash("VaultOpenIt");
 			property_vaultTurningDelta = Animator.StringToHash("VaultTurningDelta");
+			property_cinematicMotionType = Animator.StringToHash("CinematicMotionType");
+		}
+
+		anim = GetComponent<Animator>();
+
+		torchLayerIndex = anim.GetLayerIndex("Torch");
+		itemLayerIndex = anim.GetLayerIndex("Item");
+		doorPushLayerIndex = anim.GetLayerIndex("DoorPush");
+		inspectingViewLayerIndex = anim.GetLayerIndex("InspectingView");
+		cinematicMotionLayerIndex = anim.GetLayerIndex("CinematicMotion");
+
+		pickupController = V2_PickUpController.instance;
+		pickupController.onPickedUp += Game_OnItemPickedUp;
+		pickupController.onDropped += Game_OnItemDropped;
+	}
+
+	private void OnDestroy()
+	{
+		var pickupController = V2_PickUpController.instance;
+		if (pickupController)
+		{
+			pickupController.onPickedUp -= Game_OnItemPickedUp;
+			pickupController.onDropped -= Game_OnItemDropped;
+		}
+	}
+
+	private void Game_OnItemPickedUp(V2_PickUpController pickupController, V2_PickUpHandle pickupHandle)
+	{
+		var item = pickupHandle.GetComponent<V4_RightHandItem>();
+		if (item)
+		{
+			itemType = item.itemType;
+			pickupHandle.gameObject.SetActive(false);
+		}
+		else
+		{
+			itemType = ItemType.NonAnimated;
+		}
+	}
+
+	private void Game_OnItemDropped(V2_PickUpController pickupController, V2_PickUpHandle pickupHandle)
+	{
+		itemType = ItemType.None;
+		pickupHandle.gameObject.SetActive(true);
+	}
+
+
+	private V2_PickUpController pickupController;
+
+	private void CheckDrop()
+	{
+		if (Input.GetButtonDown("Fire2") && !V2_PauseMenu.instance.isPaused)
+		{
+			if (itemType == ItemType.NonAnimated)
+			{
+				pickupController.currentPickedUpHandle.Drop();
+				itemType = ItemType.None;
+			}
+			else
+			{
+				itemType = ItemType.None;
+			}
 		}
 	}
 
@@ -311,6 +583,9 @@ public class V4_PlayerAnimator : MonoBehaviour
 		isScrewdriving = false;
 
 		DeactivateAllItemVisuals();
+		DeactivateAllCinematicMotionVisuals();
+
+		torchVisuals.SetActive(false);
 
 
 		inspectingViewType = InspectingViewType.None;
@@ -320,106 +595,77 @@ public class V4_PlayerAnimator : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetKeyUp(KeyCode.I))
+		DebugInput();
+		CheckDrop();
+		UpdateCheckIsWalking();
+		CheckDesiredCinematicMotion();
+		UpdateLayerWeightBlending();
+	}
+
+	private Queue<(Vector3 ds, float dt)> recentMovement = new Queue<(Vector3 ds, float dt)>();
+	private void UpdateCheckIsWalking()
+	{
+		var fpcc = V2_FirstPersonCharacterController.instance;
+
+		recentMovement.Enqueue( (
+			ds: fpcc.displacementThisFrame,
+			dt: fpcc.deltaTimeThisFrame
+			) );
+
+		while (recentMovement.Count > 5)
+		{
+			recentMovement.Dequeue();
+		}
+
+		var total = (ds: new Vector3(), dt: 0.0f);
+		foreach (var (ds, dt) in recentMovement)
+		{
+			total.ds += ds;
+			total.dt += dt;
+		}
+		// avoid divide by zero error (when no samples).
+		if (total.dt <= 0.0f)
 		{
 			isWalking = false;
 		}
-
-		if (Input.GetKeyDown(KeyCode.I))
+		else
 		{
-			isWalking = true;
-		}
+			var averageDisplacementPerFrame = total.ds / total.dt;
 
+			var averageVelocityPerFrame = averageDisplacementPerFrame / total.dt;
+
+			// tell the Animator about whether we are walking or not.
+			isWalking = averageDisplacementPerFrame.magnitude > 0.1f;
+		}
+	}
+
+	public void PlayCinematic(CinematicMotionType type)
+	{
+		desiredCinematicMotionType = type;
+	}
+
+	private void DebugInput()
+	{
 		if (Input.GetKeyDown(KeyCode.O))
 		{
-			isHoldingTorch = !isHoldingTorch;
+			isWantingToHoldTorch = !isWantingToHoldTorch;
 		}
 
 		if (Input.GetKeyDown(KeyCode.P))
 		{
 			isPushingDoor = true;
 		}
-
-
-		if (Input.GetKeyDown(KeyCode.Alpha0))
-		{
-			itemType = ItemType.None;
-		}
-		if (Input.GetKeyDown(KeyCode.Alpha1))
-		{
-			itemType = ItemType.KeyCard;
-		}
-		if (Input.GetKeyDown(KeyCode.Alpha2))
-		{
-			itemType = ItemType.Screwdriver;
-		}
-		if (Input.GetKeyDown(KeyCode.Alpha3))
-		{
-			itemType = ItemType.Fuse;
-		}
-		if (Input.GetKeyDown(KeyCode.Alpha4))
-		{
-			itemType = ItemType.Syringe;
-		}
-		if (Input.GetKeyDown(KeyCode.Alpha5))
-		{
-			itemType = ItemType.Faint;
-		}
-
-
-		if (Input.GetKeyDown(KeyCode.U))
-		{
-			isScrewdriving = true;
-		}
-
-
-
-		if (Input.GetKeyDown(KeyCode.C))
-		{
-			inspectingViewType = InspectingViewType.None;
-		}
-		if (Input.GetKeyDown(KeyCode.V))
-		{
-			inspectingViewType = InspectingViewType.VaultStanding;
-		}
-		if (Input.GetKeyDown(KeyCode.X))
-		{
-			inspectingViewType = InspectingViewType.VaultCrouching;
-		}
-
-		if (Input.GetKeyDown(KeyCode.B))
-		{
-			vaultTryButLocked = true;
-		}
-		if (Input.GetKeyDown(KeyCode.N))
-		{
-			vaultOpenIt = true;
-		}
-		if (Input.GetKeyDown(KeyCode.M))
-		{
-			vaultTurningDelta = 0;
-		}
-		if (Input.GetKeyDown(KeyCode.Comma))
-		{
-			vaultTurningDelta = -1;
-		}
-		if (Input.GetKeyDown(KeyCode.Period))
-		{
-			vaultTurningDelta = +1;
-		}
-
-
-		UpdateLayerWeightBlending();
 	}
 
-	void UpdateLayerWeightBlending()
+	private void UpdateLayerWeightBlending()
 	{
 		var layers = new List<(int layerIndex, LayerWeightBlender blender, bool active)>
 		{
-			(torchLayerIndex, m_torchLayerWeight, isHoldingTorch),
+			(torchLayerIndex, m_torchLayerWeight, isWantingToHoldTorch || isHoldingTorch),
 			(itemLayerIndex, m_itemLayerWeight, showItemLayer),
 			(doorPushLayerIndex, m_doorPushLayerWeight, isPushingDoor),
 			(inspectingViewLayerIndex, m_inspectingLayerWeight, isInspecting),
+			(cinematicMotionLayerIndex, m_cinematicMotionLayerWeight, showCinematicMotionLayer),
 		};
 
 		foreach (var (layerIndex, blender, active) in layers)
@@ -436,11 +682,15 @@ public class V4_PlayerAnimator : MonoBehaviour
 	void OnEndScrewdriving()
 	{
 		isScrewdriving = false;
+		afterRightHandActionCallback?.Invoke();
+		afterRightHandActionCallback = null;
 	}
 
 	void OnFuseActionPlugIn()
 	{
 		fuseVisuals.SetActive(false);
+		afterRightHandActionCallback?.Invoke();
+		afterRightHandActionCallback = null;
 	}
 
 	void OnEndFuseAction()
@@ -450,16 +700,50 @@ public class V4_PlayerAnimator : MonoBehaviour
 		OnEndItemPutAway();
 	}
 
-	void OnEndInjection()
+	private void CheckDesiredCinematicMotion()
 	{
-		itemType = ItemType.None;
-		OnEndItemPutAway();
+		// If we want to do something,
+		// and we are not already doing something, then...
+		if (desiredCinematicMotionType != CinematicMotionType.None
+			&& cinematicMotionType == CinematicMotionType.None
+			&& isIdleForCinematic)
+		{
+			// Start doing the motion.
+			cinematicMotionType = desiredCinematicMotionType;
+			desiredCinematicMotionType = CinematicMotionType.None;
+			switch (cinematicMotionType)
+			{
+				default:
+					{
+						Debug.LogError("invalid state");
+					}
+					break;
+
+				case CinematicMotionType.Inject:
+					{
+						syringeVisuals.SetActive(true);
+					}
+					break;
+
+				case CinematicMotionType.Faint:
+					{
+						faintVolume.SetActive(true);
+						faintCamera.SetActive(true);
+						mainCameraGameObject.SetActive(false);
+					}
+					break;
+			}
+		}
 	}
 
-	void OnEndFaint()
+	void OnEndCinematicMotion()
 	{
-		itemType = ItemType.None;
-		OnEndItemPutAway();
+		if (cinematicMotionType == CinematicMotionType.Faint)
+		{
+			V3_SparGameObject.RestartCurrentScene();
+		}
+		cinematicMotionType = CinematicMotionType.None;
+		DeactivateAllCinematicMotionVisuals();
 	}
 
 	void OnBeginTakeItemOut()
@@ -473,6 +757,8 @@ public class V4_PlayerAnimator : MonoBehaviour
 			case ItemType.KeyCard:
 				{
 					keyCardVisuals.SetActive(true);
+					var item = pickupController.currentPickedUpHandle.GetComponent<V4_RightHandItem>();
+					keyCardRenderer.material = item.keyCardMaterial;
 				}
 				break;
 
@@ -487,25 +773,20 @@ public class V4_PlayerAnimator : MonoBehaviour
 					fuseVisuals.SetActive(true);
 				}
 				break;
-
-			case ItemType.Syringe:
-				{
-					syringeVisuals.SetActive(true);
-				}
-				break;
-
-			case ItemType.Faint:
-				{
-					faintVolume.SetActive(true);
-				}
-				break;
 		}
 	}
 
 	void OnEndItemPutAway()
 	{
-		showItemLayer = itemType != ItemType.None;
 		DeactivateAllItemVisuals();
+
+		if (pickupController.currentPickedUpHandle)
+		{
+			pickupController.currentPickedUpHandle.Drop();
+			itemType = ItemType.None;
+		}
+
+		showItemLayer = itemType != ItemType.None;
 	}
 
 	private void DeactivateAllItemVisuals()
@@ -514,9 +795,17 @@ public class V4_PlayerAnimator : MonoBehaviour
 			keyCardVisuals,
 			screwdriverVisuals,
 			fuseVisuals,
+		});
+	}
+
+	private void DeactivateAllCinematicMotionVisuals()
+	{
+		SetActiveGroup(false, new[] {
 			syringeVisuals,
 			faintVolume,
+			faintCamera,
 		});
+		mainCameraGameObject.SetActive(true);
 	}
 
 
@@ -532,6 +821,7 @@ public class V4_PlayerAnimator : MonoBehaviour
 			case InspectingViewType.VaultCrouching:
 				{
 					vaultVisuals.SetActive(true);
+					inspectingViewWorldVisuals.SetActive(false);
 				}
 				break;
 		}
@@ -545,7 +835,7 @@ public class V4_PlayerAnimator : MonoBehaviour
 	void OnEndVaultOpenIt()
 	{
 		vaultOpenIt = false;
-		inspectingViewType = InspectingViewType.None;
+		GoOutOfInspectingView();
 	}
 
 	private void DeactivateAllInspectingViewVisuals()
@@ -553,5 +843,17 @@ public class V4_PlayerAnimator : MonoBehaviour
 		SetActiveGroup(false, new[] {
 			vaultVisuals,
 		});
+	}
+
+	private void OnBeginTorch()
+	{
+		isHoldingTorch = true;
+		torchVisuals.SetActive(true);
+	}
+
+	private void OnEndTorch()
+	{
+		isHoldingTorch = false;
+		torchVisuals.SetActive(false);
 	}
 }

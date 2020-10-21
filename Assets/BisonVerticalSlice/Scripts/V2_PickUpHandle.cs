@@ -17,6 +17,9 @@ using UnityEngine;
 ///		<log author="Elijah Shadbolt" date="29/09/2020">
 ///			<para>Drop the item in front of the player instead of on their head.</para>
 ///		</log>
+///		<log author="Elijah Shadbolt" date="21/10/2020">
+///			<para>Made the PickUpController script manage dropping the PickupHandle, instead of this script.</para>
+///		</log>
 /// </changelog>
 /// 
 [RequireComponent(typeof(Rigidbody))]
@@ -50,7 +53,9 @@ public class V2_PickUpHandle : MonoBehaviour
 	private void OnClick(V2_ButtonHandle buttonHandle, V2_HandleController handleController)
 	{
 		controller = handleController.GetComponent<V2_PickUpController>();
-		if (controller)
+		if (controller
+			&& !controller.currentPickedUpHandle
+			&& V4_PlayerAnimator.instance.itemType == V4_PlayerAnimator.ItemType.None)
 		{
 			buttonHandle.enabled = false;
 			controller.InternalOnPickedUp(this);
@@ -137,35 +142,6 @@ public class V2_PickUpHandle : MonoBehaviour
 			controller = null;
 		}
 	}
-
-	private void Update()
-	{
-		if (isPickedUp)
-		{
-			if (Input.GetButtonDown("Fire2") && !V2_PauseMenu.instance.isPaused)
-			{
-				Drop();
-			}
-		}
-	}
-
-	//private void FixedUpdate()
-	//{
-	//	if (isPickedUp)
-	//	{
-	//		rb.MovePosition(controller.handPoint.position);
-	//		rb.MoveRotation(controller.handPoint.rotation);
-	//	}
-	//}
-
-	//private void LateUpdate()
-	//{
-	//	if (isPickedUp)
-	//	{
-	//		transform.position = controller.handPoint.position;
-	//		transform.rotation = controller.handPoint.rotation;
-	//	}
-	//}
 
 	private void OnDrawGizmosSelected()
 	{

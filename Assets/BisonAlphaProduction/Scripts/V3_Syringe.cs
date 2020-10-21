@@ -197,11 +197,7 @@ Shrink Duration is how long it takes to shrink out of visibility.")]
 		transform.DOScale(0, shrinkDuration).SetEase(Ease.InCirc);
 
 		/// Play the player character animation of injecting himself.
-		var armManager = FindObjectOfType<V3_Arm_Manager>();
-		if (armManager)
-		{
-			armManager.TriggerInject();
-		}
+		V4_PlayerAnimator.instance.PlayCinematic(V4_PlayerAnimator.CinematicMotionType.Inject);
 
 		/// Unparent the effects root from this transform,
 		/// but keep the position relative to this transform.

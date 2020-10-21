@@ -90,11 +90,13 @@ public class V2_GroundhogControl : MonoBehaviour
 
 		if (!V2_PauseMenu.instance.isPaused)
 		{
-			if (Input.GetKeyDown(KeyCode.R))
+			if (Input.GetKeyDown(KeyCode.R)
+				&& V4_PlayerAnimator.instance.cinematicMotionType == V4_PlayerAnimator.CinematicMotionType.None)
 			{
 				Die();
 			}
 
+			// PLAYTEST TOOL DEBUG
 			if (Input.GetKeyDown(KeyCode.K))
 			{
 				isPaused = !isPaused;
@@ -116,7 +118,7 @@ public class V2_GroundhogControl : MonoBehaviour
 
 	private IEnumerator Co_PlayerDied()
 	{
-		V3_PlayerDeath.instance.PlayAnimation();
+		V4_PlayerAnimator.instance.PlayCinematic(V4_PlayerAnimator.CinematicMotionType.Faint);
 
 		gameObject.GetComponent<AudioSource>().Play();
 
@@ -124,14 +126,14 @@ public class V2_GroundhogControl : MonoBehaviour
 		audioMixer.SetFloat("MasterOctaveRange", 5.0f);
 		audioMixer.SetFloat("MasterFreqGain", 0.05f);
 
-		//yield return new WaitForSeconds(1.5f);
+		yield return new WaitUntil(() => V4_PlayerAnimator.instance.cinematicMotionType == V4_PlayerAnimator.CinematicMotionType.Faint);
 		yield return new WaitForSeconds(3f);
 
 		flashAnim.SetTrigger("TriggerRed");
 
-		yield return new WaitUntil(() => V3_PlayerDeath.instance.isDone);
-
-		V3_SparGameObject.RestartCurrentScene();
+		yield return new WaitForSeconds(0.1f);
+		var blackAnim = GameObject.FindGameObjectWithTag("SceneFader").GetComponent<Animator>();
+		blackAnim.SetTrigger("Fade");
 	}
 
 	public void Die()
