@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <changelog>
@@ -19,28 +20,48 @@ public class V2_UltraVioletLight : MonoBehaviour
 
 	public float range = 10.0f;
 
-	public static V2_UltraVioletLight main { get; private set; }
+	public static V2_UltraVioletLight current { get; private set; }
 	private static List<V2_UltraVioletLight> instances = new List<V2_UltraVioletLight>();
+
+	private static bool s_hasCheckedThisFrame;
+	private float sqrDistanceFromPlayer = 10_000;
 
 	private void OnEnable()
 	{
 		instances.Add(this);
-		if (!main || !main.isActiveAndEnabled)
+		if (!current)
 		{
-			main = this;
+			current = this;
+		}
+	}
+
+	private void Update()
+	{
+		s_hasCheckedThisFrame = false;
+		sqrDistanceFromPlayer = Vector3.SqrMagnitude(transform.position - V2_FirstPersonCharacterController.instance.position);
+	}
+
+	private void LateUpdate()
+	{
+		if (!s_hasCheckedThisFrame)
+		{
+			s_hasCheckedThisFrame = true;
+
+			var opt = instances.MinBy(c => c.sqrDistanceFromPlayer);
+			if (opt.HasValue)
+			{
+				var (instance, _) = opt.Value;
+				current = instance;
+			}
 		}
 	}
 
 	private void OnDisable()
 	{
 		instances.Remove(this);
-		if (main == this)
+		if (current == this)
 		{
-			var other = instances.Find(o => o.isActiveAndEnabled);
-			if (other)
-			{
-				main = other;
-			}
+			current = null;
 		}
 	}
 }

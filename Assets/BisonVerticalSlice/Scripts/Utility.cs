@@ -144,6 +144,31 @@ public static class V2_Utility
 			return selectDefault();
 		}
 	}
+
+	public static (T, float)? MinBy<T>(this IEnumerable<T> items, Func<T, float> select)
+	{
+		var it = items.GetEnumerator();
+		if (!it.MoveNext())
+		{
+			return null;
+		}
+		else
+		{
+			var bestItem = it.Current;
+			var bestValue = select(it.Current);
+			while (it.MoveNext())
+			{
+				var item = it.Current;
+				var value = select(item);
+				if (value < bestValue)
+				{
+					bestValue = value;
+					bestItem = item;
+				}
+			}
+			return (bestItem, bestValue);
+		}
+	}
 }
 
 namespace Bison.Utility
