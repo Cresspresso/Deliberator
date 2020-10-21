@@ -90,11 +90,13 @@ public class V2_GroundhogControl : MonoBehaviour
 
 		if (!V2_PauseMenu.instance.isPaused)
 		{
-			if (Input.GetKeyDown(KeyCode.R))
+			if (Input.GetKeyDown(KeyCode.R)
+				&& V4_PlayerAnimator.instance.cinematicMotionType == V4_PlayerAnimator.CinematicMotionType.None)
 			{
 				Die();
 			}
 
+			// PLAYTEST TOOL DEBUG
 			if (Input.GetKeyDown(KeyCode.K))
 			{
 				isPaused = !isPaused;

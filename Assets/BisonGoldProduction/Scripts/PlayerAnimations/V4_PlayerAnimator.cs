@@ -569,14 +569,6 @@ public class V4_PlayerAnimator : MonoBehaviour
 		{
 			itemType = ItemType.Screwdriver;
 		}
-		if (Input.GetKeyDown(KeyCode.Alpha4))
-		{
-			desiredCinematicMotionType = CinematicMotionType.Inject;
-		}
-		if (Input.GetKeyDown(KeyCode.Alpha5))
-		{
-			desiredCinematicMotionType = CinematicMotionType.Faint;
-		}
 
 
 
@@ -703,7 +695,6 @@ public class V4_PlayerAnimator : MonoBehaviour
 			V3_SparGameObject.RestartCurrentScene();
 		}
 		cinematicMotionType = CinematicMotionType.None;
-		desiredCinematicMotionType = CinematicMotionType.None;
 		DeactivateAllCinematicMotionVisuals();
 	}
 
