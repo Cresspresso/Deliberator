@@ -60,6 +60,10 @@ public class V3_VentDoor : MonoBehaviour
 		pickupHandle = GetComponent<V2_PickUpHandle>();
 		pickupHandle.enabled = false;
 		pickupHandle.buttonHandle.onClick += OnClick;
+		if (!isEasyOpen)
+		{
+			pickupHandle.buttonHandle.handle.enabled = false;
+		}
 
 		dependable = GetComponent<Dependable>();
 		dependable.onChanged.AddListener(OnPoweredChanged);
@@ -87,13 +91,17 @@ public class V3_VentDoor : MonoBehaviour
 			pickupHandle.enabled = true;
 			gameObject.layer = LayerMask.NameToLayer("NoClipHandle");
 
-			var item = V2_PickUpController.instance.currentPickedUpHandle;
-			if (item)
+			if (!isEasyOpen)
 			{
-				var screwdriver = item.GetComponent<V4_Screwdriver>();
-				if (screwdriver)
+				pickupHandle.buttonHandle.handle.enabled = true;
+				var item = V2_PickUpController.instance.currentPickedUpHandle;
+				if (item)
 				{
-					screwdriver.Expire();
+					var screwdriver = item.GetComponent<V4_Screwdriver>();
+					if (screwdriver)
+					{
+						screwdriver.Expire();
+					}
 				}
 			}
 		}
