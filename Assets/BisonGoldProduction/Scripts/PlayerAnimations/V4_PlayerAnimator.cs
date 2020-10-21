@@ -96,6 +96,11 @@ public class V4_PlayerAnimator : MonoBehaviour
 	}
 	private static int property_isPushingDoor;
 
+	public void PushDoor()
+	{
+		isPushingDoor = true;
+	}
+
 
 
 	public enum ItemType
@@ -617,7 +622,6 @@ public class V4_PlayerAnimator : MonoBehaviour
 
 	private void Update()
 	{
-		DebugInput();
 		CheckDrop();
 		UpdateCheckIsWalking();
 		CheckDesiredCinematicMotion();
@@ -664,14 +668,6 @@ public class V4_PlayerAnimator : MonoBehaviour
 	public void PlayCinematic(CinematicMotionType type)
 	{
 		desiredCinematicMotionType = type;
-	}
-
-	private void DebugInput()
-	{
-		if (Input.GetKeyDown(KeyCode.P))
-		{
-			isPushingDoor = true;
-		}
 	}
 
 	private void UpdateLayerWeightBlending()
