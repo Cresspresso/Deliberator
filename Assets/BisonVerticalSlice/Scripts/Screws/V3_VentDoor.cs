@@ -45,6 +45,10 @@ public class V3_VentDoor : MonoBehaviour
 	[SerializeField]
 	private float m_openImpulse = 5.0f;
 	public float openImpulse => m_openImpulse;
+
+	[SerializeField]
+	private bool m_openForwards = false;
+	public bool openForwards => m_openForwards;
 #pragma warning restore CS0649
 
 	public bool hasOpened { get; private set; } = false;
@@ -78,7 +82,8 @@ public class V3_VentDoor : MonoBehaviour
 		{
 			hasOpened = true;
 			rb.isKinematic = false;
-			rb.AddForce(transform.forward * -openImpulse, ForceMode.Impulse);
+			var impulse = transform.forward * (openImpulse * (openForwards ? 1 : -1));
+			rb.AddForce(impulse, ForceMode.Impulse);
 			pickupHandle.enabled = true;
 			gameObject.layer = LayerMask.NameToLayer("NoClipHandle");
 
