@@ -101,7 +101,7 @@ public class V3_VaultSafeHud : MonoBehaviour
 	}
 
 
-
+	public bool isShowing { get; private set; }
 	public void Show(V3_VaultSafe safe)
 	{
 		if (safe.combination == null
@@ -111,6 +111,8 @@ public class V3_VaultSafeHud : MonoBehaviour
 			Debug.LogError("Safe combination array is invalid", safe);
 			throw new System.InvalidOperationException("Safe combination array is invalid");
 		}
+
+		isShowing = true;
 
 		currentSafe = safe;
 		currentSafe.buttonHandle.handle.enabled = false;
@@ -131,6 +133,8 @@ public class V3_VaultSafeHud : MonoBehaviour
 
 	public void Hide()
 	{
+		isShowing = false;
+
 		visuals.SetActive(false);
 
 		cursorController.enabled = true; // TODO test that the cursor works with pause menu.
@@ -139,6 +143,20 @@ public class V3_VaultSafeHud : MonoBehaviour
 		{
 			currentSafe.OnLeaveHud();
 			currentSafe = null;
+		}
+	}
+
+
+
+	private void LateUpdate()
+	{
+		if (currentSafe)
+		{
+			V4_PlayerAnimator.instance.vaultTurningDelta = currentSafe.lastDeltaFiddled;
+			Debug.Log(currentSafe.lastDeltaFiddled);
+
+			// now reset it.
+			currentSafe.lastDeltaFiddled = 0;
 		}
 	}
 }

@@ -32,9 +32,15 @@ public class V3_VaultSafe : MonoBehaviour
 	[SerializeField]
 	public int[] combination = new int[3] { 13, 52, 1 };
 
+	public bool isHumanoidStandingHeight = false;
+	public Transform humanoidLocation;
+	public GameObject visuals;
+
 	public int[] currentValues { get; private set; } // returns reference to owned array
 
 	public bool isOpened { get; private set; } = false;
+
+	public int lastDeltaFiddled { get; set; }
 
 
 
@@ -59,7 +65,10 @@ public class V3_VaultSafe : MonoBehaviour
 
 	private void OnClick(V2_ButtonHandle buttonHandle, V2_HandleController handleController)
 	{
-		if (isOpened) return;
+		if (isOpened)
+			return;
+		if (!V4_PlayerAnimator.instance.canGoIntoInspectingView)
+			return;
 
 		var puc = handleController.GetComponent<V2_PickUpController>();
 		if (puc && puc.currentPickedUpHandle)
@@ -68,6 +77,14 @@ public class V3_VaultSafe : MonoBehaviour
 		}
 
 		hud.Show(this);
+
+		var type = isHumanoidStandingHeight
+			? V4_PlayerAnimator.InspectingViewType.VaultStanding
+			: V4_PlayerAnimator.InspectingViewType.VaultCrouching;
+		V4_PlayerAnimator.instance.GoIntoInspectingView(type,
+			humanoidLocation,
+			visuals
+			);
 	}
 
 	public void OnLeaveHud()
@@ -76,6 +93,7 @@ public class V3_VaultSafe : MonoBehaviour
 		{
 			buttonHandle.handle.enabled = true;
 		}
+		V4_PlayerAnimator.instance.GoOutOfInspectingView();
 	}
 
 	public void Open()

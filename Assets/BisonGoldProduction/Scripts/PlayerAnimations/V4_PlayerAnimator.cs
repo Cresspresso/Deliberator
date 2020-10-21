@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using DG.Tweening;
 using TSingleton = V2_Singleton<V4_PlayerAnimator>;
 
 /// <summary>
@@ -181,7 +182,7 @@ public class V4_PlayerAnimator : MonoBehaviour
 
 
 
-	private enum InspectingViewType
+	public enum InspectingViewType
 	{
 		None = 0,
 		VaultStanding = 1,
@@ -203,7 +204,82 @@ public class V4_PlayerAnimator : MonoBehaviour
 	}
 	private static int property_inspectingViewType;
 
+	private InspectingViewType desiredInspectingViewType;
+
 	private bool isInspecting { get; set; }
+
+	public bool canGoIntoInspectingView => inspectingViewType == InspectingViewType.None;
+
+	private GameObject inspectingViewWorldVisuals;
+	public void GoIntoInspectingView(InspectingViewType viewType, Transform location, GameObject worldVisuals)
+	{
+		if (!canGoIntoInspectingView) return;
+
+		desiredInspectingViewType = viewType;
+		inspectingViewWorldVisuals = worldVisuals;
+
+		// Tween player position and rotation to the right spot.
+		var fpcc = V2_FirstPersonCharacterController.instance;
+		fpcc.cc.enabled = false;
+		fpcc.enabled = false;
+
+		Transform parent;
+		switch (viewType)
+		{
+			case InspectingViewType.VaultCrouching:
+				parent = vaultCrouchingCameraParent;
+				break;
+			case InspectingViewType.VaultStanding:
+				parent = vaultStandingCameraParent;
+				break;
+			default:
+				parent = fpcc.head;
+				break;
+		}
+		mainCameraGameObject.transform.SetParent(parent);
+		mainCameraGameObject.transform.localPosition = Vector3.zero;
+		mainCameraGameObject.transform.localRotation = Quaternion.identity;
+
+		var startPos = fpcc.position;
+		var startBodyAngle = fpcc.bodyAngle;
+		var startHeadAngle = fpcc.headAngle;
+		float t = 0.0f;
+		DOTween.To(() => t,
+			newt => {
+				t = newt;
+				fpcc.position = Vector3.Lerp(startPos, location.position, t);
+				fpcc.bodyAngle = Mathf.Lerp(startBodyAngle, location.eulerAngles.y, t);
+				fpcc.headAngle = Mathf.Lerp(startHeadAngle, location.eulerAngles.x, t);
+			},
+			1.0f,
+			duration: 0.5f)
+		.OnComplete(() =>
+		{
+			inspectingViewType = desiredInspectingViewType;
+		});
+	}
+
+	public void GoOutOfInspectingView()
+	{
+		if (inspectingViewType == InspectingViewType.None)
+			return;
+
+		inspectingViewType = InspectingViewType.None;
+
+		if (inspectingViewWorldVisuals)
+		{
+			inspectingViewWorldVisuals.SetActive(true);
+			inspectingViewWorldVisuals = null;
+		}
+
+		var fpcc = V2_FirstPersonCharacterController.instance;
+		fpcc.cc.enabled = true;
+		fpcc.enabled = true;
+
+		mainCameraGameObject.transform.SetParent(fpcc.head);
+		mainCameraGameObject.transform.localPosition = Vector3.zero;
+		mainCameraGameObject.transform.localRotation = Quaternion.identity;
+	}
 
 
 
@@ -216,6 +292,10 @@ public class V4_PlayerAnimator : MonoBehaviour
 	}
 	private static int property_vaultTryButLocked;
 
+	public void TryVaultButLocked()
+	{
+		vaultTryButLocked = true;
+	}
 
 
 	private bool vaultOpenIt {
@@ -227,9 +307,13 @@ public class V4_PlayerAnimator : MonoBehaviour
 	}
 	private static int property_vaultOpenIt;
 
+	public void OpenVault()
+	{
+		vaultOpenIt = true;
+	}
 
 
-	private int vaultTurningDelta {
+	public int vaultTurningDelta {
 		get => anim.GetInteger(property_vaultTurningDelta);
 		set
 		{
@@ -270,7 +354,7 @@ public class V4_PlayerAnimator : MonoBehaviour
 			{
 				isWantingToHoldTorch = false;
 				itemType = ItemType.None;
-				inspectingViewType = InspectingViewType.None;
+				GoOutOfInspectingView();
 			}
 			PollIsIdle();
 		}
@@ -337,6 +421,14 @@ public class V4_PlayerAnimator : MonoBehaviour
 	[SerializeField]
 	private GameObject m_vaultVisuals;
 	public GameObject vaultVisuals => m_vaultVisuals;
+
+	[SerializeField]
+	private Transform m_vaultStandingCameraParent;
+	public Transform vaultStandingCameraParent => m_vaultStandingCameraParent;
+
+	[SerializeField]
+	private Transform m_vaultCrouchingCameraParent;
+	public Transform vaultCrouchingCameraParent => m_vaultCrouchingCameraParent;
 
 	[Header("Layer Weight Transitions")]
 	[SerializeField]
@@ -563,50 +655,6 @@ public class V4_PlayerAnimator : MonoBehaviour
 		{
 			isPushingDoor = true;
 		}
-
-
-		if (Input.GetKeyDown(KeyCode.Alpha2))
-		{
-			itemType = ItemType.Screwdriver;
-		}
-
-
-
-		if (Input.GetKeyDown(KeyCode.C))
-		{
-			inspectingViewType = InspectingViewType.None;
-		}
-		if (Input.GetKeyDown(KeyCode.V))
-		{
-			inspectingViewType = InspectingViewType.VaultStanding;
-		}
-		if (Input.GetKeyDown(KeyCode.X))
-		{
-			inspectingViewType = InspectingViewType.VaultCrouching;
-		}
-
-		if (Input.GetKeyDown(KeyCode.B))
-		{
-			vaultTryButLocked = true;
-		}
-		if (Input.GetKeyDown(KeyCode.N))
-		{
-			vaultOpenIt = true;
-		}
-		if (Input.GetKeyDown(KeyCode.M))
-		{
-			vaultTurningDelta = 0;
-		}
-		if (Input.GetKeyDown(KeyCode.Comma))
-		{
-			vaultTurningDelta = -1;
-		}
-		if (Input.GetKeyDown(KeyCode.Period))
-		{
-			vaultTurningDelta = +1;
-		}
-
-
 	}
 
 	private void UpdateLayerWeightBlending()
@@ -773,6 +821,7 @@ public class V4_PlayerAnimator : MonoBehaviour
 			case InspectingViewType.VaultCrouching:
 				{
 					vaultVisuals.SetActive(true);
+					inspectingViewWorldVisuals.SetActive(false);
 				}
 				break;
 		}
@@ -786,7 +835,7 @@ public class V4_PlayerAnimator : MonoBehaviour
 	void OnEndVaultOpenIt()
 	{
 		vaultOpenIt = false;
-		inspectingViewType = InspectingViewType.None;
+		GoOutOfInspectingView();
 	}
 
 	private void DeactivateAllInspectingViewVisuals()
