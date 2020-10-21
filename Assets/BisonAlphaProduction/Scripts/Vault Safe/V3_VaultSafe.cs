@@ -92,14 +92,20 @@ public class V3_VaultSafe : MonoBehaviour
 		if (!isOpened)
 		{
 			buttonHandle.handle.enabled = true;
+			V4_PlayerAnimator.instance.GoOutOfInspectingView();
 		}
-		V4_PlayerAnimator.instance.GoOutOfInspectingView();
 	}
 
 	public void Open()
 	{
 		isOpened = true;
 		buttonHandle.handle.enabled = false;
+		V4_PlayerAnimator.instance.OpenVault(PlayOpening);
+	}
+
+	public void PlayOpening()
+	{
 		anim.enabled = true;
+		visuals.SetActive(true);
 	}
 }

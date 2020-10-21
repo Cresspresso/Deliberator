@@ -89,7 +89,7 @@ public class V3_VaultSafeHud : MonoBehaviour
 		}
 		else
 		{
-			Debug.Log("TODO invalid combination sound");
+			V4_PlayerAnimator.instance.TryVaultButLocked();
 		}
 	}
 
@@ -125,7 +125,7 @@ public class V3_VaultSafeHud : MonoBehaviour
 		int numFields = safe.combination.Length;
 		for (int i = 0; i < fields.Length; ++i)
 		{
-			fields[i].gameObject.SetActive(i < numFields);
+			fields[i].OnHudShow(i < numFields);
 		}
 	}
 
