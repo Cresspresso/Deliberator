@@ -523,6 +523,8 @@ public class V4_PlayerAnimator : MonoBehaviour
 		pickupController = V2_PickUpController.instance;
 		pickupController.onPickedUp += Game_OnItemPickedUp;
 		pickupController.onDropped += Game_OnItemDropped;
+		pickupController.onPickedUpLeft += Game_OnTorchPickedUp;
+		pickupController.onDroppedLeft += Game_OnTorchDropped;
 	}
 
 	private void OnDestroy()
@@ -532,6 +534,8 @@ public class V4_PlayerAnimator : MonoBehaviour
 		{
 			pickupController.onPickedUp -= Game_OnItemPickedUp;
 			pickupController.onDropped -= Game_OnItemDropped;
+			pickupController.onPickedUpLeft -= Game_OnTorchPickedUp;
+			pickupController.onDroppedLeft -= Game_OnTorchDropped;
 		}
 	}
 
@@ -555,6 +559,15 @@ public class V4_PlayerAnimator : MonoBehaviour
 		pickupHandle.gameObject.SetActive(true);
 	}
 
+	private void Game_OnTorchPickedUp(V2_PickUpController pickupController, V2_PickUpHandle pickupHandle)
+	{
+		isWantingToHoldTorch = true;
+	}
+
+	private void Game_OnTorchDropped(V2_PickUpController pickupController, V2_PickUpHandle pickupHandle)
+	{
+	}
+
 
 	private V2_PickUpController pickupController;
 
@@ -562,14 +575,21 @@ public class V4_PlayerAnimator : MonoBehaviour
 	{
 		if (Input.GetButtonDown("Fire2") && !V2_PauseMenu.instance.isPaused)
 		{
-			if (itemType == ItemType.NonAnimated)
+			if (pickupController.currentPickedUpHandle)
 			{
-				pickupController.currentPickedUpHandle.Drop();
-				itemType = ItemType.None;
+				if (itemType == ItemType.NonAnimated)
+				{
+					pickupController.currentPickedUpHandle.Drop();
+					itemType = ItemType.None;
+				}
+				else
+				{
+					itemType = ItemType.None;
+				}
 			}
 			else
 			{
-				itemType = ItemType.None;
+				isWantingToHoldTorch = false;
 			}
 		}
 	}
@@ -646,11 +666,6 @@ public class V4_PlayerAnimator : MonoBehaviour
 
 	private void DebugInput()
 	{
-		if (Input.GetKeyDown(KeyCode.O))
-		{
-			isWantingToHoldTorch = !isWantingToHoldTorch;
-		}
-
 		if (Input.GetKeyDown(KeyCode.P))
 		{
 			isPushingDoor = true;
@@ -849,11 +864,15 @@ public class V4_PlayerAnimator : MonoBehaviour
 	{
 		isHoldingTorch = true;
 		torchVisuals.SetActive(true);
+		pickupController.currentPickedUpHandleLeft.gameObject.SetActive(false);
 	}
 
 	private void OnEndTorch()
 	{
 		isHoldingTorch = false;
 		torchVisuals.SetActive(false);
+		var torchHandle = pickupController.currentPickedUpHandleLeft;
+		torchHandle.Drop();
+		torchHandle.gameObject.SetActive(true);
 	}
 }

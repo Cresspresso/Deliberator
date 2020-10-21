@@ -35,6 +35,8 @@ public class V2_PickUpHandle : MonoBehaviour
 	public event Action<V2_PickUpHandle, V2_PickUpController> onDropped;
 	public string description = "Undescribable Object";
 
+	public bool isLeftHandItem = false;
+
 #pragma warning disable CS0649
 	[Tooltip("When the player drops this item, how big is it (for placing on tables, etc)?")]
 	[SerializeField]
