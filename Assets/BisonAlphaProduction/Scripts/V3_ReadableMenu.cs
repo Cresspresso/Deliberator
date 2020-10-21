@@ -62,6 +62,17 @@ public class V3_ReadableMenu : MonoBehaviour
 	}
 
 	/// <summary>
+	/// Unpause for V3_PictureTaker, because normal unpause turns off mouse.
+	/// </summary>
+	public void UnpauseForNotes()
+	{
+		Time.timeScale = 1.0f;
+		readableMenuPanel.SetActive(false);
+		readableText.text = "";
+		StartCoroutine(waitToUnlock());
+	}
+
+	/// <summary>
 	/// Follows V2_PauseMenu pause function but is specifically for readables UI
 	/// </summary>
 	public void Pause()

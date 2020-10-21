@@ -83,8 +83,16 @@ namespace Bison.Document
 		/// <param name="notes"></param>
 		private void OnNotesChanged(string notes)
 		{
-			/// Save the notes.
-			V3_SessionPersistence.instance.notes = notes;
+			if (!Input.GetKeyDown(KeyCode.Escape))
+			{
+				/// Save the notes.
+				V3_SessionPersistence.instance.notes = notes;
+			}
+			else // if escape key was pressesd
+			{
+				// change the now-empty-text back to what it was.
+				notesInputField.text = V3_SessionPersistence.instance.notes;
+			}
 		}
 
 		/// <summary>
@@ -93,6 +101,8 @@ namespace Bison.Document
 		public void PauseAndOpenThisMenuLayout()
 		{
 			V2_PauseMenu.instance.Pause(visuals);
+			var es = FindObjectOfType<UnityEngine.EventSystems.EventSystem>();
+			es.SetSelectedGameObject(notesInputField.gameObject);
 		}
 	}
 }
