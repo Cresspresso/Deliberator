@@ -113,6 +113,8 @@ public sealed class Dependable : MonoBehaviour
 		set => condition.arrays.literalArray[0] = new Bison.BoolExpressions.Serializable.Literal(value);
 	}
 
+	public bool hasFirstLiteral => condition.arrays.literalArray.Length > 0;
+
 	/// <summary>
 	///		<para>
 	///			Gets a list of all the <see cref="Dependable"/>

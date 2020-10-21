@@ -54,5 +54,7 @@ public class V4_Screwdriver : MonoBehaviour
 		visualsRegular.SetActive(false);
 
 		Debug.LogWarning("TODO play breaking sound (e.g. metal clang)", this);
+
+		V4_PlayerAnimator.instance.OnScrewdriverExpired(this);
 	}
 }

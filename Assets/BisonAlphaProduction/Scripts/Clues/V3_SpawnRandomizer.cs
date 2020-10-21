@@ -44,7 +44,7 @@ public class V3_SpawnRandomizer : V3_Randomizer<V3_SparData_SpawnRandomizer, V3_
 	public IReadOnlyList<Transform> spawnPoints => m_spawnPoints;
 
 	[SerializeField]
-	private bool m_useSetParent = true;
+	private bool m_useSetParent = false;
 	public bool useSetParent => m_useSetParent;
 
 	[SerializeField]

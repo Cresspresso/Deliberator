@@ -26,7 +26,23 @@ using UnityEngine;
 [RequireComponent(typeof(V2_ButtonHandle))]
 public class V2_PickUpHandle : MonoBehaviour
 {
-	public V2_ButtonHandle buttonHandle { get; private set; }
+	private V2_ButtonHandle m_buttonHandle;
+	public V2_ButtonHandle buttonHandle {
+		get
+		{
+			PrepareButtonHandle();
+			return m_buttonHandle;
+		}
+	}
+	private void PrepareButtonHandle()
+	{
+		if (!m_buttonHandle)
+		{
+			m_buttonHandle = GetComponent<V2_ButtonHandle>();
+			m_buttonHandle.onClick += OnClick;
+		}
+	}
+
 	public Rigidbody rb { get; private set; }
 	public Collider[] colliders { get; private set; }
 	public V2_PickUpController controller { get; private set; } = null;
@@ -35,8 +51,6 @@ public class V2_PickUpHandle : MonoBehaviour
 	public event Action<V2_PickUpHandle, V2_PickUpController> onDropped;
 	public string description = "Undescribable Object";
 
-	public bool isLeftHandItem = false;
-
 #pragma warning disable CS0649
 	[Tooltip("When the player drops this item, how big is it (for placing on tables, etc)?")]
 	[SerializeField]
@@ -44,16 +58,21 @@ public class V2_PickUpHandle : MonoBehaviour
 	public float radius => m_radius;
 #pragma warning restore CS0649
 
+	public bool isLeftHandItem = false;
+
 	private void Awake()
 	{
-		buttonHandle = GetComponent<V2_ButtonHandle>();
-		buttonHandle.onClick += OnClick;
+		PrepareButtonHandle();
 		rb = GetComponent<Rigidbody>();
 		colliders = GetComponentsInChildren<Collider>();
 	}
 
 	private void OnClick(V2_ButtonHandle buttonHandle, V2_HandleController handleController)
 	{
+		if (!enabled)
+		{
+			return;
+		}
 		controller = handleController.GetComponent<V2_PickUpController>();
 		if (controller
 			&& !controller.currentPickedUpHandle
