@@ -9,7 +9,6 @@ using UnityEngine.Rendering;
 /// <author>Elijah Shadbolt</author>
 public class V2_UltraVioletRendererAddon : MonoBehaviour
 {
-	public static V2_UltraVioletLight uviLight;
 	private Renderer m_renderer;
 	public Renderer rend {
 		get
@@ -51,10 +50,7 @@ public class V2_UltraVioletRendererAddon : MonoBehaviour
 
 	private void OnBeginFrameRendering(ScriptableRenderContext context, Camera[] cameras)
 	{
-		if (!uviLight)
-		{
-			uviLight = FindObjectOfType<V2_UltraVioletLight>();
-		}
+		var uviLight = V2_UltraVioletLight.main;
 
 		bool has = (bool)uviLight;
 #if UNITY_EDITOR
