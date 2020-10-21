@@ -39,15 +39,15 @@ namespace Bison.Document
 				V3_DocumentEditorUI.instance.PauseAndOpenThisMenuLayout();
 
 				var rm = FindObjectOfType<V3_ReadableMenu>();
-				rm.Unpause();
+				rm.UnpauseForNotes();
 			}
 
 			if (Input.GetKeyDown(KeyCode.Q))
 			{
 				V3_DocumentEditorUI.instance.PauseAndOpenThisMenuLayout();
-
+				
 				var rm = FindObjectOfType<V3_ReadableMenu>();
-				rm.Unpause();
+				rm.UnpauseForNotes();
 			}
 		}
 	}
