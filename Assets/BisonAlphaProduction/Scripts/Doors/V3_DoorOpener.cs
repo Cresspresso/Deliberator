@@ -178,8 +178,10 @@ public class V3_DoorOpener : MonoBehaviour
 	private void OnClick(V2_ButtonHandle buttonHandle, V2_HandleController handleController)
 	{
 		var fpcc = handleController.GetComponentInParent<V2_FirstPersonCharacterController>();
-		Apply(door, fpcc.position);
-		V4_PlayerAnimator.instance.PushDoor();
+		V4_PlayerAnimator.instance.PushDoor(() =>
+		{
+			Apply(door, fpcc.position);
+		});
 	}
 
 	private void Awake()

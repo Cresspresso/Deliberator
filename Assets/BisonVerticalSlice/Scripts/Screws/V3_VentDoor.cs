@@ -76,11 +76,12 @@ public class V3_VentDoor : MonoBehaviour
 	{
 		if (dependable.hasFirstLiteral)
 		{
-			dependable.firstLiteral = true;
-
 			if (!hasOpened)
 			{
-				V4_PlayerAnimator.instance.PushDoor();
+				V4_PlayerAnimator.instance.PushDoor(() =>
+				{
+					dependable.firstLiteral = true;
+				});
 			}
 		}
 	}
