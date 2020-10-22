@@ -44,9 +44,12 @@ public class V3_PushButton : MonoBehaviour
 		buttonHandle = GetComponent<V2_ButtonHandle>();
 		buttonHandle.onClick += (buttonHandle, handleController) =>
 		{
-			dependable.firstLiteral = true;
-			audioSource.Play();
-			anim.SetTrigger("Active");
+			V4_PlayerAnimator.instance.PushDoor(() =>
+			{
+				dependable.firstLiteral = true;
+				audioSource.Play();
+				anim.SetTrigger("Active");
+			});
 		};
 	}
 

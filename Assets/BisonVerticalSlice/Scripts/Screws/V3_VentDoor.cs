@@ -25,6 +25,9 @@ using UnityEngine;
 ///			<para>
 ///				Made it also work without screws.
 ///			</para>
+///			<para>
+///				Made it play animation of player pushing door.
+///			</para>
 ///		</log>
 /// </changelog>
 /// 
@@ -73,7 +76,13 @@ public class V3_VentDoor : MonoBehaviour
 	{
 		if (dependable.hasFirstLiteral)
 		{
-			dependable.firstLiteral = true;
+			if (!hasOpened)
+			{
+				V4_PlayerAnimator.instance.PushDoor(() =>
+				{
+					dependable.firstLiteral = true;
+				});
+			}
 		}
 	}
 

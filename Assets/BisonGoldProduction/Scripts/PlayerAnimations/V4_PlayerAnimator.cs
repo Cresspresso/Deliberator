@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 using UnityEngine;
 using DG.Tweening;
 using TSingleton = V2_Singleton<V4_PlayerAnimator>;
@@ -101,9 +102,20 @@ public class V4_PlayerAnimator : MonoBehaviour
 	}
 	private static int property_isPushingDoor;
 
-	public void PushDoor()
+
+	private Action onPushedDoorActionMoment;
+
+	/// <summary>
+	/// WARNING: also used for pushing <see cref="V3_VentDoor"/> and <see cref="V3_PushButton"/>.
+	/// </summary>
+	public bool PushDoor(Action onPushedDoorActionMoment = null)
 	{
+		if (isPushingDoor)
+			return false;
+
 		isPushingDoor = true;
+		this.onPushedDoorActionMoment = onPushedDoorActionMoment;
+		return true;
 	}
 
 
@@ -701,9 +713,15 @@ public class V4_PlayerAnimator : MonoBehaviour
 		}
 	}
 
+	void OnPushingDoorActionMoment()
+	{
+		onPushedDoorActionMoment?.Invoke();
+	}
+
 	void OnEndPushingDoor()
 	{
 		isPushingDoor = false;
+		onPushedDoorActionMoment = null;
 	}
 
 	void OnEndScrewdriving()
