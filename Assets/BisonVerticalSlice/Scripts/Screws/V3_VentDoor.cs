@@ -45,6 +45,10 @@ public class V3_VentDoor : MonoBehaviour
 	[SerializeField]
 	private float m_openImpulse = 5.0f;
 	public float openImpulse => m_openImpulse;
+
+	[SerializeField]
+	private bool m_openForwards = false;
+	public bool openForwards => m_openForwards;
 #pragma warning restore CS0649
 
 	public bool hasOpened { get; private set; } = false;
@@ -56,6 +60,10 @@ public class V3_VentDoor : MonoBehaviour
 		pickupHandle = GetComponent<V2_PickUpHandle>();
 		pickupHandle.enabled = false;
 		pickupHandle.buttonHandle.onClick += OnClick;
+		if (!isEasyOpen)
+		{
+			pickupHandle.buttonHandle.handle.enabled = false;
+		}
 
 		dependable = GetComponent<Dependable>();
 		dependable.onChanged.AddListener(OnPoweredChanged);
@@ -78,17 +86,22 @@ public class V3_VentDoor : MonoBehaviour
 		{
 			hasOpened = true;
 			rb.isKinematic = false;
-			rb.AddForce(transform.forward * -openImpulse, ForceMode.Impulse);
+			var impulse = transform.forward * (openImpulse * (openForwards ? 1 : -1));
+			rb.AddForce(impulse, ForceMode.Impulse);
 			pickupHandle.enabled = true;
 			gameObject.layer = LayerMask.NameToLayer("NoClipHandle");
 
-			var item = V2_PickUpController.instance.currentPickedUpHandle;
-			if (item)
+			if (!isEasyOpen)
 			{
-				var screwdriver = item.GetComponent<V4_Screwdriver>();
-				if (screwdriver)
+				pickupHandle.buttonHandle.handle.enabled = true;
+				var item = V2_PickUpController.instance.currentPickedUpHandle;
+				if (item)
 				{
-					screwdriver.Expire();
+					var screwdriver = item.GetComponent<V4_Screwdriver>();
+					if (screwdriver)
+					{
+						screwdriver.Expire();
+					}
 				}
 			}
 		}

@@ -50,7 +50,7 @@ public class V2_UltraVioletRendererAddon : MonoBehaviour
 
 	private void OnBeginFrameRendering(ScriptableRenderContext context, Camera[] cameras)
 	{
-		var uviLight = V2_UltraVioletLight.main;
+		var uviLight = V2_UltraVioletLight.current;
 
 		bool has = (bool)uviLight;
 #if UNITY_EDITOR
