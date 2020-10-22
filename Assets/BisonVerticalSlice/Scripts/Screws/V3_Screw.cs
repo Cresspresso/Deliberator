@@ -67,7 +67,7 @@ public class V3_Screw : MonoBehaviour
 						}))
 						{
 							hasUnscrewed = true;
-							Debug.LogWarning("TODO play screw sound", this);
+							gameObject.GetComponent<AudioSource>().Play();
 						}
 					}
 				}

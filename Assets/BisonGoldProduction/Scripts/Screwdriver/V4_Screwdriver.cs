@@ -33,6 +33,8 @@ public class V4_Screwdriver : MonoBehaviour
 	private GameObject m_visualsDamaged;
 	public GameObject visualsDamaged => m_visualsDamaged;
 
+	public AudioSource breakAudioPrefab;
+
 #pragma warning restore CS0649
 
 	public bool hasExpired { get; private set; } = false;
@@ -53,7 +55,8 @@ public class V4_Screwdriver : MonoBehaviour
 		visualsDamaged.SetActive(true);
 		visualsRegular.SetActive(false);
 
-		Debug.LogWarning("TODO play breaking sound (e.g. metal clang)", this);
+		var inst = Instantiate(breakAudioPrefab);
+		Destroy(inst, breakAudioPrefab.clip.length);
 
 		V4_PlayerAnimator.instance.OnScrewdriverExpired(this);
 	}
