@@ -18,8 +18,10 @@ using System.Linq;
 ///	
 public static class V4_BringHere
 {
-	[MenuItem("Tools/Bison/Bring Here")]
-	public static void BringHere()
+	public static void BringHere(Transform[] transforms) => BringHere(transforms, (t, p) => t.position = p);
+
+	// Teleport must only change position of transform (not any serialized properties).
+	public static void BringHere(Transform[] transforms, System.Action<Transform, Vector3> teleport, float offsetY = 0.0f)
 	{
 		var cam = SceneView.GetAllSceneCameras().FirstOrDefault();
 		if (!cam) return;
@@ -45,21 +47,43 @@ public static class V4_BringHere
 			const float outPadding = 0.1f;
 			pos = ray.GetPoint(outPadding);
 		}
+		pos += Vector3.up * offsetY;
 
 		float variance = 0.1f;
-		var ts = Selection.transforms;
-		Undo.RecordObjects(ts, "Move");
-		var num = ts.Length;
+		Undo.RecordObjects(transforms, "Move");
+		var num = transforms.Length;
 		for (int i = 0; i < num; i++)
 		{
-			ts[i].position = pos + Random.onUnitSphere * (i * variance);
+			teleport(transforms[i], pos + Random.onUnitSphere * (i * variance));
 		}
 	}
 
-	[MenuItem("Tools/Bison/Bring Here", true)]
+	[MenuItem("Tools/Bison/Bring Selection Here")]
+	public static void BringSelectionHere()
+	{
+		BringHere(Selection.transforms);
+	}
+
+	[MenuItem("Tools/Bison/Bring Selection Here", true)]
 	public static bool BringHereValidation()
 	{
 		return Selection.transforms.Length > 0
 			&& SceneView.GetAllSceneCameras().Any();
+	}
+
+	[MenuItem("Tools/Bison/Bring Player Here")]
+	public static void BringPlayerHere()
+	{
+		BringHere(
+			new Transform[] { V2_FirstPersonCharacterController.instance.transform },
+			(t, p) => t.GetComponent<V2_FirstPersonCharacterController>().Teleport(p),
+			offsetY: 0.5f
+			);
+	}
+
+	[MenuItem("Tools/Bison/Bring Player Here", true)]
+	public static bool BringPlayerHereValidation()
+	{
+		return EditorApplication.isPlaying && V2_FirstPersonCharacterController.instance;
 	}
 }
