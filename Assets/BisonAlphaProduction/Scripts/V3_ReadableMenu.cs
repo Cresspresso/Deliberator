@@ -52,6 +52,7 @@ public class V3_ReadableMenu : MonoBehaviour
 	/// <summary>
 	/// Follows V2_PauseMenu Unpause function but is specifically for readables UI
 	/// </summary>
+	[System.Obsolete("do it via V2_PauseMenu")]
 	public void Unpause()
 	{
 		Time.timeScale = 1.0f;
@@ -64,6 +65,7 @@ public class V3_ReadableMenu : MonoBehaviour
 	/// <summary>
 	/// Unpause for V3_PictureTaker, because normal unpause turns off mouse.
 	/// </summary>
+	[System.Obsolete("do it via V2_PauseMenu")]
 	public void UnpauseForNotes()
 	{
 		Time.timeScale = 1.0f;
@@ -75,6 +77,7 @@ public class V3_ReadableMenu : MonoBehaviour
 	/// <summary>
 	/// Follows V2_PauseMenu pause function but is specifically for readables UI
 	/// </summary>
+	[System.Obsolete("do it via V2_PauseMenu")]
 	public void Pause()
 	{
 		Time.timeScale = 0.0f;
@@ -91,15 +94,18 @@ public class V3_ReadableMenu : MonoBehaviour
 	///		<log author="Elijah Shadbolt" date="01/10/2020">
 	///			<para>Edited {...Escape) && reading)} so that it would show the pause menu cursor in release build.</para>
 	///		</log>
+	///		<log author="Elijah Shadbolt" date="23/10/2020">
+	///			<para>Removed this method.</para>
+	///		</log>
 	/// </changelog>
 	/// 
-	private void Update()
-	{
-		if (Input.GetKeyDown(KeyCode.Escape) && reading)
-		{
-			Unpause();
-		}
-	}
+	//private void Update()
+	//{
+	//	if (Input.GetKeyDown(KeyCode.Escape) && reading)
+	//	{
+	//		Unpause();
+	//	}
+	//}
 
 	/// <summary>
 	/// Waits an amount of time before allowing pause menu to be pulled up

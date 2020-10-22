@@ -41,6 +41,7 @@ public class V3_PaperClue : MonoBehaviour
 
 		var rm = FindObjectOfType<V3_ReadableMenu>();
 		rm.SetText(content);
-		rm.Pause();
+		//rm.Pause();
+		V2_PauseMenu.instance.Pause(rm.readableMenuPanel);
 	}
 }

@@ -14,6 +14,7 @@ using UnityEngine;
 /// <author>Lorenzo Sae-Phoo Zemp</author>
 [RequireComponent(typeof(V3_ProximityCalculator))]
 [RequireComponent(typeof(BoxCollider))]
+[System.Obsolete("Use PaperClue instead because it doesn't need XML")] // Elijah added this attribute
 public class V3_Readable : MonoBehaviour
 {
     [Tooltip("Please enter the name of the XML file exactly")]

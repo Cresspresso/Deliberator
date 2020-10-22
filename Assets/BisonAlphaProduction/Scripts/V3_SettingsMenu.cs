@@ -12,7 +12,18 @@ public class V3_SettingsMenu : MonoBehaviour
     private AudioMixer audioMixer;
 #pragma warning restore CS0649
 
-    private GameObject player;
+    private GameObject m_player;
+    private GameObject player {
+        get
+        {
+            if (!m_player)
+            {
+                m_player = GameObject.FindGameObjectWithTag("Player");
+            }
+            return m_player;
+        }
+    }
+
 
 #pragma warning disable CS0649
     [SerializeField] private Dropdown resolutionDropdown;
@@ -40,13 +51,10 @@ public class V3_SettingsMenu : MonoBehaviour
     //called on start
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
-
         if (PlayerPrefs.HasKey("MouseSensitivity"))
         {
             //mouseSensitivity = PlayerPrefs.GetFloat("MouseSensitivity");
             float foundSens = PlayerPrefs.GetFloat("MouseSensitivity");
-            Debug.Log("MouseSensitivity Exists " + foundSens);
             SetSensitivity(foundSens);
             sensitivitySlider.value = foundSens;
         }
@@ -131,8 +139,6 @@ public class V3_SettingsMenu : MonoBehaviour
     /// <param name="_sensitivity"></param>
     public void SetSensitivity (float _sensitivity)
     {
-        Debug.Log("Sensitivity Changed " + _sensitivity);
-
         PlayerPrefs.SetFloat("MouseSensitivity", _sensitivity);
         mouseSensitivity = _sensitivity;
         player.GetComponent<V2_FirstPersonCharacterController>().mouseSensitivity = mouseSensitivity;
