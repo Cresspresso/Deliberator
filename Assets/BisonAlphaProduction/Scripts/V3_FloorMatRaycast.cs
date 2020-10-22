@@ -57,7 +57,7 @@ public class V3_FloorMatRaycast : MonoBehaviour
                     break;
 
                 case "carpet":
-                    //source.PlayOneShot(carpetClips[Random.Range(0, 4)]);
+                    source.PlayOneShot(carpetClips[Random.Range(0, 4)]);
                     break;
 
                 default:

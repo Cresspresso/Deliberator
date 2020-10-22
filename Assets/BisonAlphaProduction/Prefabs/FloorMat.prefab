@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1290852984316462261}
   - component: {fileID: 4816193637146982476}
   - component: {fileID: 3011700348283446687}
+  - component: {fileID: 9042196857591248048}
   m_Layer: 0
   m_Name: FloorMat
   m_TagString: Untagged
@@ -93,3 +94,16 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2.5408084, y: 0.014461297, z: 1.3809879}
   m_Center: {x: 0, y: 0.0072306483, z: 0}
+--- !u!114 &9042196857591248048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6551146004034768016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb06c4f419e533f49954aef7c3840814, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chosenMat: 3
