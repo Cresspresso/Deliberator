@@ -51,7 +51,9 @@ public class V4_ChromaticFeedback : MonoBehaviour
     {
         Debug.Log("midChrom coroutine triggered");
         chromaticAberration.intensity.Override(1.0f);
-        yield return new WaitForSeconds(0.5f);
+        Debug.Log("intensity: " + chromaticAberration.intensity);
+        yield return new WaitForSeconds(1.0f);
         chromaticAberration.intensity.Override(0.0f);
+        Debug.Log("intensity: " + chromaticAberration.intensity);
     }
 }
