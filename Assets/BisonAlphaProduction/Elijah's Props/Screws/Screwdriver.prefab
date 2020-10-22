@@ -205,6 +205,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   description: Screwdriver
   m_radius: 0.1
+  isLeftHandItem: 0
 --- !u!114 &8674851210235169801
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -219,6 +220,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_visualsRegular: {fileID: 6042675922791016021}
   m_visualsDamaged: {fileID: 6767739678527431655}
+  breakAudioPrefab: {fileID: 2149119800353120822, guid: 29cda7160e09e094b94a82f23b9e9cf1,
+    type: 3}
 --- !u!114 &2094520369280201530
 MonoBehaviour:
   m_ObjectHideFlags: 0

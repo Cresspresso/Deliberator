@@ -5,6 +5,14 @@ using UnityEngine.Serialization;
 
 /// <author> Elijah Shadbolt </author>
 /// <author> Lorenzo Zemp </author>
+/// 
+/// <changelog>
+///		<log author="Elijah Shadbolt" date="22/10/2020">
+///			<para>Added delay to sync up with player animation.</para>
+///		</log>
+/// </changelog>
+/// 
+[System.Obsolete("Deprecated")]
 [RequireComponent(typeof(V2_ButtonHandle))]
 public class V2_DoorOpener : MonoBehaviour
 {
@@ -81,7 +89,7 @@ public class V2_DoorOpener : MonoBehaviour
     {
         if (isLocked)
         {
-            switch(doorType)
+            switch (doorType)
             {
                 case 1:
                     anim[0].SetTrigger("TriedToOpen");
