@@ -92,6 +92,8 @@ public class V2_PauseMenu : MonoBehaviour
 	public void Pause() => Pause(this.pauseMenuPanel);
 	public void Pause(GameObject menuPanel)
 	{
+		V3_VaultSafeHud.instance.Hide();
+
 		isPaused = true;
 		Time.timeScale = 0.0f;
 		cursorController.enabled = false;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using TSingleton = V2_Singleton<V3_VaultSafeHud>;
 
 /// <summary>
 ///		<para>
@@ -57,9 +58,12 @@ public class V3_VaultSafeHud : MonoBehaviour
 	public V3_VaultSafe currentSafe { get; private set; }
 
 
+	public static V3_VaultSafeHud instance => TSingleton.instance;
 
 	private void Awake()
 	{
+		TSingleton.OnAwake(this, V2_SingletonDuplicateMode.Ignore);
+
 		cursorController = FindObjectOfType<V2_CursorController>();
 
 		submitButton.onClick.AddListener(OnSubmit);
@@ -118,7 +122,6 @@ public class V3_VaultSafeHud : MonoBehaviour
 		currentSafe.buttonHandle.handle.enabled = false;
 
 		visuals.SetActive(true);
-
 		cursorController.enabled = false;
 
 		// show the right number of fields
@@ -133,11 +136,15 @@ public class V3_VaultSafeHud : MonoBehaviour
 
 	public void Hide()
 	{
+		if (!isShowing)
+			return;
+
 		isShowing = false;
 
-		visuals.SetActive(false);
+		V2_PauseMenu.instance.Unpause();
 
-		cursorController.enabled = true; // TODO test that the cursor works with pause menu.
+		visuals.SetActive(false);
+		cursorController.enabled = true;
 
 		if (currentSafe)
 		{
