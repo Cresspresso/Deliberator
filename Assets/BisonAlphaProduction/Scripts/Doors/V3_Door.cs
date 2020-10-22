@@ -317,13 +317,19 @@ public class V3_Door : MonoBehaviour
 	/// </summary>
 	public void TryToOpen(Direction direction)
 	{
-		if (!isOpen)
+		StartCoroutine(Co());
+		IEnumerator Co()
 		{
-			StopLockedAnim();
-			state = DoorState.Opening;
-			this.direction = direction;
-			V2_Utility.TryElseLog(manager, () => manager.OnOpening(this));
-			V2_Utility.TryElseLog(this, () => InvokeOpening());
+			yield return new WaitForSeconds(playerAnimSyncDelay);
+
+			if (!isOpen)
+			{
+				StopLockedAnim();
+				state = DoorState.Opening;
+				this.direction = direction;
+				V2_Utility.TryElseLog(manager, () => manager.OnOpening(this));
+				V2_Utility.TryElseLog(this, () => InvokeOpening());
+			}
 		}
 	}
 
@@ -400,13 +406,21 @@ public class V3_Door : MonoBehaviour
 
 
 
+	private static float playerAnimSyncDelay = 0.1f;
+
 	/// <summary>
 	///		<para>Called by <see cref="V3_DoorManager"/>.</para>
 	/// </summary>
 	public void PlayLockedAnim()
 	{
-		lockedAnimLerpValue = 0.0f;
-		sounds.PlaySound(sounds.lockedSound);
+		StartCoroutine(Co());
+		IEnumerator Co()
+		{
+			yield return new WaitForSeconds(playerAnimSyncDelay);
+
+			lockedAnimLerpValue = 0.0f;
+			sounds.PlaySound(sounds.lockedSound);
+		}
 	}
 
 
