@@ -40,7 +40,8 @@ public class V3_ValveWheel : MonoBehaviour
         // if clicked on within range
         if (proximityCalculator.GetDistance() < interactableDistance && activatable)
         {
-            Debug.Log("Interacted with");
+            gameObject.GetComponent<AudioSource>().PlayOneShot(gameObject.GetComponent<AudioSource>().clip);
+
             animator.SetTrigger("Activate");
             activated = true;
             activatable = false;
