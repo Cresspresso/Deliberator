@@ -37,7 +37,11 @@ public class V3_PaperClue : MonoBehaviour
 
 	private void OnClick(V2_ButtonHandle buttonHandle, V2_HandleController handleController)
 	{
-		gameObject.GetComponent<AudioSource>().Play();
+		var src = gameObject.GetComponent<AudioSource>();
+		if (src)
+		{
+			src.Play();
+		}
 
 		var rm = FindObjectOfType<V3_ReadableMenu>();
 		rm.SetText(content);
