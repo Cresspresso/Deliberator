@@ -135,7 +135,7 @@ public class V2_NumPad : MonoBehaviour
 			pauseMenu = FindObjectOfType<V2_PauseMenu>();
 		}
 
-		if (isHovered && !pauseMenu.isPaused)
+		if (isHovered && !pauseMenu.isPaused && !V5_FreeCameraManager.instance.isFree)
 		{
 			for (int i = 0; i <= 9; ++i)
 			{

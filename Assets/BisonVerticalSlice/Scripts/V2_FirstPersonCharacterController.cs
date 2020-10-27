@@ -192,7 +192,8 @@ public class V2_FirstPersonCharacterController : MonoBehaviour
 	{
 		if (isLookInputEnabled
 			&& isInputEnabled
-			&& !V2_GroundhogControl.instance.hasFinished)
+			&& !V2_GroundhogControl.instance.hasFinished
+			&& !V5_FreeCameraManager.instance.isFree)
 		{
 			bodyAngle += Input.GetAxis("Mouse X") * mouseSensitivity;
 			headAngle -= Input.GetAxis("Mouse Y") * mouseSensitivity;
@@ -208,7 +209,8 @@ public class V2_FirstPersonCharacterController : MonoBehaviour
 
 		var dir = (isMoveInputEnabled
 			&& isInputEnabled
-			&& !V2_GroundhogControl.instance.hasFinished)
+			&& !V2_GroundhogControl.instance.hasFinished
+			&& !V5_FreeCameraManager.instance.isFree)
 			? new Vector2(
 			Input.GetAxis("Horizontal"),
 			Input.GetAxis("Vertical"))
@@ -226,6 +228,7 @@ public class V2_FirstPersonCharacterController : MonoBehaviour
 		if (isJumpInputEnabled
 			&& isInputEnabled
 			&& !V2_GroundhogControl.instance.hasFinished
+			&& !V5_FreeCameraManager.instance.isFree
 			&& Input.GetButtonDown("Jump"))
 		{
 			if (!didJump && isTouchingGround && !isGroundSlippery)
@@ -303,6 +306,7 @@ public class V2_FirstPersonCharacterController : MonoBehaviour
 	{
 		if (isRunInputEnabled
 			&& !V2_GroundhogControl.instance.hasFinished
+			&& !V5_FreeCameraManager.instance.isFree
 			&& isInputEnabled)
 		{
 			isRunning = Input.GetButton("Run");

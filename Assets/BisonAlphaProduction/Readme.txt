@@ -42,6 +42,7 @@ If this were a real release quality build, we would have removed these tools and
 
 - F3 to toggle debug info for playtesting.
 - K to pause/unpause the remaining steps.
+- F6 to go into free camera mode.
 
 You can find a level select screen by starting the game and going to "Playtest Tools" in the pause menu.
 

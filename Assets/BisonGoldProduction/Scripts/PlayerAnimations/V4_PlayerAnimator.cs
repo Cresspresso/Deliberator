@@ -607,7 +607,7 @@ public class V4_PlayerAnimator : MonoBehaviour
 
 	private void CheckDrop()
 	{
-		if (Input.GetButtonDown("Fire2") && !V2_PauseMenu.instance.isPaused)
+		if (Input.GetButtonDown("Fire2") && !V2_PauseMenu.instance.isPaused && !V5_FreeCameraManager.instance.isFree)
 		{
 			if (pickupController.currentPickedUpHandle)
 			{

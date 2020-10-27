@@ -41,6 +41,9 @@ public class V3_ViewBobbing : MonoBehaviour
 
     void Update()
     {
+        if (V5_FreeCameraManager.instance.isFree)
+            return;
+
         if (isBobbingEnabled)
         {
             float horizontal = Input.GetAxis("Horizontal");

@@ -45,7 +45,7 @@ public class V3_Arm_Manager : MonoBehaviour
 
 		if (!injectAnim.isPlaying)
 		{
-			if (Input.GetMouseButtonDown(0) && !V2_PauseMenu.instance.isPaused)
+			if (Input.GetMouseButtonDown(0) && !V2_PauseMenu.instance.isPaused && !V5_FreeCameraManager.instance.isFree)
 			{
 				walkSwayAnim.Stop();
 				grabAnim.Play();

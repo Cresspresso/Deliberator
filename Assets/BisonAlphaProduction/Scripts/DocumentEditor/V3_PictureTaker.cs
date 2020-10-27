@@ -33,21 +33,22 @@ namespace Bison.Document
 		/// </changelog>
 		private void Update()
 		{
+			if (V5_FreeCameraManager.instance.isFree)
+				return;
+
 			if (Input.GetKeyDown(KeyCode.E))
 			{
 				V3_PicturePanel.instance.CapturePicture();
 				V3_DocumentEditorUI.instance.PauseAndOpenThisMenuLayout();
 
-				var rm = FindObjectOfType<V3_ReadableMenu>();
-				rm.UnpauseForNotes();
+				V2_PauseMenu.instance.Unpause();
 			}
 
 			if (Input.GetKeyDown(KeyCode.Q))
 			{
 				V3_DocumentEditorUI.instance.PauseAndOpenThisMenuLayout();
-				
-				var rm = FindObjectOfType<V3_ReadableMenu>();
-				rm.UnpauseForNotes();
+
+				V2_PauseMenu.instance.Unpause();
 			}
 		}
 	}

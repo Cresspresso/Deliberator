@@ -48,7 +48,7 @@ public class V2_ButtonHandle : MonoBehaviour
 
 	private void Update()
 	{
-		if (handle.isHovered)
+		if (handle.isHovered && !V5_FreeCameraManager.instance.isFree)
 		{
 			if (Input.GetButtonDown("Fire1"))
 			{

@@ -76,7 +76,8 @@ public class V3_Crouch : MonoBehaviour
 	private void Update()
 	{
 		if (fpcc.isInputEnabled
-			&& !V2_GroundhogControl.instance.hasFinished)
+			&& !V2_GroundhogControl.instance.hasFinished
+			&& !V5_FreeCameraManager.instance.isFree)
 		{
 			isCrouchInputHeld = Input.GetKey(KeyCode.LeftControl);
 		}

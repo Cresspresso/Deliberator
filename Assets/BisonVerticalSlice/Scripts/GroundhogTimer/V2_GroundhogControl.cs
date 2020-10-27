@@ -93,7 +93,7 @@ public class V2_GroundhogControl : MonoBehaviour
 
 	private void Update()
 	{
-		if (!V2_PauseMenu.instance.isPaused)
+		if (!V2_PauseMenu.instance.isPaused && !V5_FreeCameraManager.instance.isFree)
 		{
 			if (Input.GetKeyDown(KeyCode.R))
 			{

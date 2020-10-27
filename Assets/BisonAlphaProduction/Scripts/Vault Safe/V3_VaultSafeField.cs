@@ -202,7 +202,7 @@ public class V3_VaultSafeField : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
 	private void Update()
 	{
-		if (isHovered)
+		if (isHovered && !V5_FreeCameraManager.instance.isFree)
 		{
 			AddToValue(Mathf.RoundToInt(Input.mouseScrollDelta.y));
 		}
