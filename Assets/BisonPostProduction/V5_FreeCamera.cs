@@ -44,21 +44,9 @@ public class V5_FreeCamera : MonoBehaviour
 
 		transform.localEulerAngles = new Vector3(vert, horz, roll);
 
-
-
 		if (Input.GetKeyDown(KeyCode.T))
 		{
-			var now = System.DateTime.Now;
-			var Y = now.Year.ToString();
-			var M = now.Month.ToString().PadLeft(2, '0');
-			var d = now.Day.ToString().PadLeft(2, '0');
-			var H = now.Hour.ToString().PadLeft(2, '0');
-			var m = now.Minute.ToString().PadLeft(2, '0');
-			var s = now.Second.ToString().PadLeft(2, '0');
-
-			var filename = $"{Application.persistentDataPath}/{Y}-{M}-{d}--{H}-{m}-{s}.png";
-			ScreenCapture.CaptureScreenshot(filename);
-			V4_PlaytestConsole.Log("Saved screenshot to " + filename);
+			V5_ScreenshotSaver.TakeScreenshotAndSave();
 		}
 	}
 }
